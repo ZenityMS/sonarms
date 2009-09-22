@@ -33,6 +33,7 @@ GM Commands - For characters with a GM Level of 1 or 2.
 !droprate [num]                - Sets drop rate as [num].
 !exp [number]                  - Sets [number] as exp.
 !exprate [num]                 - Sets exp rate as [num].
+!fakerelog		       - Refreshes the map.
 !fakechar [num]                - Creates a clone of you [num] times.
 !fame [user] [number]          - Sets [user]'s fame to [number].
 !giftnx [user] [amount]        - Gifts [user] [amount] nx.
@@ -49,6 +50,8 @@ GM Commands - For characters with a GM Level of 1 or 2.
 !levelperson [user] [level]    - Set's [user] to level [level].
 !levelpro [level]              - Levels you up until you're level [level].
 !levelup                       - Levels you up.
+!maxall                        - Maxes everything.
+!maxmesos                      - Maxes your mesos.
 !maxskills                     - Maxes all skills.
 !maxstats                      - Maxes stats.
 !mesoperson [user] [mesos]     - Gives [user] [mesos] mesos.
