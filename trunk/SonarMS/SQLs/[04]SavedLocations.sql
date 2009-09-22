@@ -1,0 +1,2 @@
+/*SavedLocations fix*/
+truncate savedlocations;
