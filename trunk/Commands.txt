@@ -85,6 +85,8 @@ Player Commands - Available for all players.
 @expfix
 @checkstats
 @fakerelog
+@bigshop
+@petname
 @cody
 @storage
 @spinel

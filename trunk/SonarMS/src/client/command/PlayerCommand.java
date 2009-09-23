@@ -15,6 +15,8 @@ class PlayerCommand {
 			player.dropMessage("@expfix ~ Fixes -Exp");
 			player.dropMessage("@checkstats ~ Shows your stats.");
 			player.dropMessage("@emo ~ Kill yourself");
+			player.dropMessage("@bigshop ~ Opens the Big Shop.");
+			player.dropMessage("@petname ~ Change the name of your pet.");
 			player.dropMessage("@cody, storage, spinel ~ Opens the NPC chosen");
         } else if (splitted[0].equals("@dispose")) {
             NPCScriptManager.getInstance().dispose(c);
@@ -39,6 +41,10 @@ class PlayerCommand {
                 player.getMap().addPlayer(player);
 		} else if (splitted[0].equalsIgnoreCase("@cody")) {
                 NPCScriptManager.getInstance().start(c, 9200000);
+		} else if (splitted[0].equals("@bigshop")) {
+				NPCScriptManager.getInstance().start(c, 22000, null, null);
+		} else if (splitted[0].equals("@petname")) {
+				NPCScriptManager.getInstance().start(c, 9120008, null, null);
         } else if (splitted[0].equalsIgnoreCase("@storage")) {
                 player.getStorage().sendStorage(c, 2080005);
 		} else if (splitted[0].equalsIgnoreCase("@spinel")) {

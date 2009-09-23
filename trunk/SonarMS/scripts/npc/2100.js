@@ -1,65 +1,29 @@
-/* Author: Xterminator
-	NPC Name: 		Sera
-	Map(s): 		0, 1, 3
-	Description: 	First NPC
+/* Sera
+By Tommy of SonarMS
 */
-
-var status = 0;
-var yes = 0;
+var equipGains = Array(1442018, 1442039, 1432038, 1402036, 1372032, 1382036, 1452044, 1462039, 1472051, 1332050, 1482023, 1492013);
+var cape = 1102041;
 
 function start() {
-    if (!cm.getJobById()==0 && !cm.getPlayer().gmLevel() > 0)
-        cm.getClient().disconnect();
-    status = -1;
-    action(1, 0, 0);
+    cm.sendSimple("#bWelcome to SonarMS. What job do you wish to be? You will gain items according to your job choice, and will be leveled to 10. Talk to Cody to make your first job advancement and enjoy your stay in SonarMS!#k \r\n#L0#Beginner#l \r\n\ #L1#Warrior#l \r\n\ #L2#Magician#k#l \r\n\ #L3#Bowman#l \r\n\ #L4#Thief#l \r\n\ #L5#Pirate#l");
 }
 
 function action(mode, type, selection) {
-    if (cm.getPlayer().getMapId() == 0 || cm.getPlayer().getMapId() == 3) {
-        if (mode == -1)
-            cm.dispose();
-        else {
-            if (status == -1 && mode == 0) {
-                cm.sendNext("Please talk to me again when you finally made your decision.");
-                cm.dispose();
-                return;
-            } else if (status >= 0 && mode == 0) {
-                yes = 1;
-                cm.sendYesNo("Do you really want to start your journey right away?");
-            }
-            if (mode == 1)
-                status++;
-            else
-                status--;
-            if (status == 0) {
-                if (yes == 1) {
-                    status = 2;
-                    cm.sendNext("It seems like you want to start your journey without taking the training program. Then, I will let you move on to the training ground. Be careful.");
-                } else
-                    cm.sendYesNo("Welcome to the SonarMS. The purpose of this training camp is to help beginners. Would you like to enter this training camp? Some people start their journey without taking the training program. But I strongly recommend you take the training program first.");
-            } else if (status == 1)
-                cm.sendNext("Ok then, I will let you enter the training camp. Please follow your instructor's lead.");
-            else if (status == 2) {
-                cm.getPlayer().maxAllSkills();
-                cm.warp(1, 0);
-                cm.dispose();
-            } else if (status == 3) {
-                cm.getPlayer().maxAllSkills();
-                cm.warp(40000);
-                cm.dispose();
-            }
-        }
-    } else {
-        if (mode < 1)
-            cm.dispose();
-        else {
-            status++;
-            if (status == 0) 
-                cm.sendNext("This is the image room where your first training program begins. In this room, you will have an advance look into the job of your choice.");
-            else if (status == 1)
-                cm.sendPrev("Once you train hard enough, you will be entitled to occupy a job. You can become a Bowman in Henesys, a Magician in Ellinia, a Warrior in Perion, and a Thief in Kerning City...");
-            else
-                cm.dispose();
-        }
+    if (mode < 1)
+        cm.dispose();
+    else {
+        cm.gainRandEquip(1002357);
+        for (var i = 0; i < 2; i++)
+            cm.gainRandEquip(equipGains[selection*2+i]);
+        if (selection==2) cape++;
+        cm.gainRandEquip(cape);
+        cm.getChar().maxAllSkills();
+        cm.resetStats();
+	cm.gainItem(1002419,1);
+	cm.gainItem(1082149,1);
+	cm.gainItem(2040807,7);
+	cm.gainExp(3347);
+        cm.warp(100000000,0);
+        cm.dispose();
     }
 }
