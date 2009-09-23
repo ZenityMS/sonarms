@@ -39,6 +39,7 @@ GM Commands - For characters with a GM Level of 1 or 2.
 !goto [map name]               - Warps you to a map.
 !gmshop                        - Opens the GM Shop.
 !heal                          - Heals you to full hp.
+!healmap                       - Heals the map.
 !id [name]                     - Searches IDs with keyword [name].
 !item [id] [amount]            - Gains item with id [id] and amount [amount].
 !job [jobid]                   - Changes your job to [job].
@@ -50,8 +51,8 @@ GM Commands - For characters with a GM Level of 1 or 2.
 !levelpro [level]              - Levels you up until you're level [level].
 !levelup                       - Levels you up.
 !maxall                        - Maxes everything.
-!maxmesos                      - Maxes your mesos.
 !maxskills                     - Maxes all skills.
+!maxall                        - Maxes all stats.
 !maxstats                      - Maxes stats.
 !mesoperson [user] [mesos]     - Gives [user] [mesos] mesos.
 !mesorate [num]                - Sets meso rate as [num].
@@ -71,7 +72,9 @@ GM Commands - For characters with a GM Level of 1 or 2.
 !spawn [mob] [amount]          - Spawns [amount] of monster [mob].
 !unban [userid]                - Unbans [user]'s IP and account.
 !warp [mapid] [portal]         - Warps you to [mapid] and portal [portal].
+!warpallhere                   - Warps everyone to your map.
 !warphere [user]               - Warps [user] to your map.
+!whosthere                     - Shows everyone on the map.
 
 ------------------------------------------------------------------------
 

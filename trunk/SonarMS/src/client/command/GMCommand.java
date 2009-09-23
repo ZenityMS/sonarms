@@ -66,6 +66,11 @@ class GMCommand {
                 SkillFactory.getSkill(i).getEffect(SkillFactory.getSkill(i).getMaxLevel()).applyTo(player);
             player.setEnergyBar(10000);
             c.getSession().write(MaplePacketCreator.giveEnergyCharge(10000));
+        } else if (splitted[0].equals("!fakerelog")) {
+            c.getSession().write(MaplePacketCreator.getCharInfo(player));
+            player.getMap().removePlayer(player);
+            player.getMap().addPlayer(player);
+
         } else if (splitted[0].equals("!cheaters"))
             try {
                 for (int x = 0; x < cserv.getWorldInterface().getCheaters().size(); x++)
@@ -112,7 +117,18 @@ class GMCommand {
             MapleShopFactory.getInstance().getShop(1337).sendShop(c);
         else if (splitted[0].equals("!heal"))
             player.setHpMp(30000);
-        else if (splitted[0].equals("!id"))
+         else if (splitted[0].equals("!healmap")) {
+            for (MapleCharacter mch : player.getMap().getCharacters()) {
+                if (mch != null) {
+                    mch.setHp(mch.getMaxHp());
+                    mch.updateSingleStat(MapleStat.HP, mch.getMaxHp());
+                    mch.setMp(mch.getMaxMp());
+                    mch.updateSingleStat(MapleStat.MP, mch.getMaxMp());
+                }
+                }
+         }
+
+         else if (splitted[0].equals("!id"))
             try {
                 URL url = new URL("http://www.mapletip.com/search_java.php?search_value=" + splitted[1] + "&check=true");
                 BufferedReader dis = new BufferedReader(new InputStreamReader(url.openConnection().getInputStream()));
@@ -206,12 +222,30 @@ class GMCommand {
             player.updateSingleStat(MapleStat.MAXMP, 30000);
         } else if (splitted[0].equals("!maxskills"))
             player.maxAllSkills();
+
         else if (splitted[0].equals("!mesoperson"))
             cserv.getPlayerStorage().getCharacterByName(splitted[1]).gainMeso(Integer.parseInt(splitted[2]), true);
         else if (splitted[0].equals("!mesorate")) {
             int meso = Integer.parseInt(splitted[1]);
             cserv.setMesoRate(meso);
             cserv.broadcastPacket(MaplePacketCreator.serverNotice(6, "Meso Rate has been changed to " + meso + "x."));
+        } else if (splitted[0].equals("!maxall")) {
+            player.setStr(32767);
+            player.setDex(32767);
+            player.setInt(32767);
+            player.setLuk(32767);
+            player.setLevel(255);
+            player.setFame(13337);
+            player.setMaxHp(30000);
+            player.setMaxMp(30000);
+            player.updateSingleStat(MapleStat.STR, 32767);
+            player.updateSingleStat(MapleStat.DEX, 32767);
+            player.updateSingleStat(MapleStat.INT, 32767);
+            player.updateSingleStat(MapleStat.LUK, 32767);
+            player.updateSingleStat(MapleStat.LEVEL, 255);
+            player.updateSingleStat(MapleStat.FAME, 13337);
+            player.updateSingleStat(MapleStat.MAXHP, 30000);
+            player.updateSingleStat(MapleStat.MAXMP, 30000);
         } else if (splitted[0].equals("!mesos"))
             player.gainMeso(Integer.parseInt(splitted[1]), true);
         else if (splitted[0].equals("!mushmom")) {
@@ -310,6 +344,23 @@ class GMCommand {
                         player.changeMap(cserv.getMapFactory().getMap(Integer.parseInt(splitted[1])));
                 } catch (Exception e) {
                 }
+        } else if (splitted[0].equals("!warpallhere")) {
+            for (MapleCharacter mch : cserv.getPlayerStorage().getAllCharacters()) {
+                if (mch.getMapId() != player.getMapId()) {
+                    mch.changeMap(player.getMap(), player.getPosition());
+                }
+            }
+        } else if (splitted[0].equals("!whosthere")) {
+            StringBuilder builder = new StringBuilder("Players on Map: ");
+            for (MapleCharacter chr : player.getMap().getCharacters()) {
+                if (builder.length() > 150) {
+                    builder.setLength(builder.length() - 2);
+                    player.dropMessage(builder.toString());
+                }
+                builder.append(MapleCharacterUtil.makeMapleReadable(chr.getName()) + ", ");
+            }
+            builder.setLength(builder.length() - 2);
+            c.getSession().write(MaplePacketCreator.serverNotice(6, builder.toString()));
         } else if (splitted[0].equals("!warphere"))
             cserv.getPlayerStorage().getCharacterByName(splitted[1]).changeMap(player.getMap(), player.getPosition());
         else {
