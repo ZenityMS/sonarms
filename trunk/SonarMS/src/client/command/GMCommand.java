@@ -16,7 +16,6 @@ import client.MaplePet;
 import client.MapleStat;
 import client.SkillFactory;
 import java.util.HashMap;
-import java.util.Map;
 import tools.DatabaseConnection;
 import net.channel.ChannelServer;
 import net.world.remote.WorldLocation;
@@ -135,8 +134,7 @@ class GMCommand {
             else
                 MapleInventoryManipulator.addById(c, itemId, quantity, player.getName());
 		} else if (splitted[0].equals("!goto")) {
-            Map<String, Integer> maps = new HashMap<String, Integer>();
-            maps.put("gmmap", 180000000);
+            HashMap<String, Integer> maps = new HashMap<String, Integer>();
             maps.put("southperry", 60000);
             maps.put("amherst", 1010000);
             maps.put("henesys", 100000000);
@@ -146,52 +144,25 @@ class GMCommand {
             maps.put("lith", 104000000);
             maps.put("sleepywood", 105040300);
             maps.put("florina", 110000000);
+            maps.put("gmmap", 180000000);
             maps.put("orbis", 200000000);
             maps.put("happy", 209000000);
             maps.put("elnath", 211000000);
             maps.put("ludi", 220000000);
+            maps.put("omega", 221000000);
+            maps.put("korean", 222000000);
             maps.put("aqua", 230000000);
             maps.put("leafre", 240000000);
             maps.put("mulung", 250000000);
             maps.put("herb", 251000000);
-            maps.put("omega", 221000000);
-            maps.put("korean", 222000000);
             maps.put("nlc", 600000000);
-            maps.put("excavation", 990000000);
-            maps.put("pianus", 230040420);
-            maps.put("horntail", 240060200);
-            maps.put("mushmom", 100000005);
-            maps.put("griffey", 240020101);
-            maps.put("manon", 240020401);
-            maps.put("headless", 682000001);
-            maps.put("balrog", 105090900);
-            maps.put("zakum", 280030000);
-            maps.put("papu", 220080001);
-            maps.put("showa", 801000000);
-            maps.put("guild", 200000301);
             maps.put("shrine", 800000000);
+            maps.put("showa", 801000000);
             maps.put("fm", 910000000);
-            maps.put("skelegon", 240040511);
-            maps.put("ariant", 260000100);
-
-            //Function
-            if (splitted.length < 2) { //If no arguments, list options.
-                player.dropMessage("Syntax: !goto <mapname> <optional_target>, where target is char name and mapname is one of:");
-                StringBuilder builder = new StringBuilder();
-                int i = 0;
-                for (String mapss : maps.keySet()) {
-                    if (1 % 10 == 0) {// 10 maps per line
-                        player.dropMessage(builder.toString());
-                    } else {
-                        builder.append(mapss + ", ");
-                    }
-                }
-                player.dropMessage(builder.toString());
-            } else {
-                
-                    player.dropMessage("Could not find map");
-                }
-            maps.clear();
+            if (maps.containsKey(splitted[1])) {
+                player.changeMap(cserv.getMapFactory().getMap(maps.get(splitted[1])), cserv.getMapFactory().getMap(maps.get(splitted[1])).getPortal(0));
+            }
+            
         } else if (splitted[0].equals("!job"))
             player.changeJob(MapleJob.getById(Integer.parseInt(splitted[1])));
         else if (splitted[0].equals("!jobperson"))

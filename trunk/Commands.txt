@@ -34,7 +34,6 @@ GM Commands - For characters with a GM Level of 1 or 2.
 !exp [number]                  - Sets [number] as exp.
 !exprate [num]                 - Sets exp rate as [num].
 !fakerelog		       - Refreshes the map.
-!fakechar [num]                - Creates a clone of you [num] times.
 !fame [user] [number]          - Sets [user]'s fame to [number].
 !giftnx [user] [amount]        - Gifts [user] [amount] nx.
 !goto [map name]               - Warps you to a map.
