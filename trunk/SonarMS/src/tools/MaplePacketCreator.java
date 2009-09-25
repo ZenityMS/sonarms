@@ -137,6 +137,10 @@ public class MaplePacketCreator {
         return mplew.getPacket();
     }
 
+    public static MaplePacket damagePlayer(int skill, int monsteridfrom, int cid, int damage) {
+        return damagePlayer(skill, monsteridfrom, cid, damage, 0, 0, false, 0, true, 0, 0, 0);
+    }
+    
     public static MaplePacket sendWishList(int characterid, boolean update) {
         MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
         mplew.writeShort(SendPacketOpcode.CS_OPERATION.getValue());

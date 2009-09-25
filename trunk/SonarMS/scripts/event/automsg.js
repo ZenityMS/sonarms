@@ -18,6 +18,6 @@ function cancelSchedule() {
 }
 function start() {
     scheduleNew(); //not working
-    var Message = new Array("At a certain conference, every pair of people are either friends or strangers. At mealtime, every participant eats in one of two large dining rooms. Each person insists upon eating in a room which contains an even number of his or her friends. Prove that the number of ways that the people may be split between the two rooms is a power of two.");
-    em.getChannelServer().yellowWorldMessage("[MapleTip] " + Message[Math.floor(Math.random() * Message.length)]);
+    var Message = new Array("Welcome to SonarMS! Visit our forum @ sonarms.forumotion.com");
+    em.getChannelServer().yellowWorldMessage("[SonarMS Tip] " + Message[Math.floor(Math.random() * Message.length)]);
 }

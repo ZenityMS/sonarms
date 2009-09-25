@@ -12,6 +12,7 @@ import client.SkillFactory;
 import client.anticheat.CheatingOffense;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
+import net.channel.pvp.MaplePvp;
 import net.AbstractMaplePacketHandler;
 import server.MapleInventoryManipulator;
 import server.MapleStatEffect;
@@ -77,6 +78,9 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         }
         int totDamage = 0;
         final MapleMap map = player.getMap();
+		if (player.isPvPMap()) {
+            MaplePvp.doPvP(player, map, attack);
+        }
         if (attack.skill == 4211006) {
             int delay = 0;
             for (Pair<Integer, List<Integer>> oned : attack.allDamage) {

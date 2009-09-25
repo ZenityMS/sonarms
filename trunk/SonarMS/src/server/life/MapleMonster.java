@@ -21,6 +21,7 @@ import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import net.MaplePacket;
 import net.channel.ChannelServer;
+import net.channel.pvp.MaplePvp;
 import net.world.MapleParty;
 import net.world.MaplePartyCharacter;
 import scripting.event.EventInstanceManager;
