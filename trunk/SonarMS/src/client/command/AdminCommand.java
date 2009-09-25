@@ -1,8 +1,10 @@
 package client.command;
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import client.MapleCharacter;
 import client.MapleClient;
+import java.sql.SQLException;
 import tools.DatabaseConnection;
 import net.channel.ChannelServer;
 import server.MapleOxQuiz;
@@ -45,6 +47,44 @@ class AdminCommand {
                 for (MapleCharacter chr : ch.getPlayerStorage().getAllCharacters())
                     chr.saveToDB(true);
             player.message("Done.");
+        } else if (splitted[0].equals("!pnpc")) {
+            int npcId = Integer.parseInt(splitted[1]);
+            MapleNPC npc = MapleLifeFactory.getNPC(npcId);
+            int xpos = player.getPosition().x;
+            int ypos = player.getPosition().y;
+            int fh = player.getMap().getFootholds().findBelow(player.getPosition()).getId();
+            if (npc != null && !npc.getName().equals("MISSINGNO")) {
+                npc.setPosition(player.getPosition());
+                npc.setCy(ypos);
+                npc.setRx0(xpos + 50);
+                npc.setRx1(xpos - 50);
+                npc.setFh(fh);
+                npc.setCustom(true);
+                try {
+                    Connection con = DatabaseConnection.getConnection();
+                    PreparedStatement ps = con.prepareStatement("INSERT INTO spawns ( idd, f, fh, cy, rx0, rx1, type, x, y, mid ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )");
+                    ps.setInt(1, npcId);
+                    ps.setInt(2, 0);
+                    ps.setInt(3, fh);
+                    ps.setInt(4, ypos);
+                    ps.setInt(4, ypos);
+                    ps.setInt(5, xpos + 50);
+                    ps.setInt(6, xpos - 50);
+                    ps.setString(7, "n");
+                    ps.setInt(8, xpos);
+                    ps.setInt(9, ypos);
+                    ps.setInt(10, player.getMapId());
+                    ps.executeUpdate();
+                    ps.close();
+                } catch (SQLException e) {
+                    player.dropMessage("Failed to save NPC to the database");
+                }
+                player.getMap().addMapObject(npc);
+                player.getMap().broadcastMessage(MaplePacketCreator.spawnNPC(npc));
+            } else {
+                player.dropMessage("You have entered an invalid Npc-Id");
+            }
+
         } else if (splitted[0].equals("!setgmlevel")) {
             cserv.getPlayerStorage().getCharacterByName(splitted[1]).setGMLevel(Integer.parseInt(splitted[2]));
             player.message("Done.");
