@@ -1,2 +1,0 @@
-/*SavedLocations fix*/
-truncate savedlocations;

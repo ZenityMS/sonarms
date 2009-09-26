@@ -14796,3 +14796,588 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+
+
+/*Other Drops*/
+insert into monsterdrops values (default, 9409000, 4000300, 1);
+insert into monsterdrops values (default, 9409001, 4000301, 1);
+INSERT into monsterdrops VALUES (default, 9300061, 4001101, 1);
+INSERT monsterdrops (monsterid,itemid,chance) VALUES (9300061,4001101,1);
+INSERT monsterdrops (monsterid,itemid,chance) VALUES (9300001,4001007,5);
+INSERT monsterdrops (monsterid,itemid,chance) VALUES (9300000,4001008,1);
+INSERT monsterdrops (monsterid,itemid,chance) VALUES (9300002,4001008,1);
+INSERT monsterdrops (monsterid,itemid,chance) VALUES (9300003,4001008,1);
+INSERT INTO monsterdrops VALUES(0, 9420502, 4000366, 8000);
+INSERT INTO monsterdrops VALUES(0, 9420502, 4000367, 7000);
+INSERT INTO monsterdrops VALUES(0, 9420502, 2000000, 300);
+INSERT INTO monsterdrops VALUES(0, 9420502, 4020004, 100);
+INSERT INTO monsterdrops VALUES(0, 9420502, 4010005, 100);
+INSERT INTO monsterdrops VALUES(0, 9420502, 1072048, 12);
+INSERT INTO monsterdrops VALUES(0, 9420502, 1382002, 10);
+INSERT INTO monsterdrops VALUES(0, 9420502, 1002177, 8);
+INSERT INTO monsterdrops VALUES(0, 9420506, 4000368, 7000);
+INSERT INTO monsterdrops VALUES(0, 9420506, 2002000, 12);
+INSERT INTO monsterdrops VALUES(0, 9420506, 2000001, 110);
+INSERT INTO monsterdrops VALUES(0, 9420506, 2000003, 100);
+INSERT INTO monsterdrops VALUES(0, 9420500, 4000368, 8000);
+INSERT INTO monsterdrops VALUES(0, 9420500, 4001000, 7000);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2002000, 100);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2000001, 100);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2000003, 50);
+INSERT INTO monsterdrops VALUES(0, 9420500, 4000368, 1000);
+INSERT INTO monsterdrops VALUES(0, 9420500, 4001000, 1000);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2002000, 6);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2000001, 90);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2000003, 100);
+INSERT INTO monsterdrops VALUES(0, 9420500, 4000368, 8);
+INSERT INTO monsterdrops VALUES(0, 9420500, 4001000, 10);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2002000, 8);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2000001, 10);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2000003, 7);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2000001, 9);
+INSERT INTO monsterdrops VALUES(0, 9420500, 2000003, 9);
+INSERT INTO monsterdrops VALUES(0, 9420503, 4000370, 8000);
+INSERT INTO monsterdrops VALUES(0, 9420503, 4000371, 7000);
+INSERT INTO monsterdrops VALUES(0, 9420503, 2000002, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 2000003, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 2070001, 4); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 4010001, 80); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 4020000, 80); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 1061048, 5); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 1002153, 7); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 1002137, 8); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 1061070, 10); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 1040061, 9); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 1002181, 6); 
+INSERT INTO monsterdrops VALUES(0, 9420503, 1060050, 4); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 4000372, 8000); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 2000002, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 2000003, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 4006001, 50); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1702107, 80); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 2044002, 6); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 2043200, 7); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 2043301, 5); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 2040800, 4); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 4020000, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 4010005, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1332020, 6); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1302017, 10); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 4031568, 9); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1332010, 8); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1050011, 12); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1432002, 13); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1382002, 10); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1452005, 8); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1072103, 10); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1050058, 12); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1472011, 7); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1040099, 5); 
+INSERT INTO monsterdrops VALUES(0, 9420501, 1060088, 8); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 4000374, 6000); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 4000376, 6000); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 4000375, 6000); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 2000004, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 2043201, 7); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 2043001, 6); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 4010000, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 4020002, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 4010003, 100); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1302017, 10); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1302016, 8); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1041087, 12); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1040089, 12); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1060078, 5);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1002243, 8);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1002242, 10);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1050054, 11);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1050053, 11); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1051032, 7); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1002216, 9);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1002214, 6);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1002213, 7);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1041027, 10);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1061025, 12);
+INSERT INTO monsterdrops VALUES(0, 9420507, 1332001, 8); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1492002, 7); 
+INSERT INTO monsterdrops VALUES(0, 9420507, 1002619, 9);
+INSERT INTO monsterdrops VALUES(0, 9420504, 4000377, 8000);
+INSERT INTO monsterdrops VALUES(0, 9420504, 1102003, 20);
+INSERT INTO monsterdrops VALUES(0, 9420505, 4000378, 8000);
+INSERT INTO monsterdrops VALUES(0, 9420505, 2000003, 100);
+INSERT INTO monsterdrops VALUES(0, 9420505, 2002004, 50);
+INSERT INTO monsterdrops VALUES(0, 9420505, 2000004, 20);
+INSERT INTO monsterdrops VALUES(0, 9420505, 2070003, 4);
+INSERT INTO monsterdrops VALUES(0, 9420505, 4010001, 10);
+INSERT INTO monsterdrops VALUES(0, 9420505, 4010006, 10);
+INSERT INTO monsterdrops VALUES(0, 9420505, 1002083, 7);
+INSERT INTO monsterdrops VALUES(0, 9420505, 1032002, 8);
+INSERT INTO monsterdrops VALUES(0, 9420505, 1432005, 9);
+INSERT INTO monsterdrops VALUES(0, 9420505, 1041014, 10);
+INSERT INTO monsterdrops VALUES(0, 9420505, 1041065, 6);
+INSERT INTO monsterdrops VALUES(0, 9420505, 1061070, 5);
+INSERT INTO monsterdrops VALUES(0, 9420508, 4000373, 8000);
+INSERT INTO monsterdrops VALUES(0, 9420508, 2000063, 80);
+INSERT INTO monsterdrops VALUES(0, 9420508, 1702107, 100);
+INSERT INTO monsterdrops VALUES(0, 9420508, 1040086, 12);
+INSERT INTO monsterdrops VALUES(0, 9420508, 1041087, 9);
+INSERT INTO monsterdrops VALUES(0, 9420508, 1051010, 7);
+INSERT INTO monsterdrops VALUES(0, 9420508, 1002128, 8);
+INSERT INTO monsterdrops VALUES(0, 9420509, 4000380, 7000);
+INSERT INTO monsterdrops VALUES(0, 9420509, 2000004, 80);
+INSERT INTO monsterdrops VALUES(0, 9420509, 2070004, 5);
+INSERT INTO monsterdrops VALUES(0, 9420509, 2044201, 6);
+INSERT INTO monsterdrops VALUES(0, 9420509, 4010006, 90);
+INSERT INTO monsterdrops VALUES(0, 9420509, 4020008, 20);
+INSERT INTO monsterdrops VALUES(0, 9420509, 4004004, 20);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1060081, 12);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1041093, 12);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1051014, 11);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1051001, 11);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1402007, 10);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1002210, 9);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1050037, 8);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1050036, 8);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1050039, 8);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1050059, 7);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1050060, 6);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1060064, 5);
+INSERT INTO monsterdrops VALUES(0, 9420509, 1051039, 5);
+INSERT INTO monsterdrops VALUES(0, 9420511, 4000382, 7000);
+INSERT INTO monsterdrops VALUES(0, 9420511, 2000006, 100);
+INSERT INTO monsterdrops VALUES(0, 9420511, 2070005, 3);
+INSERT INTO monsterdrops VALUES(0, 9420511, 4020007, 10);
+INSERT INTO monsterdrops VALUES(0, 9420511, 4010005, 10);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1102015, 12);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1102016, 12);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1041098, 10);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1040090, 9);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1492008, 11);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1041079, 8);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1082066, 9);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1041083, 8);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1061082, 7);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1002215, 6);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1050055, 8);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1050056, 8);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1072090, 10);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1051031, 11);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1051034, 12);
+INSERT INTO monsterdrops VALUES(0, 9420511, 1382006, 8);
+INSERT INTO monsterdrops VALUES(0, 9420510, 4000379, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 2070004, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1702107, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 2043701, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 4010006, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 4020008, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 4004004, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1032011, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1102017, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1432003, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1312008, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1382007, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1051034, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1050055, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1051046, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1051047, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1051030, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1452008, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1041068, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1061063, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1002249, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1002210, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1002209, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1040109, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1060098, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1040084, 1);
+INSERT INTO monsterdrops VALUES(0, 9420510, 1060073, 1);
+INSERT INTO monsterdrops VALUES(0, 9420512, 4000383, 7000);
+INSERT INTO monsterdrops VALUES(0, 9420512, 2070005, 5);
+INSERT INTO monsterdrops VALUES(0, 9420512, 2041022, 3);
+INSERT INTO monsterdrops VALUES(0, 9420512, 2043302, 3);
+INSERT INTO monsterdrops VALUES(0, 9420512, 4020006, 80);
+INSERT INTO monsterdrops VALUES(0, 9420512, 4004004, 80);
+INSERT INTO monsterdrops VALUES(0, 9420512, 4010006, 80);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1032015, 12);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1312009, 13);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1040089, 9);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1060078, 10);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1040093, 11);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1302011, 12);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1332015, 8);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1452007, 7);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1082082, 9);
+INSERT INTO monsterdrops VALUES(0, 9420512, 1050093, 12);
+
+
+/*GM Shop*/
+INSERT INTO `shopitems` (`shopitemid`,`shopid`,`itemid`,`price`,`position`) VALUES
+ (6479,1337,1002140,1,1),
+ (6480,1337,1042003,1,2),
+ (6481,1337,1062007,1,3),
+ (6482,1337,1322013,1,4),
+ (6483,1337,1072010,1,5),
+ (6484,1337,2022179,1,6),
+ (6485,1337,2022273,1,7),
+ (6486,1337,5072000,1,8),
+ (6487,1337,5390000,1,9),
+ (6488,1337,5390001,1,10),
+ (6489,1337,5390001,1,11),
+ (6490,1337,1452044,1,12),
+ (6491,1337,1472052,1,13),
+ (6492,1337,1462039,1,14),
+ (6493,1337,1332050,1,15),
+ (6494,1337,1312031,1,16),
+ (6495,1337,1322052,1,17),
+ (6496,1337,1302059,1,18),
+ (6497,1337,1442045,1,19),
+ (6498,1337,1432038,1,20),
+ (6499,1337,1382036,1,21),
+ (6500,1337,1412026,1,22),
+ (6501,1337,1422028,1,23),
+ (6502,1337,1402036,1,24),
+ (6503,1337,1122000,1,25),
+ (6504,1337,2041200,1,26),
+ (6505,1337,4006001,1,27),
+ (6506,1337,4001017,1,28),
+ (6507,1337,4031179,1,29),
+ (6508,1337,1912000,1,30),
+ (6509,1337,1902000,1,31),
+ (6510,1337,1902001,1,32),
+ (6511,1337,1902002,1,33),
+ (6512,1337,2044503,1,34),
+ (6513,1337,2044703,1,35),
+ (6514,1337,2044603,1,36),
+ (6515,1337,2043303,1,37),
+ (6516,1337,2043103,1,38),
+ (6517,1337,2043203,1,39),
+ (6518,1337,2043003,1,40),
+ (6519,1337,2044403,1,41),
+ (6520,1337,2044303,1,42),
+ (6521,1337,2043803,1,43),
+ (6522,1337,2044103,1,44),
+ (6523,1337,2044203,1,45),
+ (6524,1337,2044003,1,46),
+ (6525,1337,2043703,1,47),
+ (6526,1337,2040807,1,48),
+ (6527,1337,2040806,1,49),
+ (6528,1337,2040007,1,50),
+ (6529,1337,2040506,1,51),
+ (6530,1337,2040710,1,52),
+ (6531,1337,2040711,1,53),
+ (6532,1337,2340000,1,54),
+ (20020,1337,1082149,1,54);
+
+INSERT INTO `shops` (`shopid`,`npcid`) VALUES
+ (1337,11000);
+
+/*Old GMShop Removal*/
+delete from shopitems where shopid > 1337 and shopid < 1354;
+delete from shops where shopid > 1337 and shopid < 1354;
+update accounts set gm = 2 where gm > 2;
+update characters set gm = 2 where gm > 2;
+delete from shops where shopid > 4999 and shopid < 5010;
+delete from shopitems where shopid > 4999 and shopid < 5010;
+
+
+/*SavedLocations fix*/
+truncate savedlocations;
+
+
+/*PQ/Drops Fix*/
+update monsterdrops set chance = chance * 10 where monsterid >= 9420500 and monsterid <= 9420512;
+
+
+/*Mounts*/
+ALTER TABLE `characters` ADD `mountlevel` INT( 9 ) DEFAULT '1' NOT NULL ,
+ADD `mountexp` INT( 9 ) DEFAULT '0' NOT NULL ,
+ADD `mounttiredness` INT( 9 ) DEFAULT '0' NOT NULL ;
+
+
+/*MTS Stuff*/
+SET FOREIGN_KEY_CHECKS=0;
+DROP TABLE IF EXISTS `mts_cart`;
+CREATE TABLE `mts_cart` (
+  `id` int(11) NOT NULL auto_increment,
+  `cid` int(11) NOT NULL,
+  `itemid` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `mts_items`;
+CREATE TABLE `mts_items` (
+  `id` int(10) unsigned NOT NULL auto_increment,
+  `tab` int(11) NOT NULL default '0',
+  `type` int(11) NOT NULL default '0',
+  `itemid` int(10) unsigned NOT NULL default '0',
+  `quantity` int(11) NOT NULL default '1',
+  `seller` int(11) NOT NULL default '0',
+  `price` int(11) NOT NULL default '0',
+  `bid_incre` int(11) default '0',
+  `buy_now` int(11) default '0',
+  `position` int(11) default '0',
+  `upgradeslots` int(11) default '0',
+  `level` int(11) default '0',
+  `str` int(11) default '0',
+  `dex` int(11) default '0',
+  `int` int(11) default '0',
+  `luk` int(11) default '0',
+  `hp` int(11) default '0',
+  `mp` int(11) default '0',
+  `watk` int(11) default '0',
+  `matk` int(11) default '0',
+  `wdef` int(11) default '0',
+  `mdef` int(11) default '0',
+  `acc` int(11) default '0',
+  `avoid` int(11) default '0',
+  `hands` int(11) default '0',
+  `speed` int(11) default '0',
+  `jump` int(11) default '0',
+  `locked` int(11) default '0',
+  `isequip` int(1) default '0',
+  `owner` varchar(16) default '',
+  `sellername` varchar(16) NOT NULL,
+  `sell_ends` varchar(16) NOT NULL,
+  `transfer` int(2) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/*TrockLocations*/
+DROP TABLE IF EXISTS `trocklocations`;
+CREATE TABLE `trocklocations` (  
+	`trockid` int(11) NOT NULL auto_increment,
+	`characterid` int(11) NOT NULL,
+	`mapid` int(11) NOT NULL,
+	PRIMARY KEY  (`trockid`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/*Marriages*/
+ALTER TABLE `characters`
+ADD COLUMN `married` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+ADD COLUMN `partnerid` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+ADD COLUMN `cantalk` INTEGER UNSIGNED NOT NULL DEFAULT 1,
+ADD COLUMN `marriagequest` INTEGER UNSIGNED NOT NULL DEFAULT 0;
+
+CREATE TABLE `marriages` (
+  `marriageid` INTEGER UNSIGNED NOT NULL DEFAULT NULL AUTO_INCREMENT,
+  `husbandid` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+  `wifeid` INTEGER UNSIGNED NOT NULL DEFAULT 0,
+  PRIMARY KEY (`marriageid`)
+)
+ENGINE = InnoDB;
+
+
+/*Omok and Match Cards*/
+ALTER TABLE `characters` ADD COLUMN `omokwins` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `characters` ADD COLUMN `omoklosses` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `characters` ADD COLUMN `omokties` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `characters` ADD COLUMN `matchcardwins` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `characters` ADD COLUMN `matchcardlosses` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `characters` ADD COLUMN `matchcardties` int(11) NOT NULL DEFAULT '0';
+
+
+/*Meso and Drops*/
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8500002, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8500001, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8800003, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8800004, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8800005, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8800006, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8800007, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8800008, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8800009, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8800010, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810000, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810001, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810002, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810002, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810003, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810004, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810005, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810006, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810007, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810008, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810009, -1, 5);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810010, 1122000, 75);
+INSERT INTO monsterdrops (monsterid, itemid, chance) VALUES (8810010, 2041200, 75);
+
+
+/*CoolDowns*/
+DROP TABLE IF EXISTS `CoolDowns`;
+CREATE TABLE `CoolDowns` (
+  `id` int(11) NOT NULL auto_increment,
+  `charid` int(11) NOT NULL,
+  `SkillID` int(11) NOT NULL,
+  `length` bigint(20) unsigned NOT NULL,
+  `StartTime` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+
+/*Player NPCs*/
+DROP TABLE IF EXISTS `odinms`.`playernpcs`;
+CREATE TABLE  `odinms`.`playernpcs` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(13) NOT NULL,
+  `hair` int(11) NOT NULL,
+  `face` int(11) NOT NULL,
+  `skin` int(11) NOT NULL,
+  `x` int(11) NOT NULL,
+  `cy` int(11) NOT NULL default '0',
+  `map` int(11) NOT NULL,
+  `ScriptId` int(10) unsigned NOT NULL default '0',
+  `Foothold` int(11) NOT NULL default '0',
+  `rx0` int(11) NOT NULL default '0',
+  `rx1` int(11) NOT NULL default '0',
+  PRIMARY KEY  USING BTREE (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `odinms`.`playernpcs_equip`;
+CREATE TABLE  `odinms`.`playernpcs_equip` (
+  `id` int(11) NOT NULL auto_increment,
+  `NpcId` int(11) NOT NULL default '0',
+  `equipid` int(11) NOT NULL,
+  `type` int(11) NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `playernpcs` ADD COLUMN `gender` INTEGER NOT NULL AFTER `map`;
+ALTER TABLE `playernpcs` ADD COLUMN `dir` INTEGER NOT NULL AFTER `gender`;    
+
+
+
+/*Hired Merchants*/
+DROP TABLE IF EXISTS `odinms`.`hiredmerchant`;
+CREATE TABLE  `odinms`.`hiredmerchant` (
+  `id` int(11) NOT NULL auto_increment,
+  `ownerid` int(11) default '0',
+  `itemid` int(10) unsigned NOT NULL default '0',
+  `quantity` int(10) unsigned NOT NULL default '0',
+  `upgradeslots` int(11) default '0',
+  `level` int(11) default '0',
+  `str` int(11) default '0',
+  `dex` int(11) default '0',
+  `int` int(11) default '0',
+  `luk` int(11) default '0',
+  `hp` int(11) default '0',
+  `mp` int(11) default '0',
+  `watk` int(11) default '0',
+  `matk` int(11) default '0',
+  `wdef` int(11) default '0',
+  `mdef` int(11) default '0',
+  `acc` int(11) default '0',
+  `avoid` int(11) default '0',
+  `hands` int(11) default '0',
+  `speed` int(11) default '0',
+  `jump` int(11) default '0',
+  `owner` varchar(13) default '',
+  `type` tinyint(1) unsigned NOT NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
+
+ALTER TABLE `characters` ADD COLUMN `MerchantMesos` int(11) default '0';
+ALTER TABLE `characters` ADD COLUMN `HasMerchant` tinyint(1) default '0';
+
+
+/*Slots*/
+ALTER TABLE `odinms`.`characters` ADD COLUMN `equipslots` INTEGER NOT NULL DEFAULT 48 AFTER `HasMerchant`,
+ ADD COLUMN `useslots` INTEGER NOT NULL DEFAULT 48 AFTER `equipslots`,
+ ADD COLUMN `setupslots` INTEGER NOT NULL DEFAULT 48 AFTER `useslots`,
+ ADD COLUMN `etcslots` INTEGER NOT NULL DEFAULT 48 AFTER `setupslots`;
+ 
+ 
+ INSERT INTO `channels` (`channelid`,`world`,`number`,`key`) VALUES
+ (5,0,5,'113f78f519e010e65853241bfcb14450c4fccb66'),
+ (6,0,6,'4abba5486022346a2b309c1c2ea6a0da41a88090'),
+ (7,0,7,'76134d11fe0c2b337e2b786bfcc738b975fcf40a'),
+ (8,0,8,'5688c244c56a884a50984130a17d0b61d06743a3'),
+ (9,0,9,'6e59a6559033c70b98148f1bd67e1b63aaeedf30'),
+ (10,0,10,'603dd499e4b134bf9925600b7f150644f9e9a50b'),
+ (11,0,11,'b48f4c3c803f58950b005d785cf828027a83eac4'),
+ (12,0,12,'52a9458618abed6a42e228b33ade9cdf5ded10b4'),
+ (13,0,13,'190535a9ffb4d4d688ac1f3fa7dc09a6c81c3b86'),
+ (14,0,14,'5ce2b432ac85290b411ef0975b96712c1c35591a'),
+ (15,0,15,'7d8bae4945561008426174be907142196ed84275'),
+ (16,0,16,'da0517603d42ce6f9d9bdf4871bc1ecbf7a20c3c'),
+ (17,0,17,'87c56d1e33cf26f48ac76f1bd76b6637cddd9548'),
+ (18,0,18,'fbce35ee8db37d9bf02f444c65e49fb8a9685c28'),
+ (19,0,19,'51a2bb10ecf4e2e28fe62b405106baadb0d11090'),
+ (20,0,20,'9a071c700e4c051c354817f7e2482d148380d574');
+/*!40000 ALTER TABLE `channels` ENABLE KEYS */;
+
+DROP TABLE IF EXISTS `channelconfig`;
+CREATE TABLE `channelconfig` (
+  `channelconfigid` int(10) unsigned NOT NULL auto_increment,
+  `channelid` int(10) unsigned NOT NULL default '0',
+  `name` tinytext NOT NULL,
+  `value` tinytext NOT NULL,
+  PRIMARY KEY  (`channelconfigid`),
+  KEY `channelid` (`channelid`),
+  CONSTRAINT `channelconfig_ibfk_1` FOREIGN KEY (`channelid`) REFERENCES `channels` (`channelid`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `channelconfig`
+--
+
+/*!40000 ALTER TABLE `channelconfig` DISABLE KEYS */;
+INSERT INTO `channelconfig` (`channelconfigid`,`channelid`,`name`,`value`) VALUES 
+ (1,2,'net.sf.odinms.channel.net.port','7576'),
+ (2,3,'net.sf.odinms.channel.net.port','7577'),
+ (3,4,'net.sf.odinms.channel.net.port','7578'),
+ (4,5,'net.sf.odinms.channel.net.port','7589'),
+ (5,6,'net.sf.odinms.channel.net.port','7590'),
+ (6,7,'net.sf.odinms.channel.net.port','7591'),
+ (7,8,'net.sf.odinms.channel.net.port','7592'),
+ (8,9,'net.sf.odinms.channel.net.port','7593'),
+ (9,10,'net.sf.odinms.channel.net.port','7594'),
+ (10,11,'net.sf.odinms.channel.net.port','7595'),
+ (11,12,'net.sf.odinms.channel.net.port','7596'),
+ (12,13,'net.sf.odinms.channel.net.port','7597'),
+ (13,14,'net.sf.odinms.channel.net.port','7598'),
+ (14,15,'net.sf.odinms.channel.net.port','7599'),
+ (15,16,'net.sf.odinms.channel.net.port','7600'),
+ (16,17,'net.sf.odinms.channel.net.port','7601'),
+ (17,18,'net.sf.odinms.channel.net.port','7602'),
+ (18,19,'net.sf.odinms.channel.net.port','7603'),
+ (19,20,'net.sf.odinms.channel.net.port','7604');
+/*!40000 ALTER TABLE `channelconfig` ENABLE KEYS */;
+
+update channelconfig set name = 'channel.net.port';
+
+
+ALTER TABLE `odinms`.`playernpcs` MODIFY COLUMN `gender` INT(11) NOT NULL DEFAULT 0;
+ALTER TABLE `odinms`.`playernpcs` MODIFY COLUMN `dir` INT(11) NOT NULL DEFAULT 0;
+ALTER TABLE `odinms`.`playernpcs_equip` ADD COLUMN `equippos` INT(11) UNSIGNED NOT NULL AFTER `type`;
+
+
+
+ALTER TABLE `characters` ADD COLUMN `pvpkills` int(11) NOT NULL DEFAULT '0';
+ALTER TABLE `characters` ADD COLUMN `pvpdeaths` int(11) NOT NULL DEFAULT '0';
+
+
+DROP TABLE IF EXISTS `spawns`;
+CREATE TABLE `spawns` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `idd` int(11) NOT NULL,
+  `f` int(11) NOT NULL,
+  `fh` int(11) NOT NULL,
+  `type` varchar(1) NOT NULL,
+  `cy` int(11) NOT NULL,
+  `rx0` int(11) NOT NULL,
+  `rx1` int(11) NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  `mobtime` int(11) DEFAULT '1000',
+  `mid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `spawns`
+--
+
+/*!40000 ALTER TABLE `spawns` DISABLE KEYS */;
+/*!40000 ALTER TABLE `spawns` ENABLE KEYS */;
