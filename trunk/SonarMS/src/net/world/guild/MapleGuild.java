@@ -17,7 +17,6 @@ import client.MapleCharacter;
 import client.MapleClient;
 import tools.DatabaseConnection;
 import net.MaplePacket;
-import net.channel.pvp.MaplePvp;
 import net.channel.ChannelServer;
 import net.channel.remote.ChannelWorldInterface;
 import net.world.WorldRegistryImpl;

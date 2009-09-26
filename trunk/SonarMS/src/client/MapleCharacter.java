@@ -95,8 +95,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     private int itemEffect;
     private int paypalnx;
     private int maplepoints;
-	private int pvpkills;
-	private int pvpdeaths;
     private int cardnx;
     private int guildid;
     private int guildrank;
@@ -254,33 +252,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     public void addMarriageQuestLevel() {
         marriageQuestLevel++;
     }
-	
-	public int getPvpKills() {
-        return pvpkills;
-    }
-	
-	public int getPvpDeaths() {
-        return pvpdeaths;
-    }
 
     public boolean inJail() {
         return getMapId() == 200090300 || getMapId() == 980000404;
-    }
-
-    public void setPvpDeaths(int amount) {
-        this.pvpdeaths = amount;
-    }
-
-    public void setPvpKills(int amount) {
-        this.pvpkills = amount;
-    }
-
-    public void gainPvpDeath() {
-        this.pvpdeaths += 1;
-    }
-
-    public void gainPvpKill() {
-        this.pvpkills += 1;
     }
 
     public void addMP(int delta) {
@@ -519,10 +493,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 
     public boolean canDoor() {
         return canDoor;
-    }
-	
-	public boolean isPvPMap() {
-        return getMapId() == 800020400;
     }
 
     public FameStatus canGiveFame(MapleCharacter from) {
@@ -1825,8 +1795,6 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             throw new RuntimeException("Loading char failed (not found)");
         ret.name = rs.getString("name");
         ret.level = rs.getInt("level");
-		ret.pvpdeaths = rs.getInt("pvpdeaths");
-        ret.pvpkills = rs.getInt("pvpkills");
         ret.reborns = rs.getInt("reborns");
         ret.fame = rs.getInt("fame");
         ret.str = rs.getInt("str");
@@ -2512,9 +2480,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             con.setAutoCommit(false);
             PreparedStatement ps;
             if (update)
-                ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpApUsed = ?, mpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, reborns = ?, pvpkills = ?, pvpdeaths = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, married = ?, partnerid = ?, cantalk = ?, marriagequest = ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?  WHERE id = ?");
+                ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpApUsed = ?, mpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, reborns = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, married = ?, partnerid = ?, cantalk = ?, marriagequest = ?, equipslots = ?, useslots = ?, setupslots = ?, etcslots = ?  WHERE id = ?");
             else
-                ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp, mp, maxhp, maxmp, sp, ap, gm, skincolor, gender, job, hair, face, map, meso, hpApUsed, mpApUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, reborns, pvpkills, pvpdeaths, mountlevel, mounttiredness, mountexp, married, partnerid, cantalk, marriagequest, equipslots, useslots, setupslots, etcslots, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? ,?,?,?)");
+                ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp, mp, maxhp, maxmp, sp, ap, gm, skincolor, gender, job, hair, face, map, meso, hpApUsed, mpApUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, reborns, mountlevel, mounttiredness, mountexp, married, partnerid, cantalk, marriagequest, equipslots, useslots, setupslots, etcslots, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? ,?,?,?)");
             if (gmLevel < 1 && level > 250)
                 ps.setInt(1, 250);
             else
@@ -2539,9 +2507,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             ps.setInt(19, face);
             if (map == null)
                 ps.setInt(20, 0);
-			else if ((map.getId() > 910000020 && map.getId() <= 910000021) || isPvPMap()) {
-                ps.setInt(20, 910000000);
-            } else if (map.getForcedReturnId() != 999999999)
+             else if (map.getForcedReturnId() != 999999999)
                 ps.setInt(20, map.getForcedReturnId());
             else
                 ps.setInt(20, map.getId());
@@ -2570,31 +2536,29 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
                 ps.setInt(28, 4);
             }
             ps.setInt(29, reborns);
-			ps.setInt(30, pvpkills);
-            ps.setInt(31, pvpdeaths);
             if (maplemount != null) {
-                ps.setInt(32, maplemount.getLevel());
-                ps.setInt(33, maplemount.getExp());
-                ps.setInt(34, maplemount.getTiredness());
+                ps.setInt(30, maplemount.getLevel());
+                ps.setInt(31, maplemount.getExp());
+                ps.setInt(32, maplemount.getTiredness());
             } else {
-                ps.setInt(32, 1);
-                ps.setInt(33, 0);
-                ps.setInt(34, 0);
+                ps.setInt(30, 1);
+                ps.setInt(31, 0);
+                ps.setInt(32, 0);
             }
-            ps.setInt(35, married);
-            ps.setInt(36, partnerid);
-            ps.setInt(37, canTalk);
-            ps.setInt(38, marriageQuestLevel);
-            ps.setInt(39, getSlots((byte) 1));
-            ps.setInt(40, getSlots((byte) 2));
-            ps.setInt(41, getSlots((byte) 3));
-            ps.setInt(42, getSlots((byte) 4));
+            ps.setInt(33, married);
+            ps.setInt(34, partnerid);
+            ps.setInt(35, canTalk);
+            ps.setInt(36, marriageQuestLevel);
+            ps.setInt(37, getSlots((byte) 1));
+            ps.setInt(38, getSlots((byte) 2));
+            ps.setInt(39, getSlots((byte) 3));
+            ps.setInt(40, getSlots((byte) 4));
             if (update)
-                ps.setInt(43, id);
+                ps.setInt(41, id);
             else {
-                ps.setInt(43, accountid);
-                ps.setString(44, name);
-                ps.setInt(45, world);
+                ps.setInt(41, accountid);
+                ps.setString(42, name);
+                ps.setInt(43, world);
             }
             int updateRows = ps.executeUpdate();
             if (!update) {
@@ -3341,9 +3305,5 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     @Override
     public String toString() {
         return this.name;
-    }
-	
-	public boolean inBlockedMap() {
-        return isPvPMap() || inJail();
     }
 }

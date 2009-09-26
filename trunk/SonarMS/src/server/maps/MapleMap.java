@@ -30,7 +30,6 @@ import client.SkillFactory;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
 import net.MaplePacket;
-import net.channel.pvp.MaplePvp;
 import net.channel.ChannelServer;
 import net.world.MaplePartyCharacter;
 import server.MapleItemInformationProvider;
@@ -100,31 +99,6 @@ public class MapleMap {
         return ret;
     }
 	
-	public Collection<MapleCharacter> getNearestPvpChar(Point attacker, double maxRange, double maxHeight, Collection<MapleCharacter> chr) {
-        Collection<MapleCharacter> character = new LinkedList<MapleCharacter>();
-        for (MapleCharacter a : characters) {
-            if (chr.contains(a.getClient().getPlayer())) {
-                Point attackedPlayer = a.getPosition();
-                MaplePortal Port = a.getMap().findClosestSpawnpoint(a.getPosition());
-                Point nearestPort = Port.getPosition();
-                double safeDis = attackedPlayer.distance(nearestPort);
-                double distanceX = attacker.distance(attackedPlayer.getX(), attackedPlayer.getY());
-                if (MaplePvp.isLeft) {
-                    if (attacker.x > attackedPlayer.x && distanceX < maxRange && distanceX > 2 &&
-                            attackedPlayer.y >= attacker.y - maxHeight && attackedPlayer.y <= attacker.y + maxHeight && safeDis > 2) {
-                        character.add(a);
-                    }
-                }
-                if (MaplePvp.isRight) {
-                    if (attacker.x < attackedPlayer.x && distanceX < maxRange && distanceX > 2 &&
-                            attackedPlayer.y >= attacker.y - maxHeight && attackedPlayer.y <= attacker.y + maxHeight && safeDis > 2) {
-                        character.add(a);
-                    }
-                }
-            }
-        }
-        return character;
-    }
 
     public int getId() {
         return mapid;
