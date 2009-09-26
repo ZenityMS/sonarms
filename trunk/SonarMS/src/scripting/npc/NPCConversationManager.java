@@ -10,6 +10,9 @@ import client.MapleJob;
 import client.MaplePet;
 import client.MapleQuestStatus;
 import client.MapleStat;
+import java.awt.Point;
+import java.util.Arrays;
+import java.util.List;
 import tools.DatabaseConnection;
 import net.world.MapleParty;
 import net.world.guild.MapleGuild;
@@ -17,6 +20,13 @@ import scripting.AbstractPlayerInteraction;
 import scripting.event.EventManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
+import server.life.MapleLifeFactory;
+import server.life.MapleMonster;
+import server.life.MapleMonsterStats;
+import server.life.MapleNPC;
+import server.maps.MapleMap;
+import server.maps.MapleMapObject;
+import server.maps.MapleMapObjectType;
 import server.maps.SavedLocationType;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
@@ -153,6 +163,100 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         getPlayer().setSkinColor(getPlayer().getSkinColor().getById(color));
         getPlayer().updateSingleStat(MapleStat.SKIN, color);
         getPlayer().equipChanged();
+    }
+
+    public void spawnMob(int mapid, int mid, int xpos, int ypos) {
+        getClient().getChannelServer().getMapFactory().getMap(mapid).spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(mid), new Point(xpos, ypos));
+    }
+
+    public Point getNPCPosition() {
+        MapleNPC thenpc = MapleLifeFactory.getNPC(this.npc);
+        Point pos = thenpc.getPosition();
+        return pos;
+    }
+
+    public Point getPosition() {
+        Point pos = getPlayer().getPosition();
+        return pos;
+    }
+	
+	public void summonMob(int mobid, int customHP, int customEXP, int amount) {
+        spawnMonster(mobid, customHP, -1, -1, customEXP, 0, 0, amount, getPlayer().getPosition().x, getPlayer().getPosition().y);
+    }
+
+    public void summonMob(int mobid) {
+        getPlayer().getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(mobid), getNPCPosition());
+    }
+
+    public void spawnMonster(int mobid, int HP, int MP, int level, int EXP, int boss, int undead, int amount, int x, int y) {
+        MapleMonsterStats newStats = new MapleMonsterStats();
+        if (HP >= 0) {
+            newStats.setHp(HP);
+        }
+        if (MP >= 0) {
+            newStats.setMp(MP);
+        }
+        if (level >= 0) {
+            newStats.setLevel(level);
+        }
+        if (EXP >= 0) {
+            newStats.setExp(EXP);
+        }
+        newStats.setBoss(boss == 1);
+        newStats.setUndead(undead == 1);
+        for (int i = 0; i < amount; i++) {
+            MapleMonster npcmob = MapleLifeFactory.getMonster(mobid);
+            npcmob.setOverrideStats(newStats);
+            npcmob.setHp(npcmob.getMaxHp());
+            npcmob.setMp(npcmob.getMaxMp());
+            getPlayer().getMap().spawnMonsterOnGroundBelow(npcmob, new Point(x, y));
+        }
+    }
+
+    public void summonMobAtPosition(int mobid, int customHP, int customEXP, int amount, int posx, int posy) {
+        MapleMonsterStats newStats = new MapleMonsterStats();
+        if (customHP > 0) {
+            newStats.setHp(customHP);
+        }
+        if (customEXP >= 0) {
+            newStats.setExp(customEXP);
+        }
+        if (amount <= 1) {
+            MapleMonster npcmob = MapleLifeFactory.getMonster(mobid);
+            npcmob.setOverrideStats(newStats);
+            npcmob.setHp(npcmob.getMaxHp());
+            getPlayer().getMap().spawnMonsterOnGroudBelow(npcmob, new Point(posx, posy));
+        } else {
+            for (int i = 0; i < amount; i++) {
+                MapleMonster npcmob = MapleLifeFactory.getMonster(mobid);
+                npcmob.setOverrideStats(newStats);
+                npcmob.setHp(npcmob.getMaxHp());
+                getPlayer().getMap().spawnMonsterOnGroudBelow(npcmob, new Point(posx, posy));
+            }
+        }
+    }
+
+    public void summonMobAtPosition(int mobid, int amount, int posx, int posy) {
+        if (amount <= 1) {
+            MapleMonster npcmob = MapleLifeFactory.getMonster(mobid);
+            npcmob.setHp(npcmob.getMaxHp());
+            getPlayer().getMap().spawnMonsterOnGroudBelow(npcmob, new Point(posx, posy));
+        } else {
+            for (int i = 0; i < amount; i++) {
+                MapleMonster npcmob = MapleLifeFactory.getMonster(mobid);
+                npcmob.setHp(npcmob.getMaxHp());
+                getPlayer().getMap().spawnMonsterOnGroudBelow(npcmob, new Point(posx, posy));
+            }
+        }
+    }
+
+    public void killAllMobs() {
+        MapleMap map = getPlayer().getMap();
+        double range = Double.POSITIVE_INFINITY;
+        List<MapleMapObject> monsters = map.getMapObjectsInRange(getPlayer().getPosition(), range, Arrays.asList(MapleMapObjectType.MONSTER));
+        for (MapleMapObject monstermo : monsters) {
+            map.killMonster((MapleMonster) monstermo, getPlayer(), false);
+        }
     }
 
     public int itemQuantity(int itemid) {
