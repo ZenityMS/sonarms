@@ -83,12 +83,12 @@ Player Commands - Available for all players.
 @dispose                       - Use if you're stuck.
 @rebirth                       - Reborn/Rebirth you at level 200+.
 @str/dex/int/luk [num]         - Adds [num] str/dex/int/luk.
-@emo
-@expfix
-@checkstats
-@fakerelog
-@bigshop
-@petname
-@cody
-@storage
-@spinel
+@emo                           - Kill yourself.
+@expfix			       - Fixes Negative EXP.
+@checkstats                    - Shows stats.
+@fakerelog                     - Fake Relogs you.
+@bigshop                       - Opens the big Shop.
+@petname                       - Changes the pet name.
+@cody                          - Opens Cody.
+@storage                       - Opens the storage box.
+@spinel                        - Opens Spinel.

@@ -1,5 +1,6 @@
 package client.command;
 
+import client.Equip;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -8,9 +9,12 @@ import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.List;
 import client.ExpTable;
+import client.IItem;
+import client.Item;
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
 import client.MapleClient;
+import client.MapleInventoryType;
 import client.MapleJob;
 import client.MaplePet;
 import client.MapleStat;
@@ -20,6 +24,7 @@ import tools.DatabaseConnection;
 import net.channel.ChannelServer;
 import net.world.remote.WorldLocation;
 import server.MapleInventoryManipulator;
+import server.MapleItemInformationProvider;
 import server.MapleShopFactory;
 import server.MapleTrade;
 import server.life.MapleLifeFactory;
@@ -157,6 +162,7 @@ class GMCommand {
             HashMap<String, Integer> maps = new HashMap<String, Integer>();
             maps.put("southperry", 60000);
             maps.put("amherst", 1010000);
+			maps.put("guild", 200000301);
             maps.put("henesys", 100000000);
             maps.put("ellinia", 101000000);
             maps.put("perion", 102000000);
