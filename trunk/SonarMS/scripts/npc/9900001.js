@@ -3,7 +3,7 @@
  * @Author:      Signalize
  * @NPC:         9900001
  * @Purpose:     Hair/Face/Eye Changer -- May set job as GM too
- * @GMSPurpose:  Sets one's job as a GM.
+ * @GMSPurpose:  Sets one's job as a GM. Fixed by Tommy of SonarMS
  * @Map:         180000000
  */
 var status = 0;
@@ -61,7 +61,11 @@ function action(mode, type, selection) {
                 colors = Array(current , current + 100, current + 200, current + 300, current +400, current + 500, current + 600, current + 700, current + 800);
                 cm.sendStyle("Pick one?", colors);
             } else if (selection == 5)
-                if (cm.getPlayer().gmLevel() > 0) {cm.getPlayer().changeJobById(900);cm.dispose();return;}
+                if (cm.getPlayer().gmLevel() > 0) {
+				cm.getPlayer().changeJobById(910);
+				cm.dispose();
+				return;
+				}
         } else if (status == 2){
             if (beauty == 1)
                 cm.setSkin(skin[selection]);
