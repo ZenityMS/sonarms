@@ -24,6 +24,7 @@ import server.MapleShopFactory;
 import server.MapleTrade;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
+import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
@@ -60,6 +61,9 @@ class GMCommand {
             int drop = Integer.parseInt(splitted[1]);
             cserv.setBossDropRate(drop);
             cserv.broadcastPacket(MaplePacketCreator.serverNotice(6, "Boss Drop Rate has been changed to " + drop + "x."));
+        } else if (splitted[0].equals("!map")) {
+            MapleMap target = cserv.getMapFactory().getMap(Integer.parseInt(splitted[1]));
+            c.getPlayer().changeMap(target, target.getPortal(0));
         } else if (splitted[0].equals("!buffme")) {
             int[] array = {9001000, 9101002, 9101003, 9101008, 2001002, 1101007, 1005, 2301003, 5121009, 1111002, 4111001, 4111002, 4211003, 4211005, 1321000, 2321004, 3121002};
             for (int i : array)

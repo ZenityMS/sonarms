@@ -11,6 +11,7 @@ import client.MaplePet;
 import client.MapleQuestStatus;
 import client.MapleStat;
 import java.awt.Point;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import tools.DatabaseConnection;
@@ -30,6 +31,7 @@ import server.maps.MapleMapObjectType;
 import server.maps.SavedLocationType;
 import server.quest.MapleQuest;
 import tools.MaplePacketCreator;
+import tools.Pair;
 
 /**
  *
@@ -257,6 +259,27 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
         for (MapleMapObject monstermo : monsters) {
             map.killMonster((MapleMonster) monstermo, getPlayer(), false);
         }
+    }
+
+    public void setLevel(int level) {
+        getPlayer().setLevel(level);
+        getPlayer().updateSingleStat(MapleStat.LEVEL, Integer.valueOf(level));
+    }
+
+    public void resetStats() {
+        List<Pair<MapleStat, Integer>> statup = new ArrayList<Pair<MapleStat, Integer>>(5);
+        int totAp = getPlayer().getRemainingAp() + getPlayer().getStr() + getPlayer().getDex() + getPlayer().getInt() + getPlayer().getLuk();
+        getPlayer().setStr(4);
+        getPlayer().setDex(4);
+        getPlayer().setInt(4);
+        getPlayer().setLuk(4);
+        getPlayer().setRemainingAp(totAp - 16);
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.STR, Integer.valueOf(4)));
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.DEX, Integer.valueOf(4)));
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.LUK, Integer.valueOf(4)));
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.INT, Integer.valueOf(4)));
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, Integer.valueOf(getPlayer().getRemainingAp())));
+        getClient().getSession().write(MaplePacketCreator.updatePlayerStats(statup));
     }
 
     public int itemQuantity(int itemid) {

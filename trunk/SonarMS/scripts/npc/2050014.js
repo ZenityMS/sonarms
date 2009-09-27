@@ -19,7 +19,7 @@ function action(mode, type, selection) {
         else
             status--;
         if (status == 0) {
-                cm.sendSimple("Hello #h #, Welcome to #rTommyMS#k\r\nAre your mesos maxed out? Want to get more? Well I can help!\r\nI give you rare money sacks that you can trade in at any time for mesos! You can hold up to 50 of each sack. Come to me at any time to give me one, and ill give you your money back!\r\n \r\nWhat would you like to do? \r\n#L1##bTrade 1.5bil for 1 #v5200002##k#l \r\n \r\n#L2##bTrade 1 #v5200002# for 1.5bil#k#l \r\n \r\n#L3#Trade 1bil Mesos for 1 #v5200001##l \r\n#L4#Trade 1 #v5200001# For 1bil mesos.#l \r\n#L5#Trade 500m mesos for 1 #v5200000##l \r\n#L6#Trade 1 #v5200000# For 500m mesos.#l");
+                cm.sendSimple("Hello #h #, Welcome to #rSonarMS#k\r\nAre your mesos maxed out? Want to get more? Well I can help!\r\nI give you rare money sacks that you can trade in at any time for mesos! You can hold up to 50 of each sack. Come to me at any time to give me one, and I'll give you your money back!\r\n \r\nWhat would you like to do? \r\n#L1##bTrade 1.5bil for 1 #v5200002##k#l \r\n \r\n#L2##bTrade 1 #v5200002# for 1.5bil#k#l \r\n \r\n#L3#Trade 1bil Mesos for 1 #v5200001##l \r\n#L4#Trade 1 #v5200001# For 1bil mesos.#l \r\n#L5#Trade 500m mesos for 1 #v5200000##l \r\n#L6#Trade 1 #v5200000# For 500m mesos.#l");
         //cm.dispose();
             } else if (status == 1) {
             if (selection == 1) {
@@ -31,7 +31,7 @@ function action(mode, type, selection) {
                     cm.gainItem(5200002, 1); 
                     cm.dispose();
                 } else {
-                    cm.sendOk("You don't have enough #bMesos#k, are you trying to #eScam#k me!?");
+                    cm.sendOk("You don't have enough #bMesos#k.");
                     cm.dispose();
                 }                                
             } else if (selection == 2) {
