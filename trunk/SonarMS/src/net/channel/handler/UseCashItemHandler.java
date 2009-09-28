@@ -35,6 +35,7 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
         slea.readByte();
         int itemId = slea.readInt();
         int itemType = itemId / 10000;
+        if (player.haveItem(itemId)) {
         try {
             if (itemType == 505) { // AP/SP reset
                 int max = c.getChannelServer().getMaxStat();
@@ -356,6 +357,10 @@ public class UseCashItemHandler extends AbstractMaplePacketHandler {
             c.getChannelServer().reconnectWorld();
             e.printStackTrace();
         }
+        } else {
+    c.disconnect();
+    return;
+    }
     }
 
     private void remove(MapleClient c, int itemId) {

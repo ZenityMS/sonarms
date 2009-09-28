@@ -14,6 +14,7 @@ import java.util.concurrent.ScheduledFuture;
 import net.AbstractMaplePacketHandler;
 import server.MapleStatEffect;
 import server.TimerManager;
+import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
 import server.life.MobAttackInfo;
 import server.life.MobAttackInfoFactory;
@@ -166,10 +167,16 @@ public class TakeDamageHandler extends AbstractMaplePacketHandler {
                 player.addMPHP(-damage, -mpattack);
         }
         if (!player.isHidden() && !smokescreen) {
+            if (MapleLifeFactory.getMonster(monsteridfrom) != null) {
             player.getMap().broadcastMessage(player, MaplePacketCreator.damagePlayer(damagefrom, monsteridfrom, player.getId(), damage, fake, direction, is_pgmr, pgmr, is_pg, oid, pos_x, pos_y), false);
             player.updateSingleStat(MapleStat.HP, player.getHp());
             player.updateSingleStat(MapleStat.MP, player.getMp());
             player.checkBerserk();
+            } else {
+        //player.ban("Packet editing", true);
+            player.dropMessage(6, "No packet editing Faggot");
+        }
+
         }
     }
 }
