@@ -18,6 +18,6 @@ function cancelSchedule() {
 }
 function start() {
     scheduleNew(); //not working
-    var Message = new Array("Welcome to SonarMS! Visit our forum @ sonarms.forumotion.com");
+    var Message = new Array("Welcome to SonarMS! We hope you enjoy your stay here. If you have any questions, don't be afraid to ask any of our user-friendly GM!");
     em.getChannelServer().yellowWorldMessage("[SonarMS Tip] " + Message[Math.floor(Math.random() * Message.length)]);
 }

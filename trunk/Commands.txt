@@ -6,6 +6,7 @@ Admin Commands - For characters with a GM level of 2.
 
 !horntail                      - Spawns Horntail.
 !npc [npcid]                   - Spawns a NPC [npcid].
+!pnpc [npcid]                  - Spawns a permanent NPC.
 !ox [on/off]                   - Sets OX Quiz on the map on or off
 !playernpc [user] [script]     - Creates a PlayerNPC where you are standing, script > 9901001
 !saveall                       - Saves the data of the server.
