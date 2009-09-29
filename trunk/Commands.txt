@@ -90,6 +90,7 @@ Player Commands - Available for all players.
 @emo                           - Kill yourself.
 @expfix			       - Fixes Negative EXP.
 @checkstats                    - Shows stats.
+@hair                          - Change the way you look.
 @fakerelog                     - Fake Relogs you.
 @bigshop                       - Opens the big Shop.
 @petname                       - Changes the pet name.

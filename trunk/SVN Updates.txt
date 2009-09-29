@@ -15,3 +15,6 @@ Rev 23
 [+]Added !dcall
 [+]Added !lolhaha
 [+]Added !disband
+
+Rev 24
+[+]Added @hair

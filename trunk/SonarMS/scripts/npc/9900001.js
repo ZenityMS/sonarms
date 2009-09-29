@@ -1,10 +1,9 @@
 /*
  * @Name         NimaKIN
- * @Author:      Signalize
+ * @Author:      Signalize/Tommy
  * @NPC:         9900001
- * @Purpose:     Hair/Face/Eye Changer -- May set job as GM too
- * @GMSPurpose:  Sets one's job as a GM. Fixed by Tommy of SonarMS
- * @Map:         180000000
+ * @Purpose:     Hair/Face/Eye Changer (Removed GM Job Add)
+ * @Map:         180000000 [GM Map]
  */
 var status = 0;
 var beauty = 0;

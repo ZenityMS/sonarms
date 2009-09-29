@@ -9,13 +9,14 @@ import net.channel.ChannelServer.*;
 class PlayerCommand {
     static void execute(MapleClient c, String[] splitted) {
         MapleCharacter player = c.getPlayer();
-		if (splitted[0].equals("@commands")) {
+		if (splitted[0].equals("@commands") || splitted[0].equalsIgnoreCase("@help")) {
             player.dropMessage("@str/@dex/@int/@luk <number> ~ with these commands you will never have to add AP the slow way.");
             player.dropMessage("@rebirth ~ Rebirths you at level 200.");
 			player.dropMessage("@expfix ~ Fixes -Exp");
 			player.dropMessage("@checkstats ~ Shows your stats.");
 			player.dropMessage("@emo ~ Kill yourself");
 			player.dropMessage("@bigshop ~ Opens the Big Shop.");
+            player.dropMessage("@hair ~ Change the way you look.");
 			player.dropMessage("@petname ~ Change the name of your pet.");
 			player.dropMessage("@cody, storage, spinel ~ Opens the NPC chosen");
         } else if (splitted[0].equals("@dispose")) {
@@ -43,6 +44,8 @@ class PlayerCommand {
                 NPCScriptManager.getInstance().start(c, 9200000);
 		} else if (splitted[0].equals("@bigshop")) {
 				NPCScriptManager.getInstance().start(c, 22000, null, null);
+        } else if (splitted[0].equals("@hair")) {
+				NPCScriptManager.getInstance().start(c, 9900001, null, null);
 		} else if (splitted[0].equals("@petname")) {
 				NPCScriptManager.getInstance().start(c, 9120008, null, null);
         } else if (splitted[0].equalsIgnoreCase("@storage")) {
