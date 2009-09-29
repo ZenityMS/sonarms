@@ -10,3 +10,8 @@ Rev 2-20
 [+]Edited/Added NPC's
 [+]Made this SVN List
 [+]Added 2 PE Fixes
+
+Rev 23
+[+]Added !dcall
+[+]Added !lolhaha
+[+]Added !disband

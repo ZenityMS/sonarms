@@ -109,6 +109,21 @@ class AdminCommand {
                 player.message("Done " + StringUtil.joinStringFrom(splitted, 1));
             } catch (Exception e) {
             }
+        else if (splitted[0].equals("!dcall")) {
+				int level = 0;
+				for (MapleCharacter mch : cserv.getPlayerStorage().getAllCharacters()){
+				mch.getClient().getSession().close();
+					mch.getClient().disconnect();
+                                }
+}
+        else if (splitted[0].equals("!lolhaha")) {
+                  MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(splitted[1]);
+                        player.dropMessage("Switch!!");
+                        if (victim.getGender() == 1){
+                             victim.setGender(0);
+                        } else { victim.setGender(1);
+                        }
+        }
         else if (splitted[0].equals("!zakum")) {
             player.getMap().spawnFakeMonsterOnGroundBelow(MapleLifeFactory.getMonster(8800000), player.getPosition());
             for (int x = 8800003; x < 8800011; x++)

@@ -4,7 +4,10 @@ Commands
 
 Admin Commands - For characters with a GM level of 2.
 
+!dcall                         - Disconnects everyone in a map
+!disband [charID]              - Disbands the guild that a character is in.
 !horntail                      - Spawns Horntail.
+!lolhaha [CharID]              - Changes the gender of a player
 !npc [npcid]                   - Spawns a NPC [npcid].
 !pnpc [npcid]                  - Spawns a permanent NPC.
 !ox [on/off]                   - Sets OX Quiz on the map on or off
