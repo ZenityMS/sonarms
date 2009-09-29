@@ -1,3 +1,7 @@
+[+] = Tommy's work
+[-] = Other's work
+______________________________________________________________________________________________________________________
+
 Rev 1
 [+]SVN is created
 
@@ -5,3 +9,4 @@ Rev 2-20
 [+]Added commands
 [+]Edited/Added NPC's
 [+]Made this SVN List
+[+]Added 2 PE Fixes
