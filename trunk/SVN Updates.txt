@@ -18,3 +18,6 @@ Rev 23
 
 Rev 24
 [+]Added @hair
+
+Rev 25
+[+]Moved !ban & !dcall to Admin Commands for preview beta GM's

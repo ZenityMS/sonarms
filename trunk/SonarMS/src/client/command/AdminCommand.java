@@ -3,7 +3,9 @@ package client.command;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import client.MapleCharacter;
+import client.MapleCharacterUtil;
 import client.MapleClient;
+import client.MapleStat;
 import java.sql.SQLException;
 import tools.DatabaseConnection;
 import net.channel.ChannelServer;
@@ -20,6 +22,22 @@ class AdminCommand {
         if (splitted[0].equals("!horntail"))
             for (int i = 8810002; i < 8810010; i++)
                 player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(i), player.getPosition());
+         else if (splitted[0].equals("!ban"))
+            try {
+                String v = splitted[1];
+                MapleCharacter target = cserv.getPlayerStorage().getCharacterByName(v);
+                if (target != null) {
+                    if (target.gmLevel() < player.gmLevel()) {
+                        target.ban(player.getName() + " banned " + v + ": " + StringUtil.joinStringFrom(splitted, 2) + " (IP: " + target.getClient().getSession().getRemoteAddress().toString().split(":")[0] + ")", true);
+                        player.message("You banned " + MapleCharacterUtil.makeMapleReadable(target.getName()) + " for " + StringUtil.joinStringFrom(splitted, 2));
+                    }
+                } else if (MapleCharacter.ban(v, player.getName() + " banned " + v + " for " + StringUtil.joinStringFrom(splitted, 2), false))
+                    player.message("Offline Banned " + v);
+                else
+                    player.message("Failed to ban " + v);
+            } catch (Exception e) {
+                player.message(splitted[1] + " could not be banned.");
+            }
         else if (splitted[0].equals("!npc")) {
             MapleNPC npc = MapleLifeFactory.getNPC(Integer.parseInt(splitted[1]));
             if (npc != null) {
@@ -47,6 +65,11 @@ class AdminCommand {
                 for (MapleCharacter chr : ch.getPlayerStorage().getAllCharacters())
                     chr.saveToDB(true);
             player.message("Done.");
+         } else if (splitted[0].equals("!levelperson")) {
+            MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(splitted[1]);
+            victim.setLevel(Integer.parseInt(splitted[2]));
+            victim.gainExp(-victim.getExp(), false, false);
+            victim.updateSingleStat(MapleStat.LEVEL, victim.getLevel());
         } else if (splitted[0].equals("!pnpc")) {
             int npcId = Integer.parseInt(splitted[1]);
             MapleNPC npc = MapleLifeFactory.getNPC(npcId);

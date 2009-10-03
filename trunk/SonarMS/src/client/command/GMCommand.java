@@ -1,6 +1,5 @@
 package client.command;
 
-import client.Equip;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.InetAddress;
@@ -9,12 +8,9 @@ import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.List;
 import client.ExpTable;
-import client.IItem;
-import client.Item;
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
 import client.MapleClient;
-import client.MapleInventoryType;
 import client.MapleJob;
 import client.MaplePet;
 import client.MapleStat;
@@ -24,7 +20,6 @@ import tools.DatabaseConnection;
 import net.channel.ChannelServer;
 import net.world.remote.WorldLocation;
 import server.MapleInventoryManipulator;
-import server.MapleItemInformationProvider;
 import server.MapleShopFactory;
 import server.MapleTrade;
 import server.life.MapleLifeFactory;
@@ -46,22 +41,7 @@ class GMCommand {
             int[] ids = {8130100, 8150000, 9400536};
             for (int a : ids)
                 player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(a), player.getPosition());
-        } else if (splitted[0].equals("!ban"))
-            try {
-                String v = splitted[1];
-                MapleCharacter target = cserv.getPlayerStorage().getCharacterByName(v);
-                if (target != null) {
-                    if (target.gmLevel() < player.gmLevel()) {
-                        target.ban(player.getName() + " banned " + v + ": " + StringUtil.joinStringFrom(splitted, 2) + " (IP: " + target.getClient().getSession().getRemoteAddress().toString().split(":")[0] + ")", true);
-                        player.message("You banned " + MapleCharacterUtil.makeMapleReadable(target.getName()) + " for " + StringUtil.joinStringFrom(splitted, 2));
-                    }
-                } else if (MapleCharacter.ban(v, player.getName() + " banned " + v + " for " + StringUtil.joinStringFrom(splitted, 2), false))
-                    player.message("Offline Banned " + v);
-                else
-                    player.message("Failed to ban " + v);
-            } catch (Exception e) {
-                player.message(splitted[1] + " could not be banned.");
-            }
+        }
         else if (splitted[0].equals("!bossdroprate")) {
             int drop = Integer.parseInt(splitted[1]);
             cserv.setBossDropRate(drop);
@@ -207,11 +187,6 @@ class GMCommand {
             player.setLevel(Integer.parseInt(splitted[1]));
             player.gainExp(-player.getExp(), false, false);
             player.updateSingleStat(MapleStat.LEVEL, player.getLevel());
-        } else if (splitted[0].equals("!levelperson")) {
-            MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(splitted[1]);
-            victim.setLevel(Integer.parseInt(splitted[2]));
-            victim.gainExp(-victim.getExp(), false, false);
-            victim.updateSingleStat(MapleStat.LEVEL, victim.getLevel());
         } else if (splitted[0].equals("!levelpro")) {
             while (player.getLevel() < Math.min(255, Integer.parseInt(splitted[1])))
                 player.levelUp();
