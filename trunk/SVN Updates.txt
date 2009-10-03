@@ -21,3 +21,6 @@ Rev 24
 
 Rev 25
 [+]Moved !ban & !dcall to Admin Commands for preview beta GM's
+
+Rev 26
+[+]Changed the world message
