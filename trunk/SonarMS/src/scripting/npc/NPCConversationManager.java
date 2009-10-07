@@ -10,6 +10,7 @@ import client.MapleJob;
 import client.MaplePet;
 import client.MapleQuestStatus;
 import client.MapleStat;
+import client.SkillFactory;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,6 +99,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public void setGetText(String text) {
         this.getText = text;
+    }
+	
+	public void teachSkill(int id, int level, int masterlevel) {
+        getPlayer().changeSkillLevel(SkillFactory.getSkill(id), level, masterlevel);
     }
 
     public String getText() {
