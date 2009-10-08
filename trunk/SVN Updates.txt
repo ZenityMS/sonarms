@@ -29,3 +29,6 @@ Rev 27
 [+]Updated NPCConversationManager
 [+]Updated Sera to give correct amount of AP when choosing your job
 [+]Fixed a skill maxing bug
+
+Rev 28
+[+]Added MSConsole
