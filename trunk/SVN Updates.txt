@@ -37,3 +37,16 @@ Rev 29
 [+]Removed MSConsole
 [+]Updated World.properties
 [+]Added Optional SQL
+
+Rev 30 
+[+]Hopefully fixed odinms.jar
+[+]Fixed various bugs
+[+]Major server crash
+
+Rev 31
+[+]Completely revamped repack
+[+]Added PVP
+[+]Added Karma System
+[+]Added GM Levels
+[+]Added new commands
+[+]Fixed a few exploits
