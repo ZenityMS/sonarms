@@ -50,3 +50,6 @@ Rev 31
 [+]Added GM Levels
 [+]Added new commands
 [+]Fixed a few exploits
+
+Rev 36
+[+]Changed a few things
