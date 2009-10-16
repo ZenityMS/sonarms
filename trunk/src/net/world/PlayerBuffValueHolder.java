@@ -1,0 +1,42 @@
+package net.world;
+
+import java.io.Serializable;
+import server.MapleStatEffect;
+
+/**
+ *
+ * @author Danny
+ */
+public class PlayerBuffValueHolder implements Serializable {
+    public long startTime;
+    public MapleStatEffect effect;
+    private int id;
+
+    public PlayerBuffValueHolder(long startTime, MapleStatEffect effect) {
+        this.startTime = startTime;
+        this.effect = effect;
+        this.id = (int) (Math.random() * 100);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + id;
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        final PlayerBuffValueHolder other = (PlayerBuffValueHolder) obj;
+        if (id != other.id)
+            return false;
+        return true;
+    }
+}
