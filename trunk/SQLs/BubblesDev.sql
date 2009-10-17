@@ -15385,3 +15385,10 @@ ALTER TABLE `odinms`.`playernpcs_equip` ADD COLUMN `equippos` INT(11) UNSIGNED N
 
 ALTER TABLE `characters` ADD COLUMN `pvpkills` int(11) NOT NULL DEFAULT '0' AFTER `messengerposition`;
 ALTER TABLE `characters` ADD COLUMN `pvpdeaths` int(11) NOT NULL DEFAULT '0' AFTER `pvpkills`;
+
+
+
+ALTER TABLE `accounts` ADD COLUMN `donatorpoints` int(11) NOT NULL DEFAULT '0'
+
+
+
