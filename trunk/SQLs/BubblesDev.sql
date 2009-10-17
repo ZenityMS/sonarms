@@ -15380,7 +15380,6 @@ CREATE TABLE `spawns` (
 
 ALTER TABLE `odinms`.`playernpcs` MODIFY COLUMN `gender` INT(11) NOT NULL DEFAULT 0;
 ALTER TABLE `odinms`.`playernpcs` MODIFY COLUMN `dir` INT(11) NOT NULL DEFAULT 0;
-ALTER TABLE `odinms`.`playernpcs_equip` ADD COLUMN `equippos` INT(11) UNSIGNED NOT NULL AFTER `type`;
 
 
 ALTER TABLE `characters` ADD COLUMN `pvpkills` int(11) NOT NULL DEFAULT '0' AFTER `messengerposition`;
@@ -15389,6 +15388,4 @@ ALTER TABLE `characters` ADD COLUMN `pvpdeaths` int(11) NOT NULL DEFAULT '0' AFT
 
 
 ALTER TABLE `accounts` ADD COLUMN `donatorpoints` int(11) NOT NULL DEFAULT '0'
-
-
 
