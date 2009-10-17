@@ -20,7 +20,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import client.anticheat.CheatTracker;
-import client.command.DonatorCommand;
+import client.command.*;
 import tools.DatabaseConnection;
 import net.MaplePacket;
 import net.channel.ChannelServer;
@@ -1120,6 +1120,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         return !gmchattype;
     }
 
+    public int getGMLevel() {
+        return gmLevel;
+    }
+
     public MapleGuild getGuild() {
         try {
             return getClient().getChannelServer().getWorldInterface().getGuild(getGuildId(), null);
@@ -1575,6 +1579,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         return this.gmLevel;
     }
 
+    public boolean isGM() {
+        return gmLevel > 2;
+    }
+
     public boolean isDonator(int type) {
         if (type == 0) {
             return gmLevel() == 1;
@@ -1747,6 +1755,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 
     public boolean isPartyLeader() {
         return this.party.getLeader() == this.party.getMemberById(this.getId());
+    }
+
+    public boolean isPvPMap() {
+        return getMapId() == 800020400;
     }
 
     public void leaveMap() {
@@ -2530,21 +2542,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             con.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             con.setAutoCommit(false);
             PreparedStatement ps;
-			if (update)
-            ps = con.prepareStatement("UPDATE characters "
-					+ "SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, "
-					+ "exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, "
-					+ "gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, "
-					+ "meso = ?, hpApUsed = ?, mpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, pvpkills = ?, pvpdeaths = ? WHERE id = ?");
-			 else 
-                            //31 inserts
-				ps = con
-					.prepareStatement("INSERT INTO characters ("
-						+ "level, fame, str, dex, luk, `int`, exp, hp, mp, "
-						+ "maxhp, maxmp, sp, ap, gm, skincolor, gender, job, hair, face, map, meso, hpApUsed, mpApUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, pvpkills, pvpdeaths, accountid, name, world"
-						+ ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-            if (gmLevel < 1 && level > 250)
+			if (update) {
+                ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, map = ?, meso = ?, hpApUsed = ?, mpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, reborns = ?, pvpkills = ?, pvpdeaths = ?, mountlevel = ?, mountexp = ?, mounttiredness= ?, married = ?, partnerid = ?, cantalk = ?, marriagequest = ? WHERE id = ?");
+            } else {
+                ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp, mp, maxhp, maxmp, sp, ap, gm, skincolor, gender, job, hair, face, map, meso, hpApUsed, mpApUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, reborns, pvpkills, pvpdeaths, mountlevel, mounttiredness, mountexp, married, partnerid, cantalk, marriagequest, accountid, name, world) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            }
+            if (gmLevel < 3 && level > 250)
                 ps.setInt(1, 250);
             else
                 ps.setInt(1, level);
@@ -2597,31 +2600,28 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
                 ps.setInt(28, 4);
             }
             ps.setInt(29, reborns);
+            ps.setInt(30, pvpkills);
+            ps.setInt(31, pvpdeaths);
             if (maplemount != null) {
-                ps.setInt(30, maplemount.getLevel());
-                ps.setInt(31, maplemount.getExp());
-                ps.setInt(32, maplemount.getTiredness());
+                ps.setInt(32, maplemount.getLevel());
+                ps.setInt(33, maplemount.getExp());
+                ps.setInt(34, maplemount.getTiredness());
             } else {
-                ps.setInt(30, 1);
-                ps.setInt(31, 0);
-                ps.setInt(32, 0);
+                ps.setInt(32, 1);
+                ps.setInt(33, 0);
+                ps.setInt(34, 0);
             }
-            ps.setInt(33, married);
-            ps.setInt(34, partnerid);
-            ps.setInt(35, canTalk);
-            ps.setInt(36, marriageQuestLevel);
-            ps.setInt(37, getSlots((byte) 1));
-            ps.setInt(38, getSlots((byte) 2));
-            ps.setInt(39, getSlots((byte) 3));
-            ps.setInt(40, getSlots((byte) 4));
-			ps.setInt(41, pvpkills);
-            ps.setInt(42, pvpdeaths);
+            ps.setInt(35, married);
+            ps.setInt(36, partnerid);
+            ps.setInt(37, canTalk);
+            ps.setInt(38, marriageQuestLevel);
+            
             if (update)
-                ps.setInt(43, id);
+                ps.setInt(39, id);
             else {
-                ps.setInt(43, accountid);
-                ps.setString(44, name);
-                ps.setInt(45, world);
+                ps.setInt(39, accountid);
+                ps.setString(40, name);
+                ps.setInt(41, world);
             }
             int updateRows = ps.executeUpdate();
             if (!update) {
@@ -2865,7 +2865,13 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     }
 
     public void setGMLevel(int level) {
-        this.gmLevel = level;
+        if (level >= 5) {
+            this.gmLevel = 5;
+        } else if (level < 0) {
+            this.gmLevel = 0;
+        } else {
+            this.gmLevel = level;
+        }
     }
 
     public void setGuildId(int _id) {

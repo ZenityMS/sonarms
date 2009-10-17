@@ -53,6 +53,7 @@ public class MapleClient {
     private int accId = 1;
     private boolean loggedIn = false;
     private boolean serverTransition = false;
+    public boolean gm;
     private Calendar birthday = null;
     private String accountName;
     private int world;
@@ -264,6 +265,7 @@ public class MapleClient {
                 gmlevel = rs.getInt("gm");
                 String passhash = rs.getString("password");
                 String salt = rs.getString("salt");
+                gm = gmlevel > 2;
                 greason = rs.getByte("greason");
                 if ((banned == 0 && !ipMacBanned) || banned == -1) {
                     PreparedStatement ips = con.prepareStatement("INSERT INTO iplog (accountid, ip) VALUES (?, ?)");
@@ -407,6 +409,10 @@ public class MapleClient {
 
     public int getAccID() {
         return accId;
+    }
+
+    public int getGMLevel() {
+        return this.gmlevel;
     }
 
     public void updateLoginState(int newstate) {

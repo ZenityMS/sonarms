@@ -63,3 +63,6 @@ Rev 43
 
 Rev 44
 [+]Added GM Levels
+
+Rev 47
+[+]Fixed PVP Bug
