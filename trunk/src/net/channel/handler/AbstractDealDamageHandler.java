@@ -1,7 +1,6 @@
 package net.channel.handler;
 
 import java.awt.Point;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import client.ISkill;
@@ -12,7 +11,9 @@ import client.SkillFactory;
 import client.anticheat.CheatingOffense;
 import client.status.MonsterStatus;
 import client.status.MonsterStatusEffect;
+import java.util.ArrayList;
 import net.AbstractMaplePacketHandler;
+import net.channel.pvp.MaplePvp;
 import server.MapleInventoryManipulator;
 import server.MapleStatEffect;
 import server.TimerManager;
@@ -34,7 +35,7 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         public List<Pair<Integer, List<Integer>>> allDamage;
         public boolean isHH = false;
         public int speed = 4;
-
+        public int PVP_MAP = 800020400;
         private MapleStatEffect getAttackEffect(MapleCharacter chr, ISkill theSkill) {
             ISkill mySkill = theSkill;
             if (mySkill == null)
@@ -77,6 +78,12 @@ public abstract class AbstractDealDamageHandler extends AbstractMaplePacketHandl
         }
         int totDamage = 0;
         final MapleMap map = player.getMap();
+		//pvp monster bombscase
+                if (attack.skill != 2301002 && attack.skill != 4201004 && attack.skill != 1111008 && player.getMapId() == 800020400) {//checks
+                        MaplePvp.doPvP(player, map, attack);
+                }
+                //end pvp monster bombs
+
         if (attack.skill == 4211006) {
             int delay = 0;
             for (Pair<Integer, List<Integer>> oned : attack.allDamage) {
