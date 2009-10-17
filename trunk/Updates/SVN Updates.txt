@@ -60,3 +60,6 @@ Rev 37
 
 Rev 43
 [+]Added PVP at map 800020400
+
+Rev 44
+[+]Added GM Levels

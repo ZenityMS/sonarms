@@ -7,18 +7,38 @@ import client.MapleCharacterUtil;
 import client.MapleClient;
 import client.MapleStat;
 import java.sql.SQLException;
+import java.util.List;
 import tools.DatabaseConnection;
 import net.channel.ChannelServer;
 import server.MapleOxQuiz;
 import server.life.MapleLifeFactory;
 import server.life.MapleNPC;
 import tools.MaplePacketCreator;
+import tools.Pair;
 import tools.StringUtil;
 
-class AdminCommand {
-    static void execute(MapleClient c, String[] splitted) {
+public class AdminCommand {
+
+    private static class ShutdownAnnouncer implements Runnable {
+
+        private ChannelServer cserv;
+        private long startTime,  time;
+
+        public ShutdownAnnouncer(ChannelServer cs, long t) {
+            cserv = cs;
+            time = t;
+            startTime = System.currentTimeMillis();
+        }
+
+        public void run() {
+            cserv.broadcastPacket(MaplePacketCreator.serverNotice(0, "The world will be shut down in " + ((time - System.currentTimeMillis() + startTime) / 60000) + " minutes, please log off safely."));
+        }
+    }
+
+    public static boolean executeAdminCommand(MapleClient c, MessageCallback mc, String line, org.slf4j.Logger log, List<Pair<MapleCharacter, String>> gmlog, Runnable persister) {
         ChannelServer cserv = c.getChannelServer();
         MapleCharacter player = c.getPlayer();
+        String[] splitted = line.split(" ");
         if (splitted[0].equals("!horntail"))
             for (int i = 8810002; i < 8810010; i++)
                 player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(i), player.getPosition());
@@ -118,9 +138,10 @@ class AdminCommand {
             if (splitted[0].equals("!shutdownnow"))
                 time = 1;
             cserv.shutdown(time);
-        } else if (splitted[0].equals("!smega"))
+        } /*else if (splitted[0].equals("!smega"))
             for (MapleCharacter mc : cserv.getPlayerStorage().getAllCharacters())
                 mc.dropMessage(3, cserv.getPlayerStorage().getCharacterByName(splitted[1]).getName() + " : " + StringUtil.joinStringFrom(splitted, 3));
+           * */
         else if (splitted[0].equals("!speak")) {
             MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(splitted[1]);
             victim.getMap().broadcastMessage(MaplePacketCreator.getChatText(victim.getId(), StringUtil.joinStringFrom(splitted, 2), victim.gmLevel() > 0, 0));
@@ -151,7 +172,10 @@ class AdminCommand {
             player.getMap().spawnFakeMonsterOnGroundBelow(MapleLifeFactory.getMonster(8800000), player.getPosition());
             for (int x = 8800003; x < 8800011; x++)
                 player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(x), player.getPosition());
-        } else
+        } else {
             player.message("Command " + splitted[0] + " does not exist");
+        return false;
     }
+    return true;
+}
 }

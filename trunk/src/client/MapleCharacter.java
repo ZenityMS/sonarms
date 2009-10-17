@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import client.anticheat.CheatTracker;
+import client.command.DonatorCommand;
 import tools.DatabaseConnection;
 import net.MaplePacket;
 import net.channel.ChannelServer;
@@ -100,6 +101,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     private int paypalnx;
     private int maplepoints;
     private int cardnx;
+    private int donatorpoints;
     private int guildid;
     private int guildrank;
     private int messengerposition = 4;
@@ -193,6 +195,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         setPosition(new Point(0, 0));
     }
 
+    public static MapleCharacter getDefault(MapleClient client, int chrid) {
+        MapleCharacter ret = getDefault(client);
+        ret.id = chrid;
+        return ret;
+    }
+
     public static MapleCharacter getDefault(MapleClient c) {
         MapleCharacter ret = new MapleCharacter();
         ret.client = c;
@@ -216,6 +224,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
                 ret.paypalnx = rs.getInt("paypalNX");
                 ret.maplepoints = rs.getInt("mPoints");
                 ret.cardnx = rs.getInt("cardNX");
+                ret.donatorpoints = rs.getInt("donatorpoints");
             }
             rs.close();
             ps.close();
@@ -251,6 +260,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     public void addHP(int delta) {
         setHp(hp + delta);
         updateSingleStat(MapleStat.HP, hp);
+    }
+
+    public void setDonatorPoints(int v) {
+        this.donatorpoints = v;
     }
 
     public void addMarriageQuestLevel() {
@@ -1075,6 +1088,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         return 1;
     }
 
+    public void gainDonatorPoints(int gain) {
+        this.donatorpoints += gain;
+    }
+
     public int getEnergyBar() {
         return this.energybar;
     }
@@ -1558,6 +1575,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         return this.gmLevel;
     }
 
+    public boolean isDonator(int type) {
+        if (type == 0) {
+            return gmLevel() == 1;
+        } else {
+            return gmLevel() > 0;
+        }
+    }
+
     public String guildCost() {
         return nf.format(MapleGuild.CREATE_GUILD_COST);
     }
@@ -1651,6 +1676,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         return hasMerchant;
     }
 
+    public int getDonatorPoints() {
+        return this.donatorpoints;
+    }
+
     public boolean haveItem(int itemid) {
         return haveItem(itemid, 1, false, true);
     }
@@ -1661,6 +1690,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             possesed += inventory[MapleInventoryType.EQUIPPED.ordinal()].countById(itemid);
         return greaterOrEquals ? possesed >= quantity : possesed == quantity;
     }
+
 
     public void increaseGuildCapacity() {
         if (this.getMeso() < 1500000) {
@@ -1907,6 +1937,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             ret.paypalnx = rs.getInt("paypalNX");
             ret.maplepoints = rs.getInt("mPoints");
             ret.cardnx = rs.getInt("cardNX");
+            ret.donatorpoints = rs.getInt("donatorpoints");
         }
         rs.close();
         ps.close();
@@ -2732,11 +2763,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             }
             ps.close();
             pse.close();
-            ps = con.prepareStatement("UPDATE accounts SET `paypalNX` = ?, `mPoints` = ?, `cardNX` = ? WHERE id = ?");
+            ps = con.prepareStatement("UPDATE accounts SET `paypalNX` = ?, `mPoints` = ?, `cardNX` = ?, `donatorpoints` = ? WHERE id = ?");
             ps.setInt(1, paypalnx);
             ps.setInt(2, maplepoints);
             ps.setInt(3, cardnx);
-            ps.setInt(4, client.getAccID());
+            ps.setInt(4, donatorpoints);
+            ps.setInt(5, client.getAccID());
             ps.executeUpdate();
             ps.close();
             if (storage != null)

@@ -7,12 +7,15 @@ import client.MapleStat;
 import server.MapleItemInformationProvider;
 import client.Item;  
 import client.MapleInventoryType;
+import net.channel.ChannelServer;
 import scripting.npc.NPCScriptManager;
 import tools.MaplePacketCreator;
 import net.channel.ChannelServer.*;
 class PlayerCommand {
-    static void execute(MapleClient c, String[] splitted) {
+    public static boolean executePlayerCommand(MapleClient c, MessageCallback mc, String line) {
         MapleCharacter player = c.getPlayer();
+        String[] splitted = line.split(" ");
+        ChannelServer cserv = c.getChannelServer();
 		if (splitted[0].equals("@commands") || splitted[0].equalsIgnoreCase("@help")) {
             player.dropMessage("@str/@dex/@int/@luk <number> ~ with these commands you will never have to add AP the slow way.");
             player.dropMessage("@rebirth ~ Rebirths you at level 200.");
@@ -83,14 +86,16 @@ class PlayerCommand {
                 else if (splitted[0].equals("@luk") && x + player.getLuk() < max)
                     player.addStat(4, x);
                 else {
-                    player.message("The stat cannot exceed " + max + ".");
-                    return;
+                    player.message("The stat cannot exceed " + max + ".");                   
                 }
                 player.setRemainingAp(player.getRemainingAp() - x);
                 player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
             } else
                 player.message("You do not have enough AP.");
-        } else
+        } else {
             player.message("Player Command " + splitted[0] + " does not exist.");
+            return false;
+    }
+        return true;
     }
 }

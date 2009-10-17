@@ -8,9 +8,12 @@ import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.List;
 import client.ExpTable;
+import client.IItem;
+import client.Item;
 import client.MapleCharacter;
 import client.MapleCharacterUtil;
 import client.MapleClient;
+import client.MapleInventoryType;
 import client.MapleJob;
 import client.MaplePet;
 import client.MapleStat;
@@ -20,6 +23,7 @@ import tools.DatabaseConnection;
 import net.channel.ChannelServer;
 import net.world.remote.WorldLocation;
 import server.MapleInventoryManipulator;
+import server.MapleItemInformationProvider;
 import server.MapleShopFactory;
 import server.MapleTrade;
 import server.life.MapleLifeFactory;
@@ -31,9 +35,21 @@ import tools.MaplePacketCreator;
 import tools.StringUtil;
 
 class GMCommand {
-    static boolean execute(MapleClient c, String[] splitted) {
+    public static int getOptionalIntArg(String splitted[], int position, int def) {
+        if (splitted.length > position) {
+            try {
+                return Integer.parseInt(splitted[position]);
+            } catch (NumberFormatException nfe) {
+                return def;
+            }
+        }
+        return def;
+    }
+
+   public static boolean executeGMCommand(MapleClient c, MessageCallback mc, String line) {
         MapleCharacter player = c.getPlayer();
         ChannelServer cserv = c.getChannelServer();
+        String[] splitted = line.split(" ");
         if (splitted[0].equals("!ap")) {
             player.setRemainingAp(Integer.parseInt(splitted[1]));
             player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
@@ -83,6 +99,17 @@ class GMCommand {
             victim.getClient().disconnect();
             victim.saveToDB(true);
             cserv.removePlayer(victim);
+        } else if (splitted[0].equals("!drop")) {
+            MapleItemInformationProvider ii = MapleItemInformationProvider.getInstance();
+            int itemId = Integer.parseInt(splitted[1]);
+            short quantity = (short) getOptionalIntArg(splitted, 2, 1);
+            IItem toDrop;
+            if (ii.getInventoryType(itemId) == MapleInventoryType.EQUIP) {
+                toDrop = ii.getEquipById(itemId);
+            } else {
+                toDrop = new Item(itemId, (byte) 0, quantity);
+            }
+            player.getMap().spawnItemDrop(player, player, toDrop, player.getPosition(), true, true);
         } else if (splitted[0].equals("!droprate")) {
             int drop = Integer.parseInt(splitted[1]);
             cserv.setDropRate(drop);
@@ -194,18 +221,8 @@ class GMCommand {
             player.updateSingleStat(MapleStat.EXP, 0);
         } else if (splitted[0].equals("!levelup"))
             player.gainExp(ExpTable.getExpNeededForLevel(player.getLevel() + 1) - player.getExp(), false, false);
-        else if (splitted[0].equals("!maxstat")) {
-            String[] s = {"!setall", "32767"};
-            execute(c, s);
-            player.setLevel(255);
-            player.setFame(13337);
-            player.setMaxHp(30000);
-            player.setMaxMp(30000);
-            player.updateSingleStat(MapleStat.LEVEL, 255);
-            player.updateSingleStat(MapleStat.FAME, 13337);
-            player.updateSingleStat(MapleStat.MAXHP, 30000);
-            player.updateSingleStat(MapleStat.MAXMP, 30000);
-        } else if (splitted[0].equals("!maxskills"))
+        
+         else if (splitted[0].equals("!maxskills"))
             player.maxAllSkills();
 
         else if (splitted[0].equals("!mesoperson"))
