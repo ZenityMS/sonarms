@@ -1,6 +1,6 @@
 /*
     Made by Tommy 
-    pet name changer  
+    Pet name changer  
 */ 
 
 var status = 0;
@@ -26,7 +26,7 @@ function action(mode, type, selection)
         } if (status == 0) {
         cm.sendYesNo(" Hello #b#h ##k, do you want to change your pet's name? ");
     } else if (status == 1) {
-        cm.sendGetText(" Please enter your desired pet name in the blank below. ");
+        cm.sendGetText(" Please enter your desired pet name in the blank below. You will then be gifted a pet name tag. ");
     } else if (status == 2) {
         name = cm.getText();
             if (name.length() < 2 || name.length() > 12) {

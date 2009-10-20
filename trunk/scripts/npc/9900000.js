@@ -2,7 +2,7 @@
  * @Name         KIN
  * @Author:      Signalize
  * @NPC:         9900000
- * @Purpose:     Levels people up.
+ * @Purpose:     Levels people up if they are a GM.
  */
 function start() {
     cm.sendYesNo("Do you want to level up?");

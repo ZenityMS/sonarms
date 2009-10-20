@@ -70,6 +70,9 @@ Rev 48
 [+]Hopefully fixed a bug with GMLevels
 
 Rev 51
-[+]Fixed GM Levels (YAY!)
+[+]Fixed GM Levels
 [+]Fixed Character creating/logging in bug
 
+Rev 52
+[+]Fixed @petname
+[+]Updated Kin

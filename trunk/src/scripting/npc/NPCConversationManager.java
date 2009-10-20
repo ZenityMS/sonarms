@@ -125,6 +125,14 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void completeQuest(int id) {
         MapleQuest.getInstance(id).complete(getPlayer(), npc);
     }
+	
+	public void changeMusic(String songName) {
+        getPlayer().getMap().broadcastMessage(MaplePacketCreator.musicChange(songName));
+    }
+	
+	public void gainDonatorPoints(int gain) {
+        getPlayer().gainDonatorPoints(gain);
+    }
 
     public int getMeso() {
         return getPlayer().getMeso();
@@ -140,6 +148,10 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public int getLevel() {
         return getPlayer().getLevel();
+    }
+	
+	public void giveNPCBuff(MapleCharacter chr, int itemID) {
+        MapleItemInformationProvider.getInstance().getItemEffect(itemID).applyTo(chr);
     }
 
     public EventManager getEventManager(String event) {
@@ -304,6 +316,11 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
     public void resetMap(int mapid) {
         getClient().getChannelServer().getMapFactory().getMap(mapid).resetReactors();
     }
+	
+	public void changeSex() {
+        getPlayer().setGender(1 - getPlayer().getGender());
+        getClient().getSession().write(MaplePacketCreator.updateCharLook(getPlayer()));
+    }
 
     public void environmentChange(String env, int mode) {
         getPlayer().getMap().broadcastMessage(MaplePacketCreator.environmentChange(env, mode));
@@ -326,6 +343,19 @@ public class NPCConversationManager extends AbstractPlayerInteraction {
 
     public String getName() {
         return getPlayer().getName();
+    }
+	
+	public void setPetName(String petname) {
+        for (MaplePet pet : getPlayer().getPets()) {
+            pet.setName(petname);
+        }
+    }
+	
+	public String getPetName() {
+        for (MaplePet pet : getPlayer().getPets()) {
+            return pet.getName();
+        }
+        return "";
     }
 
     public int getGender() {

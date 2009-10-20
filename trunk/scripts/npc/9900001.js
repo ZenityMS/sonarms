@@ -2,7 +2,7 @@
  * @Name         NimaKIN
  * @Author:      Signalize/Tommy
  * @NPC:         9900001
- * @Purpose:     Hair/Face/Eye Changer (Removed GM Job Add)
+ * @Purpose:     Hair/Face/Eye Changer (Removed GM Job)
  * @Map:         180000000 [GM Map]
  */
 var status = 0;
