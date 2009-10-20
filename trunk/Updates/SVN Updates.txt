@@ -39,14 +39,12 @@ Rev 29
 [+]Added Optional SQL
 
 Rev 30 
-[+]Hopefully fixed odinms.jar
+[+]Fixed bug odinms.jar
 [+]Fixed various bugs
 [+]Major server crash
 
 Rev 31
-[+]Completely revamped repack
 [+]Added PVP
-[+]Added Karma System
 [+]Added GM Levels
 [+]Added new commands
 [+]Fixed a few exploits
@@ -59,10 +57,14 @@ Rev 37
 [+]Fixed PlayerNPC bug
 
 Rev 43
-[+]Added PVP at map 800020400
+[+]Fixed PVP; Now at map 800020400 (WanWan Spa)
 
 Rev 44
 [+]Added GM Levels
 
 Rev 47
 [+]Fixed PVP Bug
+
+Rev 48
+[+]Fixed Command Making bug
+[+]Hopefully fixed a bug with GMLevels
