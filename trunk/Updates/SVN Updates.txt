@@ -68,3 +68,8 @@ Rev 47
 Rev 48
 [+]Fixed Command Making bug
 [+]Hopefully fixed a bug with GMLevels
+
+Rev 51
+[+]Fixed GM Levels (YAY!)
+[+]Fixed Character creating/logging in bug
+
