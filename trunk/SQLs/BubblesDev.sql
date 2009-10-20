@@ -15387,10 +15387,11 @@ ALTER TABLE `characters` ADD COLUMN `pvpdeaths` int(11) NOT NULL DEFAULT '0' AFT
 
 
 
-ALTER TABLE `accounts` ADD COLUMN `donatorpoints` int(11) NOT NULL DEFAULT '0'
+ALTER TABLE `accounts` ADD COLUMN `donatorpoints` int(11) NOT NULL DEFAULT 0;
 
 
-CREATE TABLE `odinms`.`newcommands` (
+DROP TABLE IF EXISTS `newcommands`;
+CREATE TABLE `snewcommands` (
   `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(45) NOT NULL,
   `monsterid` INTEGER UNSIGNED NOT NULL,
@@ -15400,5 +15401,4 @@ CREATE TABLE `odinms`.`newcommands` (
   PRIMARY KEY (`id`)
 )
 ENGINE = InnoDB;
-
 
