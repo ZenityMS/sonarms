@@ -15391,7 +15391,7 @@ ALTER TABLE `accounts` ADD COLUMN `donatorpoints` int(11) NOT NULL DEFAULT 0;
 
 
 DROP TABLE IF EXISTS `newcommands`;
-CREATE TABLE `snewcommands` (
+CREATE TABLE `newcommands` (
   `id` INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
   `type` VARCHAR(45) NOT NULL,
   `monsterid` INTEGER UNSIGNED NOT NULL,
