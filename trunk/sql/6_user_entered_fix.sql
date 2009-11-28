@@ -1,0 +1,1 @@
+ALTER TABLE `user_entered` ADD COLUMN `mapid` INT(11) UNSIGNED NOT NULL;
