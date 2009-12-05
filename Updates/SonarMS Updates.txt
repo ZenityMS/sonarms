@@ -86,3 +86,7 @@ Rev 55
 [+]Added some tips
 [+]Added more commands
 [+]Changed MTS for later use
+
+Rev 56
+[+]Added some player commands (Still Buggy)
+[+]Added /goto

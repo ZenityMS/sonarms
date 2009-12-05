@@ -6,5 +6,6 @@ MTS (If Wanted)
 Mount Skill
 Pet Nametag doesn't change pet name
 HP/MP bug
+Add player Commands
 
 ~~~Please post all bugs found on the forums.~~~
