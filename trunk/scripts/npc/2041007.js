@@ -56,24 +56,21 @@ function action(mode, type, selection) {
 			} else if (selection == 1) {
 				beauty = 1;
 				hairnew = Array();
-				if (cm.getChar().getGender() == 0) {
+				if (cm.getPlayer().getGender() == 0) {
 					for(var i = 0; i < mhair.length; i++) {
-						hairnew.push(mhair[i] + parseInt(cm.getChar().getHair()
- % 10));
+						hairnew.push(mhair[i] + parseInt(cm.getPlayer().getHair()% 10));
 					}
 				} 
-				if (cm.getChar().getGender() == 1) {
+				if (cm.getPlayer().getGender() == 1) {
 					for(var i = 0; i < fhair.length; i++) {
-						hairnew.push(fhair[i] + parseInt(cm.getChar().getHair()
- % 10));
+						hairnew.push(fhair[i] + parseInt(cm.getPlayer().getHair()% 10));
 					}
 				}
 				cm.sendStyle("I can completely change the look of your hair. Aren't you ready for a change? With #b#t5150007##k, I'll take care of the rest for you. Choose the style of your liking!", hairnew);
 			} else if (selection == 2) {
 				beauty = 2;
 				haircolor = Array();
-				var current = parseInt(cm.getChar().getHair()
-/10)*10;
+				var current = parseInt(cm.getPlayer().getHair()/10)*10;
 				for(var i = 0; i < 8; i++) {
 					haircolor.push(current + i);
 				}

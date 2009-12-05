@@ -1522,6 +1522,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 		this.name = name;
 	}
 
+        public void setFame(int fame) {
+        this.fame = fame;
+        }
+
 	public void setStr(int str) {
 		this.str = str;
 		recalcLocalStats();

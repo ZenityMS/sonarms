@@ -27,8 +27,6 @@
 	* Shoes, level 60-80 all classes
 */
 
-importPackage(net.sf.odinms.client);
-
 var status = 0;
 var selectedType = -1;
 var selectedItem = -1;
@@ -182,24 +180,14 @@ function action(mode, type, selection) {
 							}
 						}
 						else {
-							var count = 0;
-							var iter = cm.getChar().getInventory(MapleInventoryType.ETC).listById(mats[i]).iterator();
-							while (iter.hasNext()) {
-								count += iter.next().getQuantity();
-							}
-							if (count < matQty[i])
-								complete = false;
+
+                    if (!cm.haveItem(mats[i],matQty[i])) complete=false;
 						}					
 					}
 				}
 				else {
-					var count = 0;
-					var iter = cm.getChar().getInventory(MapleInventoryType.ETC).listById(mats).iterator();
-					while (iter.hasNext()) {
-						count += iter.next().getQuantity();
-					}
-					if (count < matQty)
-						complete = false;
+
+                    if (!cm.haveItem(mats,matQty)) complete=false;
 				}
 			}
 			

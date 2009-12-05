@@ -40,7 +40,7 @@ function start() {
 }
 
 function action(mode, type, selection) {
-	if (cm.getChar().getMapId() == 251000000) {
+	if (cm.getPlayer().getMapId() == 251000000) {
 		maps = maps2;
 		mapNames = mapNames2;
 	}

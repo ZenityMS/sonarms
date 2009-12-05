@@ -1,8 +1,8 @@
 /*
 	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-					   Matthias Butz <matze@odinms.de>
-					   Jan Christian Meyer <vimes@odinms.de>
+    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+		       Matthias Butz <matze@odinms.de>
+		       Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -26,8 +26,6 @@
 	Refining NPC: 
 	* Gloves, level 70-80 all classes
 */
-
-importPackage(net.sf.odinms.client);
 
 var status = 0;
 var selectedType = -1;
@@ -174,24 +172,12 @@ function action(mode, type, selection) {
 							}
 						}
 						else {
-							var count = 0;
-							var iter = cm.getChar().getInventory(MapleInventoryType.ETC).listById(mats[i]).iterator();
-							while (iter.hasNext()) {
-								count += iter.next().getQuantity();
-							}
-							if (count < matQty[i])
-								complete = false;
+                    if (!cm.haveItem(mats[i],matQty[i])) complete=false;
 						}					
 					}
 				}
 				else {
-					var count = 0;
-					var iter = cm.getChar().getInventory(MapleInventoryType.ETC).listById(mats).iterator();
-					while (iter.hasNext()) {
-						count += iter.next().getQuantity();
-					}
-					if (count < matQty)
-						complete = false;
+                    if (!cm.haveItem(mats,matQty)) complete=false;
 				}
 			}
 			
