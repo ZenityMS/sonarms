@@ -146,6 +146,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 	private MapleJob job = MapleJob.BEGINNER;
 	private int gender;
 	private int gmLevel;
+        private int reborns;
 	private int energybar = 0;
 	private boolean hidden;
 	private boolean canDoor = true;
@@ -1454,6 +1455,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 		return maxmp;
 	}
 
+        public int getReborns() {
+            return reborns;
+        }
+
 	public int getRemainingAp() {
 		return remainingAp;
 	}
@@ -1497,6 +1502,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 	public void setHpApUsed(int hpApUsed) {
 		this.hpApUsed = hpApUsed;
 	}
+
+        public void doReborn() {
+            setLevel(1);
+            setExp(0);
+            changeJob(MapleJob.getById(0));
+            updateSingleStat(MapleStat.LEVEL, 1);
+            updateSingleStat(MapleStat.JOB, 0);
+            updateSingleStat(MapleStat.EXP, 0);
+            reborns += 1;
+        }
 
 	public MapleSkinColor getSkinColor() {
 		return skinColor;
@@ -2685,6 +2700,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 	public void setChair(int chair) {
 		this.chair = chair;
 	}
+
+        public void setExp(int exp) {
+            this.exp.set(exp);
+        }
 
 	public void setItemEffect(int itemEffect) {
 		this.itemEffect = itemEffect;

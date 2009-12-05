@@ -1,26 +1,12 @@
-/*
-	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
-		       Matthias Butz <matze@odinms.de>
-		       Jan Christian Meyer <vimes@odinms.de>
+var bossmaps = Array(100000005, 105070002, 105090900, 230040420, 280030000, 220080001, 240020402, 240020101, 801040100, 240060200, 610010005, 610010012, 610010013, 610010100, 610010101, 610010102, 610010103, 610010104); 
+var monstermaps = Array(100040001, 101010100, 104040000, 103000101, 103000105, 101030110, 106000002, 101030103, 101040001, 101040003, 101030001, 104010001, 105070001, 105090300, 105040306, 230020000, 230010400, 211041400, 222010000, 220080000, 220070301, 220070201, 220050300, 220010500, 250020000, 251010000, 200040000, 200010301, 240020100, 240040500, 240040000, 600020300, 801040004, 800020130); 
+var townmaps = Array(1010000, 680000000, 230000000, 101000000, 211000000, 0, 100000000, 251000000, 103000000, 222000000, 104000000, 240000000, 220000000, 250000000, 800000000, 600000000, 221000000, 200000000, 102000000, 801000000, 105040300, 60000, 610010004, 260000000, 540010000, 120000000); 
+var chosenMap = -1;
+var monsters = 0;
+var towns = 0;
+var bosses = 0;
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU Affero General Public License as
-    published by the Free Software Foundation version 3 as published by
-    the Free Software Foundation. You may not use, modify or distribute
-    this program under any other version of the GNU Affero General Public
-    License.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU Affero General Public License for more details.
-
-    You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-var status = 0;
-var goToShowa = false;
+importPackage(net.sf.odinms.client);
 
 function start() {
     status = -1;
@@ -30,56 +16,103 @@ function start() {
 function action(mode, type, selection) {
     if (mode == -1) {
         cm.dispose();
-    } else {
-        if (status >= 2 && mode == 0) {
-            cm.sendOk("Alright, see you next time.");
+    }
+    else {
+        if (status >= 3 && mode == 0) {
+            cm.sendOk("See you next time!.");
             cm.dispose();
-            return;
+            return;    
         }
-        if (mode == 1)
+        if (mode == 1) {
             status++;
-        else
+        }
+        else {
             status--;
-        if (cm.getPlayer().getMapId() == 800000000) {
-            if (status == 0) 
-                cm.sendNext("Hi, I drive a World Tour Mobile.");
-             else if (status == 1) {
-                cm.sendSimple ("I can take you back somewhere for #bFREE#k.\r\n#L0#It's scary here take me back#l\r\n#L1#Bring me to Showa Town!#l");
-            } else if (status == 2) {
-                if (selection == 0) 
-                    cm.sendYesNo("So you want to go back to where you came from?");
-                 else {
-                    goToShowa = true;
-                    cm.sendYesNo("So you want to go to Showa Town?");
-                }
-            } else if (status == 3) {
-                var map = 801000000;
-                if (!goToShowa) {
-                    map = cm.getPlayer().getSavedLocation("WORLDTOUR");
-                    if (map == -1)
-                        map = 104000000;
-                }
-                cm.warp(map, 0);
+        }
+        if (status == 0) {
+            cm.sendNext("Hey I'm the Travel NPC what can I do for you?");
+        }
+        if (status == 1) {
+            cm.sendSimple("#fUI/UIWindow.img/QuestIcon/3/0#\r\n#L0#World Tour#l\r\n#L1#Leave#l\r\n#L2#Job Advancer#l\r\n#L3#AIO Shop#l\r\n#L4#Reward NPC#l");
+        }
+        else if (status == 2) {
+            if (selection == 0) {
+                cm.sendSimple("#fUI/UIWindow.img/QuestIcon/3/0#\r\n#L0#Towns#l\r\n#L1#Monstermaps#l\r\n#L2#Bossmaps#l");
+            }
+            else if (selection == 1) {
                 cm.dispose();
             }
-        } else {
-            if (status == 0) 
-                cm.sendNext("Hi, I drive a World Tour Mobile.");
-             else if (status == 1) 
-                cm.sendNextPrev("I can take you to Zipangu for just a small fee.")
-             else if (status == 2) {
-                if (cm.getMeso() < 1500) {
-                    cm.sendOk("You do not have enough mesos.")
-                    cm.dispose();
-                } else {
-                    cm.sendYesNo("So you want to pay #b1500 mesos#k and leave for Zipangu? Alright, then, but just be aware that you may be running into some monsters around there, too. Okay, would you like to head over to Zipangu right now?");
+			
+			else if (selection == 2) {
+			cm.dispose();
+               	cm.openNpc(9001001);
+            }
+			else if (selection == 3) {
+			cm.dispose();
+                cm.openNpc(9001003);
+            }
+			else if (selection == 4) {
+		cm.dispose();
+                cm.openNpc(9001002);
+            }
+        }
+        else if (status == 3) {
+            if (selection == 0) {
+                var selStr = "Select your destination.#b";
+                for (var i = 0; i < townmaps.length; i++) {
+                    selStr += "\r\n#L" + i + "##m" + townmaps[i] + "#";
                 }
-            } else if (status == 3) {
-                cm.gainMeso(-1500);
-                cm.getPlayer().saveLocation("WORLDTOUR");
-                cm.warp(800000000, 0);
+                cm.sendSimple(selStr);
+                towns = 1;
+            }
+            if (selection == 1) {
+                var selStr = "Select your destination.#b";
+                for (var i = 0; i < monstermaps.length; i++) {
+                    selStr += "\r\n#L" + i + "##m" + monstermaps[i] + "#";
+                }
+                cm.sendSimple(selStr);
+                monsters = 1;
+            }
+            if (selection == 2) {
+                var selStr = "Select your destination.#b";
+                for (var i = 0; i < bossmaps.length; i++) {
+                    selStr += "\r\n#L" + i + "##m" + bossmaps[i] + "#";
+                }
+                cm.sendSimple(selStr);
+                bosses = 1;
+            }
+        }
+        else if (status == 4) {
+            if (towns == 1) {
+                cm.sendYesNo("Do you want to go to #m" + townmaps[selection] + "#?");
+                chosenMap = selection;
+                towns = 2;
+            }
+            else if (monsters == 1) {
+                cm.sendYesNo("Do you want to go to #m" + monstermaps[selection] + "#?");
+                chosenMap = selection;
+                monsters = 2;
+            }
+            else if (bosses == 1) {
+                cm.sendYesNo("Do you want to go to #m" + bossmaps[selection] + "#?");
+                chosenMap = selection;
+                bosses = 2;
+            }
+        }
+        else if (status == 5) {
+            if (towns == 2) {
+                cm.warp(townmaps[chosenMap], 0);
+                cm.dispose();
+            }
+            else if (monsters == 2) {
+                cm.warp(monstermaps[chosenMap], 0);
+                cm.dispose();
+            }
+            else if (bosses == 2) {
+                cm.warp(bossmaps[chosenMap], 0);
                 cm.dispose();
             }
         }
+              
     }
 }
