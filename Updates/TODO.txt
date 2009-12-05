@@ -1,0 +1,10 @@
+Bug Fixes
+--------------------------------------------------------------------------------------------------
+
+D/C from cash shop when exiting
+MTS (If Wanted)
+Mount Skill
+Pet Nametag doesn't change pet name
+HP/MP bug
+
+~~~Please post all bugs found on the forums.~~~

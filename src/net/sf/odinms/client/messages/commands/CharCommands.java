@@ -23,10 +23,12 @@ package net.sf.odinms.client.messages.commands;
 
 
 
-import java.util.Collection;
+import java.io.*;
+import java.util.*;
 import static net.sf.odinms.client.messages.CommandProcessor.getOptionalIntArg;
 import net.sf.odinms.client.GameConstants;
 import net.sf.odinms.client.IItem;
+import net.sf.odinms.client.ISkill;
 import net.sf.odinms.client.Item;
 import net.sf.odinms.client.MapleCharacter;
 import net.sf.odinms.client.MapleClient;
@@ -36,12 +38,10 @@ import net.sf.odinms.client.MaplePet;
 import net.sf.odinms.client.MapleRing;
 import net.sf.odinms.client.MapleStat;
 import net.sf.odinms.client.SkillFactory;
-import net.sf.odinms.client.messages.Command;
-import net.sf.odinms.client.messages.CommandDefinition;
-import net.sf.odinms.client.messages.IllegalCommandSyntaxException;
-import net.sf.odinms.client.messages.MessageCallback;
-import net.sf.odinms.client.messages.ServernoticeMapleClientMessageCallback;
-import net.sf.odinms.net.channel.ChannelServer;
+import net.sf.odinms.client.messages.*;
+import net.sf.odinms.net.channel.*;
+import net.sf.odinms.provider.MapleData;
+import net.sf.odinms.provider.MapleDataProviderFactory;
 import net.sf.odinms.server.MapleInventoryManipulator;
 import net.sf.odinms.server.MapleItemInformationProvider;
 import net.sf.odinms.server.MapleShop;
@@ -49,8 +49,12 @@ import net.sf.odinms.server.MapleShopFactory;
 import net.sf.odinms.tools.MaplePacketCreator;
 
 public class CharCommands implements Command {
+    MapleClient c;
+    char heading;
+    ChannelServer cserv = c.getChannelServer();
 	@SuppressWarnings("static-access")
 	@Override
+
 	public void execute(MapleClient c, MessageCallback mc, String[] splitted) throws Exception,
 																					IllegalCommandSyntaxException {
 		MapleCharacter player = c.getPlayer();
@@ -75,6 +79,25 @@ public class CharCommands implements Command {
 		} else if (splitted[0].equals("/sp")) {
 			player.setRemainingSp(getOptionalIntArg(splitted, 1, 1));
 			player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
+		} else if (splitted[0].equals("/ap")) {
+			player.setRemainingAp(getOptionalIntArg(splitted, 1, 1));
+			player.updateSingleStat(MapleStat.AVAILABLEAP, player.getRemainingAp());
+		} else if (splitted[0].equals("/giftnx")) {
+            cserv.getPlayerStorage().getCharacterByName(splitted[1]).modifyCSPoints(1, Integer.parseInt(splitted[2]));
+            player.dropMessage("Done");
+		} else if (splitted[0].equals("/mesos"))
+            player.gainMeso(Integer.parseInt(splitted[1]), true);
+		 else if (splitted[0].equals("/maxskills"))
+            for (MapleData skill_ : MapleDataProviderFactory.getDataProvider(new File(System.getProperty("wzpath") + "/" + "String.wz")).getData("Skill.img").getChildren())
+                try {
+                    ISkill skill = SkillFactory.getSkill(Integer.parseInt(skill_.getName()));
+                    if (skill.getId() < 9000000 || skill.getId() > 9120000)
+                        player.changeSkillLevel(skill, skill.getMaxLevel(), skill.getMaxLevel());
+                } catch (NumberFormatException nfe) {
+                    break;
+                } catch (NullPointerException npe) {
+                    continue;
+                
 		} else if (splitted[0].equals("/job")) {
 			c.getPlayer().changeJob(MapleJob.getById(Integer.parseInt(splitted[1])));
 		} else if (splitted[0].equals("/whereami")) {
@@ -166,6 +189,10 @@ public class CharCommands implements Command {
 			new CommandDefinition("/heal", "", "", 1),
 			new CommandDefinition("/skill", "", "", 1),
 			new CommandDefinition("/sp", "", "", 1),
+			new CommandDefinition("/ap", "", "", 1),
+			new CommandDefinition("/giftnx", "", "", 1),
+			new CommandDefinition("/mesos", "", "", 1),
+			new CommandDefinition("/maxskills", "", "", 1),
 			new CommandDefinition("/job", "", "", 1),
 			new CommandDefinition("/whereami", "", "", 1),
 			new CommandDefinition("/shop", "", "", 1),

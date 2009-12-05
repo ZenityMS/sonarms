@@ -19,14 +19,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Storage
-*/
+/**
+-- Odin JavaScript --------------------------------------------------------------------------------
+	Seppy - Ludibrium : Ludibrium (220000000)
+-- By ---------------------------------------------------------------------------------------------
+	Xterminator
+-- Version Info -----------------------------------------------------------------------------------
+	1.0 - First Version by Xterminator
+---------------------------------------------------------------------------------------------------
+**/
 
 function start() {
-	cm.getChar().getStorage().sendStorage(cm.getC(), 2041008);
+	cm.getPlayer().getStorage().sendStorage(cm.getClient(), 2041008);
 	cm.dispose();
-}
-
-function action(mode, type, selection) {
-
 }

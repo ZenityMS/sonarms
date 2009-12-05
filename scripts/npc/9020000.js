@@ -1,85 +1,107 @@
-/* Lakelis
-Kerning City - KPQ NPC
+/*
+	This file is part of the OdinMS Maple Story Server
+    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
+                       Matthias Butz <matze@odinms.de>
+                       Jan Christian Meyer <vimes@odinms.de>
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Affero General Public License version 3
+    as published by the Free Software Foundation. You may not use, modify
+    or distribute this program under any other version of the
+    GNU Affero General Public License.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Affero General Public License for more details.
+
+    You should have received a copy of the GNU Affero General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/**
+-- Odin JavaScript --------------------------------------------------------------------------------
+	Lakelis - Victoria Road: Kerning City (103000000)
+-- By ---------------------------------------------------------------------------------------------
+	Stereo
+-- Version Info -----------------------------------------------------------------------------------
+	1.0 - First Version by Stereo
+---------------------------------------------------------------------------------------------------
+**/
 
 var status = 0;
 
 function start() {
-	status = -1;
-	action(1, 0, 0);
+    status = -1;
+    action(1, 0, 0);
 }
 
 function action(mode, type, selection) {
-	if (mode == -1) {
-		cm.dispose();
-		return;
-	} else {
-		if (mode == 0) {
-			cm.sendOk("Okay.  Maybe next time.");
-			cm.dispose();
-		}
-		if (mode == 1)
-			status++;
-		else
-			status--;
-		if (status == 0) {
-			if (cm.getParty() != null) {
-				if (cm.isPartyLeader()) {
-					var iter = cm.getChar().getMap().getCharacters().iterator();
-					var partynum = 0;
-					while (iter.hasNext()) {
-						var curChar = iter.next();
-						if (curChar.getParty() == cm.getParty()) {
-							partynum += 1;
-						}
-					}
-					if (partynum == 4 || cm.getPlayer().isGM()) {
-						if (cm.playerCount(103000800) == 0 && cm.playerCount(103000801) == 0  && cm.playerCount(103000802) == 0  && cm.playerCount(103000803) == 0  && cm.playerCount(103000804) == 0  && cm.playerCount(103000805) == 0) {
-							var iter = cm.getChar().getMap().getCharacters().iterator();
-							cm.gainItem(4001007, -(cm.getPlayer().getQuantity(4001007)));
-							cm.gainItem(4001008, -(cm.getPlayer().getQuantity(4001008)));
-							cm.setPortal(103000800, 2, false);
-							cm.setPortal(103000801, 2, false);
-							cm.setPortal(103000802, 2, false);
-							cm.setPortal(103000803, 2, false);
-							var partynum = 0;
-								while (iter.hasNext()) {
-								var curChar = iter.next();
-								if (curChar.getParty() == cm.getParty()) {
-									curChar.warpMapTo(103000800);
-								}
-							}
-							cm.dispose();
-						} else {
-							cm.sendNext("Some other party has already gotten in to try clearing the quest. Please try again later.");
-							cm.dispose();
-						}
-					} else {
-						cm.sendNext("Your party is not a party of four. Please come back when you have four party members.");
-						cm.dispose();
-					}
-				} else {
-					cm.sendNext("How about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it unless with great teamwork. If you want to try it, please tell the #bleader of your party#k to talk to me.");
-					cm.dispose();
-				}
-			} else {
-				cm.sendNext("How about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it unless with great teamwork. If you want to try it, please tell the #bleader of your party#k to talk to me.");
-				cm.dispose();
-			}
-		} else if (status == 1) {
-			if (selection == 0) {
-				cm.sendOk("See you later!");
-			}else{
-				cm.sendOk("The purpose of Kerning PQ is to collaborate with other players to try to aim for one goal.  Defeating the #bKing Slime#k.  I hope you will try this challenge.  There are three stages to this PQ...  #bStage 1#k is where you kill Ligators to obtain coupons.  Then depending on how much coupons you need, that's how much you need to get.  Once you get all the coupons you need you can click on #bCloto#k to go to the next stage.  At the #bLast Stage#k, you will need to collect 10 passes.  After you collect that you can move to the next stage.  In #bBonus#k you can kill the monsters there to obtain coupons.  Depending on how much you get, you can get various prizes! #bThis KPQ Patch has been made possible by Acrylic/Penguins of LiteMS (Removing this violates permission to use this KPQ script)#k");
-				cm.dispose();
-			}
-		} else if (status == 2) {
-			if (cm.haveItem(4001007) == false && cm.haveItem(4001008) == false ) {
-				cm.warp(103000890);
-			}else{
-				cm.sendOk("You may not enter the PQ area when you have either #bCoupon#k or #bPass#k.");
-			}
-			cm.dispose();
-		}
-	}
+    if (mode == -1) {
+        cm.dispose();
+    } else {
+        if (mode == 0 && status == 0) {
+            cm.dispose();
+            return;
+        }
+        if (mode == 1)
+            status++;
+        else
+            status--;
+        if (status == 0) {
+            // Lakelis has no preamble, directly checks if you're in a party
+            if (cm.getParty() == null) { // No Party
+                cm.sendOk("How about you and your party members collectively beating a quest? Here you'll find obstacles and problems where you won't be able to beat it without great teamwork.  If you want to try it, please tell the #bleader of your party#k to talk to me.");
+                cm.dispose();
+            } else if (!cm.isLeader()) { // Not Party Leader
+                cm.sendOk("If you want to try the quest, please tell the #bleader of your party#k to talk to me.");
+                cm.dispose();
+            } else {
+                cm.getPlayer().dropMessage("Hi");
+                // Check if all party members are within Levels 21-30
+                var party = cm.getParty().getMembers();
+                var mapId = cm.getPlayer().getMapId();
+                var next = true;
+                var levelValid = 0;
+                var inMap = 0;
+                var it = party.iterator();
+                while (it.hasNext()) {
+                    var cPlayer = it.next();
+                    if ((cPlayer.getLevel() >= 21) && (cPlayer.getLevel() <= 30)) {
+                        levelValid += 1;
+                    } else {
+                        next = false;
+                    }
+                    if (cPlayer.getMapid() == mapId) {
+                        inMap += 1;
+                    }
+                }
+                if (party.size() < 4 || party.size() > 6 || inMap < 4)
+                    next = false;
+                if (cm.getPlayer().gmLevel() > 0) next = true;
+                if (next) {
+                    var em = cm.getEventManager("KerningPQ");
+                    if (em == null) {
+                        cm.sendOk("This PQ is not currently available.");
+                    } else {
+                        if (em.getProperty("entryPossible") == "true") {
+                            // Begin the PQ.
+                            em.startInstance(cm.getParty().cm.getPlayer().getMap());
+                            // Remove Passes and Coupons
+                            party = cm.getPlayer().getEventInstance().getPlayers();
+                            cm.removeFromParty(4001008, party);
+                            cm.removeFromParty(4001007, party);
+                            em.setProperty("entryPossible", "false");
+                        } else {
+                            cm.sendNext("It looks like there is already another party inside the Party Quest. Why don't you come back later?");
+                        }
+                    }
+                    cm.dispose();
+                } else {
+                    cm.sendOk("Your party is not a party of four. Please make sure all your members are present and qualified to participate in this quest. I see #b" + levelValid.toString() + "#k members are in the right level range, and #b" + inMap.toString() + "#k are in Kerning. If this seems wrong, #blog out and log back in,#k or reform the party.");
+                    cm.dispose();
+                }
+            }
+        }
+    }
 }
