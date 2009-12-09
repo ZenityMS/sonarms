@@ -1,1 +1,2 @@
-Everything is set-up already. The only things you may change are the .Properties files. Do not edit or touch anything without asking.
+Everything is set-up already.
+Ask me how to change rates/ other things.
