@@ -40,6 +40,7 @@ import client.MapleStat;
 import client.SkillFactory;
 import constants.ServerConstants;
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
 import tools.DatabaseConnection;
 import net.channel.ChannelServer;
@@ -50,9 +51,11 @@ import provider.MapleDataTool;
 import scripting.npc.NPCScriptManager;
 import server.MapleInventoryManipulator;
 import server.MapleItemInformationProvider;
+import server.MaplePortal;
 import server.MapleShopFactory;
 import server.life.MapleLifeFactory;
 import server.life.MapleMonster;
+import server.maps.MapleMap;
 import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
@@ -262,6 +265,54 @@ class GMCommand {
             player.updateSingleStat(MapleStat.DEX, x);
             player.updateSingleStat(MapleStat.INT, x);
             player.updateSingleStat(MapleStat.LUK, x);
+        } else if (splitted[0].equals("map")) {
+			int mapid = Integer.parseInt(splitted[1]);
+			MapleMap target = cserv.getMapFactory().getMap(mapid);
+			MaplePortal targetPortal = null;
+			if (splitted.length > 2) {
+				try {
+					targetPortal = target.getPortal(Integer.parseInt(splitted[2]));
+				} catch (IndexOutOfBoundsException ioobe) {
+					// noop, assume the gm didn't know how many portals there are
+				} catch (NumberFormatException nfe) {
+					// noop, assume that the gm is drunk
+				}
+			}
+			if (targetPortal == null) {
+				targetPortal = target.getPortal(0);
+			}
+			c.getPlayer().changeMap(target, targetPortal);
+
+                } else if (splitted[0].equals("goto")) {
+                    HashMap<String, Integer> maps = new HashMap<String, Integer>();
+                    maps.put("gmmap", 180000000);
+                    maps.put("henesys", 100000000);
+                    maps.put("ellinia", 101000000);
+                    maps.put("perion", 102000000);
+                    maps.put("kerning", 103000000);
+                    maps.put("lith", 104000000);
+                    maps.put("sleepywood", 105040300);
+                    maps.put("florina", 110000000);
+                    maps.put("orbis", 200000000);
+                    maps.put("happy", 209000000);
+                    maps.put("elnath", 211000000);
+                    maps.put("ludi", 220000000);
+                    maps.put("omega", 221000000);
+                    maps.put("korean", 222000000);
+                    maps.put("aqua", 230000000);
+                    maps.put("leafre", 240000000);
+                    maps.put("mulung", 250000000);
+                    maps.put("herb", 251000000);
+                    maps.put("nlc", 600000000);
+                    maps.put("shrine", 800000000);
+                    maps.put("showa", 801000000);
+                    maps.put("fm", 910000000);
+                    if (maps.containsKey(splitted[1])) {
+                        player.changeMap(cserv.getMapFactory().getMap(maps.get(splitted[1])), cserv.getMapFactory().getMap(maps.get(splitted[1])).getPortal(0));
+                    } else {
+                       player.message("No map enetered. Enter /goto  <Location>");
+                    }
+
         } else if (splitted[0].equals("sp")) {
             player.setRemainingSp(Integer.parseInt(splitted[1]));
             player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());

@@ -95,4 +95,9 @@ Rev 57
 [+]Fixed a major command bug
 
 Rev 58-59
-[+]Updated source. Many bugs should be fixed.
+[+]Fixed Mounts.
+[+]Fixed CS Exit bug.
+[+]Fixed a HP/MP bug.
+
+Rev 60
+[+]Added /goto + /map
