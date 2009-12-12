@@ -1,2 +1,4 @@
+~~~When making the SQL Database, make the default schema 'bubblesdev'~~~
+
 Everything is set-up already.
-Ask me how to change rates/ other things.
+You may change rates and server message in-game.
