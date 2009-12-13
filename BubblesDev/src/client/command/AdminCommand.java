@@ -21,9 +21,11 @@
 */
 package client.command;
 
+import client.command.CommandProcessor;
 import java.sql.PreparedStatement;
 import client.MapleCharacter;
 import client.MapleClient;
+import java.awt.Point;
 import java.util.Map.Entry;
 import tools.DatabaseConnection;
 import net.channel.ChannelServer;
@@ -37,11 +39,16 @@ import tools.MaplePacketCreator;
 class AdminCommand {
     static void execute(MapleClient c, String[] splitted, char heading) {
         MapleCharacter player = c.getPlayer();
+
         if (splitted[0].equals("gc"))
             System.gc();
         else if (splitted[0].equals("horntail"))
             for (int i = 8810002; i < 8810010; i++)
                 player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(i), player.getPosition());
+		else if (splitted[0].equals("mynpcpos")) {
+		    Point pos = c.getPlayer().getPosition();
+		    player.message("CY: " + pos.y + " | RX0: " + (pos.x + 50) + " | RX1: " + (pos.x - 50) + " | FH: " + c.getPlayer().getMap().getFootholds().findBelow(pos).getId());
+		}
         else if (splitted[0].equals("npc")) {
             MapleNPC npc = MapleLifeFactory.getNPC(Integer.parseInt(splitted[1]));
             if (npc != null) {
@@ -66,6 +73,7 @@ class AdminCommand {
             player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8820001), player.getPosition());
         else if (splitted[0].equals("playernpc"))
             player.playerNPC(c.getChannelServer().getPlayerStorage().getCharacterByName(splitted[1]), Integer.parseInt(splitted[2]));
+	
         else if (splitted[0].equals("reloadmapscripts"))
             MapScriptManager.getInstance().clearScripts();
         else if (splitted[0].equals("reloadmapspawns"))

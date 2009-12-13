@@ -33,8 +33,10 @@ import client.BuddylistEntry;
 import client.MapleCharacter;
 import client.BuddyList.BuddyAddResult;
 import client.BuddyList.BuddyOperation;
+import client.MapleCharacterUtil;
 import client.MaplePet;
 import java.sql.PreparedStatement;
+import java.util.Collections;
 import tools.DatabaseConnection;
 import net.ByteArrayMaplePacket;
 import net.MaplePacket;
@@ -44,8 +46,10 @@ import net.world.MapleParty;
 import net.world.MaplePartyCharacter;
 import net.world.PartyOperation;
 import net.world.guild.MapleGuildSummary;
+import net.world.remote.CheaterData;
 import server.ShutdownServer;
 import server.TimerManager;
+import tools.CollectionUtil;
 import tools.MaplePacketCreator;
 
 /**
@@ -177,6 +181,27 @@ public class ChannelWorldInterfaceImpl extends UnicastRemoteObject implements Ch
             return server.getPlayerStorage().getCharacterByName(name).getMapId();
         return -1;
     }
+
+    public List<CheaterData> getCheaters() throws RemoteException {
+		List<CheaterData> cheaters = new ArrayList<CheaterData>();
+		List<MapleCharacter> allplayers = new ArrayList<MapleCharacter>(server.getPlayerStorage().getAllCharacters());
+		/*Collections.sort(allplayers, new Comparator<MapleCharacter>() {
+			@Override
+			public int compare(MapleCharacter o1, MapleCharacter o2) {
+				int thisVal = o1.getCheatTracker().getPoints();
+				int anotherVal = o2.getCheatTracker().getPoints();
+				return (thisVal<anotherVal ? 1 : (thisVal==anotherVal ? 0 : -1));
+			}
+		});*/
+		for (int x = allplayers.size() - 1; x >= 0; x--) {
+			MapleCharacter cheater = allplayers.get(x);
+			if (cheater.getCheatTracker().getPoints() > 0) {
+				cheaters.add(new CheaterData(cheater.getCheatTracker().getPoints(), MapleCharacterUtil.makeMapleReadable(cheater.getName()) + " (" + cheater.getCheatTracker().getPoints() + ") " + cheater.getCheatTracker().getSummary()));
+			}
+		}
+		Collections.sort(cheaters);
+		return CollectionUtil.copyFirst(cheaters, 10);
+	}
 
     @Override
     public BuddyAddResult requestBuddyAdd(String addName, int channelFrom, int cidFrom, String nameFrom) {

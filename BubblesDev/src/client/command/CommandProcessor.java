@@ -24,6 +24,16 @@ package client.command;
 import client.MapleClient;
 
 public final class CommandProcessor {
+    public static int getOptionalIntArg(String splitted[], int position, int def) {
+		if (splitted.length > position) {
+			try {
+				return Integer.parseInt(splitted[position]);
+			} catch (NumberFormatException nfe) {
+				return def;
+			}
+		}
+		return def;
+	}
     public static final boolean processCommand(final MapleClient c, final String s) {
         if (s.charAt(0) == '/' && c.getPlayer().isGM()) {
             String[] sp = s.split(" ");
