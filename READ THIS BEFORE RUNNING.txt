@@ -1,1 +1,3 @@
-Everything is set-up already. If you have any questions or requests, shoot them by me anytime.
+Everything is set-up already. If you have any questions or requests, shoot them by me at anytime.
+
+For a list of commands, go in game and type !help.

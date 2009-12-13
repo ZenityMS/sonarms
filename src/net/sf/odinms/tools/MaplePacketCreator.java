@@ -5212,4 +5212,39 @@ public class MaplePacketCreator {
 		return mplew.getPacket();
 
 	}
+
+        public static MaplePacket showCygnusIntro(int id) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        mplew.writeShort(SendPacketOpcode.SHOW_ITEM_GAIN_INCHAT.getValue());
+        mplew.write(0x12);
+        mplew.writeMapleAsciiString("Effect/Direction.img/cygnus/Scene" + id);
+        return mplew.getPacket();
+    }
+
+    public static MaplePacket cygnusIntroLock(boolean enable) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        mplew.writeShort(SendPacketOpcode.CYGNUS_INTRO_LOCK.getValue());
+        mplew.write(enable ? 1 : 0);
+        return mplew.getPacket();
+    }
+
+    public static MaplePacket cygnusIntroDisableUI(boolean enable) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        mplew.writeShort(SendPacketOpcode.CYGNUS_INTRO_DISABLE_UI.getValue());
+        mplew.write(enable ? 1 : 0);
+        return mplew.getPacket();
+    }
+
+    public static MaplePacket cygnusCharCreate() {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        mplew.writeShort(SendPacketOpcode.CREATE_CYGNUS.getValue());
+        return mplew.getPacket();
+    }
+
+    public static MaplePacket cygnusCharacterCreated(int mode) {
+        MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+        mplew.writeShort(SendPacketOpcode.CYGNUS_CHAR_CREATED.getValue());
+        mplew.writeInt(mode);
+        return mplew.getPacket();
+    }
 }

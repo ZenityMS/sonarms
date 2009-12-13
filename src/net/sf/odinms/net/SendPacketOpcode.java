@@ -103,6 +103,9 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
 	REMOVE_SPECIAL_MAPOBJECT,
 	SUMMON_ATTACK,
 	MOVE_SUMMON,
+        CYGNUS_INTRO_LOCK, //0xCA
+        CYGNUS_INTRO_DISABLE_UI, //0xCB
+        CYGNUS_CHAR_CREATED, //0xCC
 	SPAWN_MIST,
 	REMOVE_MIST,
 	DAMAGE_SUMMON,
@@ -140,7 +143,7 @@ public enum SendPacketOpcode implements WritableIntValueHolder {
 	SHOW_NOTES,
 	GM_OPERATION,
 	VICIOUS_HAMMER,
-	CREATE_CYGNUS,
+	CREATE_CYGNUS,//0x62
 	CYGNUS_RESPONSE;
 	private int code = -2;
 

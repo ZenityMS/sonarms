@@ -1,8 +1,8 @@
 /*
 	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-					   Matthias Butz <matze@odinms.de>
-					   Jan Christian Meyer <vimes@odinms.de>
+    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+		       Matthias Butz <matze@odinms.de>
+		       Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,7 +19,6 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
 /* Chris
 	Victoria Road : Kerning City Repair Shop (103000006)
 	
@@ -29,8 +28,6 @@
 	* Special - Iron Hog's Metal Hoof x 100 into Steel Plate
 	* Claws
 */
-
-importPackage(net.sf.odinms.client);
 
 var status = 0;
 var selectedType = -1;
@@ -202,33 +199,12 @@ function action(mode, type, selection) {
 						}
 					}
 					else {
-						var count = 0;
-						var iter;
-						if (last_use && i == mats.length - 1)//last item
-							iter = cm.getChar().getInventory(MapleInventoryType.USE).listById(mats[i]).iterator();
-						else 
-							iter = cm.getChar().getInventory(MapleInventoryType.ETC).listById(mats[i]).iterator();
-						while (iter.hasNext()) {
-							count += iter.next().getQuantity();
-						}
-						if (count < matQty[i] * qty)
-							complete = false;
+                       if (!cm.haveItem(mats[i],matQty[i] * selection)) complete=false;
 					}					
 				}
 			}
 			else {
-				var count = 0;
-				var iter;
-				
-				if (last_use == true)//only item is use
-					iter = cm.getChar().getInventory(MapleInventoryType.USE).listById(mats).iterator();
-				else //only item is etc
-					iter = cm.getChar().getInventory(MapleInventoryType.ETC).listById(mats).iterator();
-				while (iter.hasNext()) {
-					count += iter.next().getQuantity();
-				}
-				if (count < matQty * qty)
-					complete = false;
+                if (!cm.haveItem(mats,matQty * selection)) complete=false;
 			}
 		}
 		
@@ -242,8 +218,6 @@ function action(mode, type, selection) {
 			}
 			else
 				cm.gainItem(mats, -matQty * qty);
-				
-			
 			cm.gainMeso(-cost * qty);
 			cm.gainItem(item, qty);
 			cm.sendNext("Phew... I almost didn't think that would work for a second... Well, I hope you enjoy it, anyway.");

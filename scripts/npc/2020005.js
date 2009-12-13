@@ -1,8 +1,8 @@
 /*
 	This file is part of the OdinMS Maple Story Server
-    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc> 
-					   Matthias Butz <matze@odinms.de>
-					   Jan Christian Meyer <vimes@odinms.de>
+    Copyright (C) 2008 Patrick Huy <patrick.huy@frz.cc>
+		       Matthias Butz <matze@odinms.de>
+		       Jan Christian Meyer <vimes@odinms.de>
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Affero General Public License as
@@ -19,23 +19,25 @@
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+/**
+-- Odin JavaScript --------------------------------------------------------------------------------
+	Alcaster - El Nath Market (211000100)
+-- By ---------------------------------------------------------------------------------------------
+	Unknown/Information/xQuasar
+-- Version Info -----------------------------------------------------------------------------------
+	1.3 - Fixed up completely [xQuasar]
+	1.2 - Add a missing text part [Information]
+	1.1 - Recoded to official [Information]
+	1.0 - First Version by Unknown
+---------------------------------------------------------------------------------------------------
+**/
 
-/* Alcaster
-	El Nath: El Nath Market (211000100)
-	
-	Shop NPC: but must complete quest
-	* 100 Summon Rocks - 500k
-	* 100 Magic Rocks - 500k
-	* 100 All-Cure Potions - 40k
-	* 100 Holy Water - 30k
-*/
-
-importPackage(net.sf.odinms.client);
-
-var status = 0;
-var selectedItem = -1;
-var item;
-var cost;
+var selected;
+var amount;
+var totalcost;
+var item = new Array(2050003,2050004,4006000,4006001);
+var cost = new Array(300,400,5000,5000);
+var msg = new Array("that cures the state of being sealed and cursed","that cures all",", possessing magical power, that is used for high-quality skills",", possessing the power of summoning that is used for high-quality skills");
 
 function start() {
 	status = -1;
@@ -43,51 +45,50 @@ function start() {
 }
 
 function action(mode, type, selection) {
-	if (mode == 1)
-		status++;
-	else
+	if(mode == 0 && status == 2) {
+		cm.sendNext("I see. Understand that I have many different items here. Take a look around. I'm only selling these items to you, so I won't be ripping you off in any way shape or form.");
 		cm.dispose();
-	if (status == 0 && mode == 1) {
-		if (cm.getQuestStatus(3035).equals(MapleQuestStatus.Status.COMPLETED)) {
-			var selStr = "Thank you for helping me find and destory the Book of the Ancients. As thanks for your help, I would like to put my alchemy skills to use. However, my special items are not free."
-				
-			cm.sendYesNo(selStr);
+		return;
+	}
+	if(mode == 0 || mode == -1) {
+		cm.dispose();
+		return;
+	}
+	else
+		status++;
+	if (status == 0) {
+		if (cm.isQuestCompleted(3035)) {
+			var selStr;
+			for (var i = 0; i < item.length; i++){
+				selStr += "\r\n#L" + i + "# #b#t" + item[i] + "# (Price: "+cost[i]+" mesos)#k#l";
+			}
+			cm.sendSimple("Thanks to you #b#t4031056##k is safely sealed. Of course, also as a result, I used up about half of the power I have accumulated over the last 800 years or so...but now I can die in peace. Oh, by the way... are you looking for rare items by any chance? As a sign of appreciation for your hard work, I'll sell some items I have to you, and ONLY you. Pick out the one you want!"+selStr);
 		}
-		else
-		{
-			cm.sendOk("I was once a legendary alchemist, but those days are behind me.");
+		else {
+			cm.sendNext("If you decide to help me out, then in return, I'll make the item available for sale.");
 			cm.dispose();
 		}
 	}
-	else if (status == 1 && mode == 1){
-		var selStr = "Very well then, what item would you like? Just tell me, and I can get it to you straightaway!#b"
-		var options = new Array("Holy Water #k(300 meso)#b","All-Cure Potion #k(400 meso)#b","The Magic Rock #k(5000 meso)#b","The Summoning Rock #k(5000 meso)#b");
-		for (var i = 0; i < options.length; i++){
-			selStr += "\r\n#L" + i + "# " + options[i] + "#l";
-		}
-		cm.sendSimple(selStr);
+	else if(status == 1) {
+		selected = selection;
+		cm.sendGetNumber("Is #b#t"+item[selected]+"##k really the item that you need? It's the item "+msg[selected]+". It may not be the easiest item to acquire, but I'll give you a good deal on it. It'll cost you #b"+cost[selected]+" mesos#k per item. How many would you like to purchase?", 0, 1, 100);
 	}
-	else if (status == 2 && mode == 1) {
-		var itemSet = new Array(2050003,2050004,4006000,4006001);
-		var costSet = new Array(300,400,5000,5000);
-		var prompt;
-		item = itemSet[selection];
-		cost = costSet[selection];
-		
-		prompt = "So, you want me to make #t" + item + "# for you? In that case, it'll come to " + cost + " meso each. How many do you want?"
-		cm.sendGetNumber(prompt, 1, 1, 100);
-	}
-	else if (status == 3 && mode == 1) {
-		
-		if (cm.getMeso() < cost * selection)
-		{
-			cm.sendOk("I'm sorry, but you do not have enough meso.")
+	else if(status == 2) {
+		amount = selection;
+		totalcost = cost[selected] * amount;
+		if (amount == 0) {
+			cm.sendOk("If you're not going to buy anything, then I've got nothing to sell neither.");
+			cm.dispose();
 		}
-		else {	
-			cm.gainMeso(-cost * selection);
-			cm.gainItem(item, selection);
-			cm.sendOk("I have faith that you will put these to great use.");
+		cm.sendYesNo("Are you sure you want to buy #r"+amount+" #t"+item[selected]+"(s)##k? It'll cost you "+cost[selected]+" mesos per #t"+item[selected]+"#, which will cost you #r"+totalcost+" mesos#k in total.");
+	} else if(status == 3) {
+		if(cm.getMeso() < totalcost || !cm.canHold(item[selected])) {
+			cm.sendNext("Are you sure you have enough mesos? Please check and see if your etc. or use inventory is full, or if you have at least #r"+totalcost+"#k mesos.");
+			cm.dispose();
 		}
+		cm.sendNext("Thank you. If you ever find yourself needing items down the road, make sure to drop by here. I may have gotten old over the years, but I can still make magic items with ease.");
+		cm.gainMeso(-totalcost);
+		cm.gainItem(item[selected], amount);
 		cm.dispose();
 	}
 }

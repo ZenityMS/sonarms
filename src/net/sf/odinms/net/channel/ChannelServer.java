@@ -116,6 +116,7 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
 	private Map<Integer, MapleGuildSummary> gsStore = new HashMap<Integer, MapleGuildSummary>();
 	private Boolean worldReady = true;
 	private Map<MapleSquadType, MapleSquad> mapleSquads = new HashMap<MapleSquadType, MapleSquad>();
+        private int maxStat;
 
 	private ChannelServer(String key) {
 		mapFactory = new MapleMapFactory(MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/Map.wz")), MapleDataProviderFactory.getDataProvider(new File(System.getProperty("net.sf.odinms.wzpath") + "/String.wz")));
@@ -125,6 +126,10 @@ public class ChannelServer implements Runnable, ChannelServerMBean {
 	public static WorldRegistry getWorldRegistry() {
 		return worldRegistry;
 	}
+
+        public int getMaxStat() {
+        return maxStat;
+    }
 
 	public void reconnectWorld() {
 		// check if the connection is really gone
