@@ -21,6 +21,7 @@
 */
 package client;
 
+import client.anticheat.CheatTracker;
 import constants.ExpTable;
 import constants.SkillConstants;
 import java.awt.Point;
@@ -49,6 +50,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 import net.MaplePacket;
+import net.PacketProcessor;
 import net.channel.ChannelServer;
 import net.world.MapleMessenger;
 import net.world.MapleMessengerCharacter;
@@ -90,7 +92,11 @@ import tools.DatabaseConnection;
 import tools.MaplePacketCreator;
 import tools.Pair;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class MapleCharacter extends AbstractAnimatedMapleMapObject implements InventoryContainer {
+    private static Logger log = LoggerFactory.getLogger(PacketProcessor.class);
     private int world;
     private int accountid;
     private int rank;
@@ -207,6 +213,8 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     private Map<Integer, Boolean> isLinkedCache = new LinkedHashMap<Integer, Boolean>();
     private List<MapleDisease> diseases = new ArrayList<MapleDisease>();
     private List<MapleDoor> doors = new ArrayList<MapleDoor>();
+    // anticheat related information
+    private CheatTracker anticheat;
     private ScheduledFuture<?> dragonBloodSchedule;
     private ScheduledFuture<?> mapTimeLimitTask = null;
     private ScheduledFuture<?> fullnessSchedule;
@@ -363,6 +371,29 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     public void addVisibleMapObject(MapleMapObject mo) {
         visibleMapObjects.add(mo);
     }
+
+    public void ban(String reason) {
+		if (lastmonthfameids == null) {
+			throw new RuntimeException("Trying to ban a non-loaded character (testhack)");
+		}
+		try {
+			getClient().banMacs();
+			Connection con = DatabaseConnection.getConnection();
+			PreparedStatement ps = con.prepareStatement("UPDATE accounts SET banned = ?, banreason = ? WHERE id = ?");
+			ps.setInt(1, 1);
+			ps.setString(2, reason);
+			ps.setInt(3, accountid);
+			ps.executeUpdate();
+			ps.close();
+			ps = con.prepareStatement("INSERT INTO ipbans VALUES (DEFAULT, ?)");
+			String[] ipSplit = client.getSession().getRemoteAddress().toString().split(":");
+			ps.setString(1, ipSplit[0]);
+			ps.executeUpdate();
+			ps.close();
+		} catch (SQLException ex) {
+		}
+		client.getSession().close();
+	}
 
     public void ban(String reason, boolean dc) {
         try {
@@ -623,6 +654,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
         else
             keymap.remove(Integer.valueOf(key));
     }
+
+    public CheatTracker getCheatTracker() {
+		return anticheat;
+	}
 
     public void changeMap(MapleMap to) {
         changeMap(to, to.getPortal(0));
@@ -1284,6 +1319,29 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
     public int getId() {
         return id;
     }
+
+    public static int getIdByName(String name, int world) {
+		Connection con = DatabaseConnection.getConnection();
+		PreparedStatement ps;
+		try {
+			ps = con.prepareStatement("SELECT id FROM characters WHERE name = ? AND world = ?");
+			ps.setString(1, name);
+			ps.setInt(2, world);
+			ResultSet rs = ps.executeQuery();
+			if (!rs.next()) {
+				rs.close();
+				ps.close();
+				return -1;
+			}
+			int id = rs.getInt("id");
+			rs.close();
+			ps.close();
+			return id;
+		} catch (SQLException e) {
+			log.error("ERROR", e);
+		}
+		return -1;
+	}
 
     public static int getIdByName(String name) {
         try {

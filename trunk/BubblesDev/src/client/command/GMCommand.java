@@ -27,7 +27,6 @@ import java.net.URL;
 import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.List;
-import constants.ExpTable;
 import client.IItem;
 import client.ISkill;
 import client.Item;
@@ -38,10 +37,14 @@ import client.MapleJob;
 import client.MaplePet;
 import client.MapleStat;
 import client.SkillFactory;
+import constants.ExpTable;
 import constants.ServerConstants;
 import java.io.File;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import net.MaplePacket;
 import tools.DatabaseConnection;
 import net.channel.ChannelServer;
 import provider.MapleData;
@@ -60,6 +63,7 @@ import server.maps.MapleMapObject;
 import server.maps.MapleMapObjectType;
 import tools.MaplePacketCreator;
 import tools.Pair;
+import tools.StringUtil;
 
 class GMCommand {
     static boolean execute(MapleClient c, String[] splitted, char heading) {
@@ -203,7 +207,18 @@ class GMCommand {
             player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8500001), player.getPosition());
         else if (splitted[0].equals("pianus"))
             player.getMap().spawnMonsterOnGroudBelow(MapleLifeFactory.getMonster(8510000), player.getPosition());
-        else if (splitted[0].equalsIgnoreCase("search"))
+		else if (splitted[0].equals("say")) {
+			if (splitted.length > 1) { 
+				MaplePacket packet = MaplePacketCreator.serverNotice(6, "[" + c.getPlayer().getName() + "] " + StringUtil.joinStringFrom(splitted, 1));
+				try {
+					ChannelServer.getInstance(c.getChannel()).getWorldInterface().broadcastMessage(c.getPlayer().getName(), packet.getBytes());
+				} catch (RemoteException e) {
+					c.getChannelServer().reconnectWorld();
+				}
+			} else {
+				player.message("Syntax: /say <message>");
+			}
+                } else if (splitted[0].equalsIgnoreCase("search"))
             if (splitted.length > 2) {
                 String search = joinStringFrom(splitted, 2);
                 MapleData data = null;
@@ -273,16 +288,15 @@ class GMCommand {
 				try {
 					targetPortal = target.getPortal(Integer.parseInt(splitted[2]));
 				} catch (IndexOutOfBoundsException ioobe) {
-					// noop, assume the gm didn't know how many portals there are
+					
 				} catch (NumberFormatException nfe) {
-					// noop, assume that the gm is drunk
+					
 				}
 			}
 			if (targetPortal == null) {
 				targetPortal = target.getPortal(0);
 			}
 			c.getPlayer().changeMap(target, targetPortal);
-
                 } else if (splitted[0].equals("goto")) {
                     HashMap<String, Integer> maps = new HashMap<String, Integer>();
                     maps.put("gmmap", 180000000);
@@ -316,6 +330,30 @@ class GMCommand {
         } else if (splitted[0].equals("sp")) {
             player.setRemainingSp(Integer.parseInt(splitted[1]));
             player.updateSingleStat(MapleStat.AVAILABLESP, player.getRemainingSp());
+	} else if (splitted[0].equals("statreset")) {
+			int str = c.getPlayer().getStr();
+			int dex = c.getPlayer().getDex();
+			int int_ = c.getPlayer().getInt();
+			int luk = c.getPlayer().getLuk();
+			int newap = c.getPlayer().getRemainingAp() + (str - 4) + (dex - 4) + (int_ - 4) + (luk - 4);
+			c.getPlayer().setStr(4);
+			c.getPlayer().setDex(4);
+			c.getPlayer().setInt(4);
+			c.getPlayer().setLuk(4);
+			c.getPlayer().setRemainingAp(newap);
+			List<Pair<MapleStat, Integer>> stats = new ArrayList<Pair<MapleStat, Integer>>();
+			stats.add(new Pair<MapleStat, Integer>(MapleStat.STR, Integer.valueOf(4)));
+			stats.add(new Pair<MapleStat, Integer>(MapleStat.DEX, Integer.valueOf(4)));
+			stats.add(new Pair<MapleStat, Integer>(MapleStat.INT, Integer.valueOf(4)));
+			stats.add(new Pair<MapleStat, Integer>(MapleStat.LUK, Integer.valueOf(4)));
+			stats.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, Integer.valueOf(newap)));
+			c.getSession().write(MaplePacketCreator.updatePlayerStats(stats));
+			player.message("Your stats have been reset.");
+		
+		} else if (splitted[0].equals("warphere")) {
+			MapleCharacter victim = cserv.getPlayerStorage().getCharacterByName(splitted[1]);
+			victim.changeMap(c.getPlayer().getMap(), c.getPlayer().getMap().findClosestSpawnpoint(c.getPlayer().getPosition()));
+		
         } else if (splitted[0].equals("unban")) {
             try {
                 PreparedStatement p = DatabaseConnection.getConnection().prepareStatement("UPDATE accounts SET banned = -1 WHERE id = " + MapleCharacter.getIdByName(splitted[1]));
@@ -332,9 +370,9 @@ class GMCommand {
             return false;
         }
         return true;
-    }
+                }
 
-    static String joinStringFrom(String arr[], int start) {
+         static String joinStringFrom(String arr[], int start) {
         StringBuilder builder = new StringBuilder();
         for (int i = start; i < arr.length; i++) {
             builder.append(arr[i]);
@@ -342,5 +380,5 @@ class GMCommand {
                 builder.append(" ");
         }
         return builder.toString();
-    }
-}
+         }
+       }

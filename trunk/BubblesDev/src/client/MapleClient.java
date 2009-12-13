@@ -21,6 +21,7 @@
 */
 package client;
 
+import client.anticheat.CheatTracker;
 import java.rmi.RemoteException;
 import java.security.MessageDigest;
 import java.sql.Connection;
@@ -43,6 +44,7 @@ import javax.script.ScriptEngine;
 import tools.DatabaseConnection;
 import net.channel.ChannelServer;
 import net.login.LoginServer;
+import client.anticheat.CheatTracker;
 import net.world.MapleMessengerCharacter;
 import net.world.MaplePartyCharacter;
 import net.world.PartyOperation;
@@ -76,6 +78,11 @@ public class MapleClient {
     private boolean serverTransition = false;
     private Calendar birthday = null;
     private String accountName;
+    //AntiCheat Things
+    private CheatTracker anticheat;
+    private ScheduledFuture<?> dragonBloodSchedule;
+    private ScheduledFuture<?> mapTimeLimitTask = null;
+    //End AntiCheat
     private int world;
     private long lastPong;
     private int gmlevel;
@@ -564,6 +571,10 @@ public class MapleClient {
     public ChannelServer getChannelServer() {
         return ChannelServer.getInstance(getChannel());
     }
+
+    public CheatTracker getCheatTracker() {
+		return anticheat;
+	}
 
     public boolean deleteCharacter(int cid) {
         Connection con = DatabaseConnection.getConnection();
