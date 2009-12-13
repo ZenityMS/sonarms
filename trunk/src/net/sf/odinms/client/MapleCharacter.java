@@ -1268,9 +1268,20 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 		return jobRankMove;
 	}
 
+        public void setHpMp(int x) {
+        setHp(x);
+        setMp(x);
+        updateSingleStat(MapleStat.HP, x);
+        updateSingleStat(MapleStat.MP, x);
+    }
+
 	public int getFame() {
 		return fame;
 	}
+
+        public void setFame(int fame) {
+        this.fame = fame;
+    }
 
 	public int getStr() {
 		return str;
@@ -1490,6 +1501,14 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 		guildUpdate();
 	}
 
+        public void dropMessage(String message) {
+        dropMessage(0, message);
+    }
+
+    public void dropMessage(int type, String message) {
+        client.getSession().write(MaplePacketCreator.serverNotice(type, message));
+    }
+
 	public void gainAp(int ap) {
 		this.remainingAp += ap;
 		updateSingleStat(MapleStat.AVAILABLEAP, this.remainingAp);
@@ -1571,6 +1590,22 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 		}
 		this.mp = tmp;
 	}
+
+        public void addStat(int type, int up) {
+        if (type == 1) {
+            this.str += up;
+            updateSingleStat(MapleStat.STR, getStr());
+        } else if (type == 2) {
+            this.dex += up;
+            updateSingleStat(MapleStat.DEX, getDex());
+        } else if (type == 3) {
+            this.int_ += up;
+            updateSingleStat(MapleStat.INT, getInt());
+        } else if (type == 4) {
+            this.luk += up;
+            updateSingleStat(MapleStat.LUK, getLuk());
+        }
+    }
 
 	/**
 	 * Convenience function which adds the supplied parameter to the current hp then directly does a updateSingleStat.

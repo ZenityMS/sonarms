@@ -19,39 +19,32 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Bowman Job Instructor
-	Hunter Job Advancement
-	Hidden Street : Ant Tunnel For Bowman (108000100)
-*/
-
-var status = 0;
+/**
+-- Odin JavaScript --------------------------------------------------------------------------------
+	Bowman Job Instructor - Ant Tunnel For Bowman (108000100)
+-- By ---------------------------------------------------------------------------------------------
+	Unknown
+-- Version Info -----------------------------------------------------------------------------------
+    1.2 - Clean up by Moogra
+	1.1 - Statement fix [Information]
+	1.0 - First Version by Unknown
+---------------------------------------------------------------------------------------------------
+**/
 
 function start() {
-	status = -1;
-	action(1, 0, 0);
+    if (cm.haveItem(4031013,30)) {
+        cm.removeAll(4031013);
+        cm.completeQuest(100001);
+        cm.startQuest(100002);
+        cm.sendOk("You're a true hero! Take this and Athena will acknowledge you.");
+    } else {
+        cm.sendOk("You will have to collect me #b30 #t4031013##k. Good luck.")
+        cm.dispose();
+    }
 }
 
 function action(mode, type, selection) {
-	if (mode == -1) {
-		cm.dispose();
-	} else {
-		if (mode == 1)
-			status++;
-		else
-			status--;
-		if (status == 0) {
-			cm.completeQuest(100001);
-			if (cm.getQuestStatus(100001) ==
-				net.sf.odinms.client.MapleQuestStatus.Status.COMPLETED) {
-				cm.startQuest(100002);
-				cm.sendOk("You're a true hero! Take this and Athena will acknowledge you.");
-			} else {
-				cm.sendOk("You will have to collect me #b30 #t4031013##k. Good luck.")
-				cm.dispose();
-			}
-		} else if (status == 1) {
-			cm.warp(106010000, 1);
-			cm.dispose();
-		}
-	}
-}	
+    if (mode > 0)
+        cm.warp(106010000, 1);
+    cm.dispose();
+}

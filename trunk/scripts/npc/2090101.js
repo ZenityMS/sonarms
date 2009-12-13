@@ -56,23 +56,23 @@ function action(mode, type, selection) {
 			} else if (selection == 1) {
 				beauty = 1;
 				hairnew = Array();
-				if (cm.getChar().getGender() == 0) {
+				if (cm.getPlayer().getGender() == 0) {
 					for(var i = 0; i < mhair.length; i++) {
-						hairnew.push(mhair[i] + parseInt(cm.getChar().getHair()
+						hairnew.push(mhair[i] + parseInt(cm.getPlayer().getHair()
  % 10));
 					}
 				} 
-				if (cm.getChar().getGender() == 1) {
+				if (cm.getPlayer().getGender() == 1) {
 					for(var i = 0; i < fhair.length; i++) {
-						hairnew.push(fhair[i] + parseInt(cm.getChar().getHair()
+						hairnew.push(fhair[i] + parseInt(cm.getPlayer().getHair()
  % 10));
 					}
 				}
-				cm.sendYesNo("If you use the EXP coupon your hair will change RANDOMLY with a chance to obtain a new experimental style that I came up with. Are you going to use #b#t5150010##k and really change your hairstyle?");
+				cm.sendYesNo("If you use the EXP coupon your hair will change RANDOMLY with a chance to obtain a new experimental style that I came up with. Are you going to use #b#t5150024##k and really change your hairstyle?");
 			} else if (selection == 2) {
 				beauty = 2;
 				haircolor = Array();
-				var current = parseInt(cm.getChar().getHair()
+				var current = parseInt(cm.getPlayer().getHair()
 /10)*10;
 				for(var i = 0; i < 8; i++) {
 					haircolor.push(current + i);
