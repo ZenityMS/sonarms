@@ -32,6 +32,11 @@ CREATE TABLE `accounts` (
   KEY `ranking1` (`id`,`banned`,`gm`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+/*!40000 ALTER TABLE `accounts` DISABLE KEYS */;
+INSERT INTO `accounts` (`id`,`name`,`password`,`salt`,`loggedin`,`lastlogin`,`createdat`,`birthday`,`banned`,`banreason`,`gm`,`email`,`emailcode`,`forumaccid`,`macs`,`lastknownip`,`lastpwemail`,`tempban`,`greason`,`cardNX`,`maplePoints`,`paypalNX`) VALUES 
+ (1,'admin','f81e14c61bd5943707588d1f758a479f2193cfe3d91f3dfe021cab0bb373ae57be3c20a07fe6eb98dc3d91adcd0c3f0c9633ca9c190c4313b1ccef6920caac06','fbc1993a5b1af39e648afe807482bea4',0,'2009-09-17 21:30:31','2008-12-17 22:26:15','0000-00-00',0,NULL,2,NULL,NULL,0,'00-23-54-3A-7B-DC','127.0.0.1','2002-12-31 17:00:00','0000-00-00 00:00:00',NULL,34909337,309683,4822834);
+/*!40000 ALTER TABLE `accounts` ENABLE KEYS */;
+
 --
 -- Table structure for table `characters`
 --

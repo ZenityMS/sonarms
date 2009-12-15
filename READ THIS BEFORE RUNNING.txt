@@ -1,3 +1,4 @@
 Everything is set-up already. If you have any questions or requests, shoot them by me at anytime.
+To start the server, run: SonarMS Starter.bat
 
 For a list of commands, go in game and type !help.
