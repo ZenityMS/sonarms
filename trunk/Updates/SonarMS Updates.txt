@@ -104,7 +104,7 @@ Rev 60
 [+]Added /map
 [+]Prepared for some bugs to fix.
 
-Rev 61
+Rev 61-64
 [+]Simplified SQL
 [+]90% ready for release date
 [+]Found some bugs to fix.
@@ -117,3 +117,11 @@ Rev 65
 [+]Added Quests
 [+]Prepared for some things to add (CS, Mu Lung Dojo)
 [+]Added some commands
+
+Rev 66
+[+]Added All-in-one Teleporter(Spinel)
+[+]Updated SQL
+[+]Updated recvops, sendops
+[+]Prepared for adding ring effects
+[+]Tested Lie Detector (Still in progress)
+[+]Cleaned up source
