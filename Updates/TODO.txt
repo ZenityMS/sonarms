@@ -1,0 +1,8 @@
+Bug Fixes
+--------------------------------------------------------------------------------------------------
+Fix Rings.
+Make Medals 100% bugless.
+Change Login Screen with additonal options.
+Fix Lie Detector.
+
+~~~Please post all bugs found on the forums.~~~
