@@ -1,0 +1,541 @@
+SonarMS Setup on Ubuntu Linux
+============================================
+Author:  EnragedMage aka mythrilore, 2009 EDITED: BY Tommy
+
+Support: I may provide LIGHT support to help you get your Linux box
+running, but please don't expect or demand it.  This document is very
+long, but if you follow it closely, it'll work. There are no pictures,
+but if you need pictures, you may not want to try setting up a Linux
+server.
+
+Let me know of any errors or omissions in this doc.
+
+Introduction
+=============
+This guide shows you how to setup a Ubuntu Linux machine to run SonarMS, and configure 
+your Windows client to connect and play.
+
+Note this is a FRESH install, from scratch. I do not know how to preserve your
+existing data.
+
+To avoid a REALLY long document, for anything not SonarMS related I'll just list the task 
+but not go into detail about how to achieve it (for example, installing packages 
+on Linux). I have to assume you know how to do that, because you need Linux 
+experience and I can't teach that here.  I'll try to put actual commands as much
+as possible though.
+
+Why I Use Linux
+==============
+These are my personal reasons for using Linux instead of Windows. Pick the ones you like.
+
+* Linux is free.
+* Linux can run on an old PC I have laying around.
+* At work, I'm a UNIX systems administrator. It just makes sense to me.
+* It's easier to compile the server (no need to be a NetBeans GUI expert).
+* It's faster to compile - on my system it takes 6 seconds, versus 47 
+  seconds (tested by dual-booting Linux and Windows on the same system).
+* The Linux OdinTeh.jar is less than half the size of the Windows OdinTeh.jar.
+* Performance is more stable (not necessarily FASTER, just more stable, resulting in a
+  better user experience). This allows more worlds, channels, players on one server.
+
+Setting up SonarMS Linux server
+=====================================
+You can use any distribution of Linux, but I use Ubuntu. If you are undecided 
+on which Linux distro, then just use Ubuntu so this guide works for you. 
+Otherwise, you'll have to translate my Ubuntu directions to your specific distro.
+
+And please, no comments/discussions about "teh best distro" - you keep your million
+reasons and I'll keep mine.
+
+Install Ubuntu
+--------------------------------
+Go to ubuntu.com and download the desktop cd image and burn it.
+Boot your computer with the cd in the drive, and install Ubuntu.
+
+Install required components
+-----------------------------
+Install the following, using Synaptic Package Manager (GUI) or apt-get (command line)
+(for example, sudo apt-get install package-name)
+  java jdk 6 - to compile and run SonarMS
+	(Ubuntu package sun-java6-jdk)
+  svn - to download SonarMS source from its repository
+	(Ubuntu package subversion)
+  ant - java source code auto-builder
+	(Ubuntu package ant)
+  mysql client - so you can use mysql command line
+	(Ubuntu package mysql-client)
+  mysql server - to store the SonarMS database
+	(Ubuntu package mysql-server)
+
+OPTIONAL PACKAGES
+  dos2unix - to convert the source files from Windows to UNIX format
+	(Ubuntu package tofrodos)
+  mysql Navigator, to help familiarize yourself with the database's structure
+	(Ubuntu package mysql-navigator)
+  apache - for the regpage
+	(Ubuntu package apache2)
+  php apache module - for the regpage
+	(Ubuntu package libapache2-mod-php5)
+  php mysql module - for the regpage
+	(Ubuntu package php5-mysql)
+  rar - to extract rar archives
+	(Ubuntu package rar)
+
+Download required Java libraries
+---------------------------------
+EMMS2 requires the following libraries
+
+The JCE Unlimited Strength Files
+http://java.sun.com/javase/downloads/index.jsp
+Go to the bottom, the link is under "Other Downloads"
+
+Extract JCE and copy local_policy.jar and US_export_policy.jar to your java 
+installation's security directory. For my Ubuntu system, it's in 
+/usr/lib/jvm/java-6-sun/jre/lib/security
+  sudo cp local_policy.jar US_export_policy.jar /usr/lib/jvm/java-6-sun/jre/lib/security
+
+Apache MINA 1.1
+NOTE: SonarMS already provides this jar file in the dist directory
+http://mina.apache.org/downloads.html
+
+Extract mina, and make note of the file mina-core-1.1.7.jar
+
+MySQL Connector/J
+NOTE: SonarMS already provides this jar file in the dist directory
+http://dev.mysql.com/downloads/connector/j/
+
+Extract the JDBC connector and note the file mysql-connector-java-3.1.14-bin.jar
+
+slf4j 1.5
+NOTE: SonarMS already provides this jar file in the dist directory
+http://www.slf4j.org/download.html
+
+Extract slf4j and note the files slf4j-api-1.5.0.jar and slf4j-jdk14-1.5.0.jar
+
+Extract the above libraries. Find, copy and rename libraries
+  mina-core-1.1.7.jar to mina-core.jar
+  slf4j-api-1.5.0.jar to slf4j-api.jar
+  slf4j-jdk14-1.5.0.jar to slf4j-jdk14.jar
+  mysql-connector-java-3.1.14-bin.jar to mysql-connector-java-bin.jar
+
+Setup source
+-------------
+First, determine where you want to store your server. I keep mine in
+/root/SonarMS. When you pull SonarMS from svn, it will create the SonarMS directory,
+so you just need to make an /SonarMS directory
+  mkdir /SonarMS
+
+Change into that directory
+  cd /SonarMS
+
+Pull SonarMS from source
+  svn co http://my-svn.assembla.com/svn/emms2 
+
+Now there should be a SonarMS directory in /SonarMS. Inside that are some directories
+and several informational text files.
+
+Go into the main SonarMS directory
+  cd SonarMS
+
+[OPTIONAL] Convert files to UNIX/Linux format
+Some of the source files may have a bunch of "^M" characters.
+This isn't harmful, you don't need to remove them, but they can be 
+annoying. You can remove all "^M" like so:
+  dos2unix *
+  find . -name '*.java' -exec dos2unix {} \;
+  find . -name '*.js' -exec dos2unix {} \;
+
+Don't worry about the following read/write errors, it's just because those 
+are directories, not files.
+dos2unix: File read/write error while converting build.
+dos2unix: File read/write error while converting dist.
+dos2unix: File read/write error while converting EMMS3rdParty.
+dos2unix: File read/write error while converting scripts.
+dos2unix: File read/write error while converting src.
+
+[OPTIONAL] Add a blank line at the end of files
+Some of the text files don't leave a blank line at the end, so when 
+you edit them, they'll complain about an incomplete last line.  It's 
+not harmful, just annoying, but we can fix this by doing the following:
+
+find . -name '*.java' -exec echo "^M" >> {} \;
+find . -name '*.js' -exec echo "^M" >> {} \;
+
+The ^M above is entered by typing "Ctrl-V Ctrl-M", and not by typing ^M.
+
+[OPTIONAL] compile OdinTeh.jar
+----------------------------------
+EMMS2 comes with a precompiled OdinTeh.jar, ready to use. If you're anxious to get
+going, then skip this section. Come back here when you need to re-compile.
+
+I like to compile the source fresh from svn, to make sure it compiles correctly
+before I start making edits.
+
+First, make sure you're in the main folder (in this document's case, that's in
+/root/SonarMS)
+  cd /root/SonarMS
+
+Compile it
+  ant
+
+Backup the original distributed OdinTeh.jar that's in the dist folder
+  cd dist
+  mv OdinTeh.jar OdinTeh.jar.orig
+
+Copy the file "build/OdinTeh.jar" into the "dist" directory.
+  cp ../build/OdinTeh.jar .
+  cd ..
+
+Setup MySQL
+------------
+On Ubuntu, installing the mysql server also sets it up and starts it
+with the default databases. During the install, it will ask for a root
+password; this is for the root mysql user - we will need this.
+
+EMMS2 comes with a default SQL script called SonarMS.sql. We
+need to run this against our database.
+
+  cd /root/ArberMS
+
+First, create the database
+  mysqladmin -u root -p create SonarMS
+  
+Then import the sql file
+  mysql -u root -p SonarMS < SonarMS.sql
+
+NOTE that if you already had an SonarMS database, it will be overwritten 
+when you run the SonarMS.sql file.
+
+To avoid this, or to use your own database name, you'll need to create
+your db with a different name
+  mysqladmin -u root -p create dbname
+  mysql -u root -p dbname < SonarMS.sql
+
+Configure SonarMS server
+------------------------
+EMMS2 provides the java store and trust keys in filename.keystore, with a
+password of "passw0rd". 
+
+If you don't like this, or if you want to do it the way OdinMS used to 
+do it (which was in separate key and trust store files), then you'll 
+need to generate your own store keys like below.  Otherwise, skip 
+this part.
+
+Create the store keys. Enter info that it asks for.
+  keytool -genkeypair -keyalg RSA -keysize 1024 -validity 365 -keystore key.keystore
+
+	Enter keystore password:
+	Re-enter new password:
+	What is your first and last name?
+  	[Unknown]:  First Last
+	What is the name of your organizational unit?
+  	[Unknown]:  NA
+	What is the name of your organization?
+  	[Unknown]:  NA
+	What is the name of your City or Locality?
+  	[Unknown]:  NA
+	What is the name of your State or Province?
+  	[Unknown]:  NA
+	What is the two-letter country code for this unit?
+  	[Unknown]:  US
+	Is CN=First Last, OU=NA, O=NA, L=NA, ST=NA, C=US correct?
+  	[no]:  yes
+
+	Enter key password for <mykey>
+        (RETURN if same as keystore password):
+
+Copy the key.keystore file for world, login and channel servers
+  for each in world login channel
+  do
+    cp key.keystore $each.keystore
+    cp key.keystore $each.truststore
+  done
+
+Edit the launch files
+------------------------
+The launch_XXXXX.sh files are your launch files.
+
+EMMS2 has already configured the launch files, but you should look at 
+them to make sure they look OK.
+
+If needed, make the *.sh files executable (should already be done)
+  chmod a+x *.sh
+
+Edit the properties files
+--------------------------
+  world.properties - change the following lines
+	net.sf.odinms.channel.net.interface=YOUR_IP_HERE <== change to your IP
+
+  channel.properties - change your host to your actual IP address
+	net.sf.odinms.world.host=YOUR_IP_HERE
+
+  login.properties - change the host to your actual IP address
+	net.sf.odinms.world.host=YOUR_IP_HERE
+
+  db.properties - change the following lines
+	url=jdbc:mysql://localhost:3306/emms2  <== replace with your db name
+	user = root  <== mysql user that owns the database (probably root)
+	password = mypassword  <== mysql user's password
+
+Put in WZ files
+--------------
+You must use the XML files provided by SonarMS, for the correct version of the server.
+I have tried other people's but many NPCs and objects were in the wrong places, or I'd
+disconnect when going to most maps.
+
+The XML should be available at the forums where I posted SonarMS release.
+	
+Unzip the file, then move the wz directory into the /root/SonarMS/emms2 directory.
+
+Starting the SonarMS server
+---------------------------
+Run the shell scripts in this order
+	launch_world.sh
+	launch_login.sh
+	launch_channel.sh
+
+You should first test these scripts in 3 separate terminal windows, so you can 
+see any error messages.  After they work fine, then you can use the
+startall.sh script to launch all servers.
+
+Stopping the SonarMS server
+---------------------------
+NOTE: Make sure everyone is logged off before you shutdown or else they'll be 
+rolled-back, meaning they lose a lot of things like exp, mesos, and items.
+
+Open a terminal and type "pkill java"
+
+OR
+
+While in-game with a GM character, type "!shutdown now"
+
+Setup MS Client
+===============================
+Obviously your SonarMS server is a different machine than your Windows PC,
+since afaik you can't play MS on Linux (I hope you didn't come this far thinking
+you were going to play MS on the same Linux box as your server!).
+
+So you will need one piece of information before moving to your Windows machine:
+the IP address of your Linux box. Find it by typing "ifconfig" in a terminal.
+
+Now on your Windows box:
+Since the server is version 0.75, you will need a v0.75 MS client for everything
+to work. Dig around, there are v0.75 MSSetup.exe links floating around.
+
+Open up Windows Explorer, navigate to where MS is installed (probably c:\nexon).
+
+Copy the MapleStory folder, then rename the copied folder (probably called 
+"Copy of MapleStory") to SonarMS62.
+
+Get the localhost V75 launcher (I recommend Kiki's V75 localhost), and follow its
+instructions for installing it.
+
+If you are using Kiki's v0.75 localhost, then place it into C:\Nexon\EMMS262.
+
+Edit the Kiki.cfg file, and change the IP address to match your server's IP address.
+
+Launch the Maplestory.exe file.
+
+You'll know things are well if Gameguard doesn't come up, and you go directly to
+the Nexon splash screen.
+
+To login, you will need to first create an account. SonarMS does not use auto-register.
+
+Manually Adding an Account
+--------------------------
+The hardest part about manually adding an account, is generating a SHA512 crypt for
+your password. But because you're on Linux, it's much easier for you.
+
+First, install command-line php if you haven't already done so
+  sudo apt-get install php5-cli
+
+Generate a SHA512 crypt for your password
+  echo "<?php echo hash('SHA512','your-password') ?>" | php > pw.sql
+
+Right now, pw.sql only contains the sha512 hash of your-password. You need to edit 
+pw.sql to form a proper mysql statement. Edit it so it looks something like this
+
+insert into accounts (name,password,salt,email,birthday,gm,macs,banreason)
+  values ('accountname','thatlonghash','','','2008-08-28','0','','');
+
+Add it to the database
+  mysql -u root -p dbname < pw.sql
+
+Personal Changes
+=================
+These are some things you might want to change on your server.
+
+Add channels
+-------------
+By default, 4 channels are configured in the database, and SonarMS is set
+to use 4. You might want more. Just remember that more channels means 
+more memory; if you have too many channels you may get Java out of 
+heap errors.
+
+Edit channel.properties, and change
+
+net.sf.odinms.channel.count=4
+
+to the number of channels you want.
+
+Add a line for each of your new channels
+
+net.sf.odinms.channel.8.key=release5
+net.sf.odinms.channel.9.key=release6
+.. and so on
+
+You need to generate a sha1 hash of the key value for each of the new channels,
+to be put into the database.  An easy way is to use php.  Type this at the command line
+
+  echo "<?php echo hash('sha1',"release5");?>"|php
+
+Repeat for all your channels' keys.
+
+Now you need to add these new keys into your database. 
+
+The channels table contains the key for the channels in channelconfig.
+
+Here's the sha1 keys for the following texts
+
+release5	113f78f519e010e65853241bfcb14450c4fccb66
+release6	4abba5486022346a2b309c1c2ea6a0da41a88090
+release7	76134d11fe0c2b337e2b786bfcc738b975fcf40a
+release8	5688c244c56a884a50984130a17d0b61d06743a3
+release9	6e59a6559033c70b98148f1bd67e1b63aaeedf30
+release10	603dd499e4b134bf9925600b7f150644f9e9a50b
+release11	b48f4c3c803f58950b005d785cf828027a83eac4
+release12	52a9458618abed6a42e228b33ade9cdf5ded10b4
+
+Connect to mysql and enter the following queries
+
+insert into channels (`world`,`number`,`key`) values (0,5,'113f78f519e010e65853241bfcb14450c4fccb66');
+insert into channels (`world`,`number`,`key`) values (0,6,'4abba5486022346a2b309c1c2ea6a0da41a88090');
+insert into channels (`world`,`number`,`key`) values (0,7,'76134d11fe0c2b337e2b786bfcc738b975fcf40a');
+insert into channels (`world`,`number`,`key`) values (0,8,'5688c244c56a884a50984130a17d0b61d06743a3');
+insert into channels (`world`,`number`,`key`) values (0,9,'6e59a6559033c70b98148f1bd67e1b63aaeedf30');
+insert into channels (`world`,`number`,`key`) values (0,10,'603dd499e4b134bf9925600b7f150644f9e9a50b');
+insert into channels (`world`,`number`,`key`) values (0,11,'b48f4c3c803f58950b005d785cf828027a83eac4');
+insert into channels (`world`,`number`,`key`) values (0,12,'52a9458618abed6a42e228b33ade9cdf5ded10b4');
+insert into channelconfig (`channelid`,`name`,`value`) values (5,'net.sf.odinms.channel.net.port',7579);
+insert into channelconfig (`channelid`,`name`,`value`) values (6,'net.sf.odinms.channel.net.port',7580);
+insert into channelconfig (`channelid`,`name`,`value`) values (7,'net.sf.odinms.channel.net.port',7581);
+insert into channelconfig (`channelid`,`name`,`value`) values (8,'net.sf.odinms.channel.net.port',7582);
+insert into channelconfig (`channelid`,`name`,`value`) values (9,'net.sf.odinms.channel.net.port',7583);
+insert into channelconfig (`channelid`,`name`,`value`) values (10,'net.sf.odinms.channel.net.port',7584);
+insert into channelconfig (`channelid`,`name`,`value`) values (11,'net.sf.odinms.channel.net.port',7585);
+insert into channelconfig (`channelid`,`name`,`value`) values (12,'net.sf.odinms.channel.net.port',7586);
+
+Change Guild Costs
+---------------------------
+You may want to change the costs to create a guild, expand it, get an emblem.
+
+Edit src/net/sf/odinms/net/world/guild/MapleGuild.java
+
+change the lines
+        public final static int CREATE_GUILD_COST = 5000000; // 5 mil to start a guild
+        public final static int CHANGE_EMBLEM_COST = 15000000;
+        public final static int INCREASE_CAPACITY_COST = 5000000; // every 5 slots
+
+3rd Job doesn't give 5 ap points
+--------------------------------
+GMS gives you 5 extra ap points upon getting 3rd job, but Valhalla doesn't.
+EMMS2 has this fix in place, but here's the code for reference.
+
+Edit src/net/sf/odinms/client/MapleCharacter.java
+
+In the changeJob method, after the lines
+		this.job = newJob;
+                this.remainingSp++;
+
+Add the following
+                if (this.level >= 70 && (this.job == MapleJob.FP_MAGE || this.job == MapleJob.IL_MAGE
+					|| this.job == MapleJob.AND_SO_ON_FOR_ALL_3RD_JOBS )) {
+                        this.remainingAp += 5;
+                        updateSingleStat(MapleStat.AVAILABLEAP, this.remainingAp);
+                }
+
+
+Change World / Channel Name
+-----------------------------
+By default, SonarMS configures everyone in world 0 (Scania). You may want you default
+world to be something else.
+
+Edit src/net/sf/odinms/net/login/handler/ServerlistRequestHandler.java
+
+Change the line
+
+c.getSession().write(MaplePacketCreator.getServerList(X, "CHAN_NAME", LoginServer.getInstance().getLoad()));
+
+replace CHAN_NAME with desired name, and where X is one of the following
+* 0 = Scania * 1 = Bera * 2 = Broa * 3 = Windia
+* 4 = Khania * 5 = Bellocan * 6 = Mardia * 7 = Kradia
+* 8 = Yellonde * 9 = Demethos * 10 = Elnido * 11 = Kastia
+* 12 = Judis * 13 = Arkenia * 14 = Plana * 15 = Galicia
+* 16 = Kalluna * 17 = Stius * 18 = Croa * 19 = Zenith
+* 20 = Medere (Korean)
+
+For example, you want Demethos as your default world, and your channel names
+are KoolMS.  Then you should have
+
+c.getSession().write(MaplePacketCreator.getServerList(9, "KoolMS", LoginServer.getInstance().getLoad()));
+
+You will also need to update your characters to use the new world as well.
+Run this query (replace X with your world number)
+
+  update characters set world='X';
+
+
+Anti-multi levels
+------------------
+This is for high rate servers to avoid leveling from level 1 to 15 
+in one shot for example. SonarMS has this implemented.
+
+Edit src/net/sf/odinms/client/MapleCharacter.java
+
+Look for the section
+
+        if (show && gain != 0) {
+            client.getSession().write(MaplePacketCreator.getShowExpGain(gainShow, inChat, white));
+        }
+        while (level < 250 && exp.get() >= ExpTable.getExpNeededForLevel(level)) {
+            levelUp();
+        }
+
+and change to
+
+        if (show && gain != 0) {
+            client.getSession().write(MaplePacketCreator.getShowExpGain(gainShow, inChat, white));
+        }
+        if (level < 250 && exp.get() >= ExpTable.getExpNeededForLevel(level)) {
+            levelUp();
+        }
+
+Now look for the section
+
+        maxhp = Math.min(30000, maxhp);
+        maxmp = Math.min(30000, maxmp);
+        List<Pair<MapleStat, Integer>> statup = new ArrayList<Pair<MapleStat, Integer>>(8);
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, Integer.valueOf(remainingAp)));
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXHP, Integer.valueOf(maxhp)));
+
+and add the exp.set(0) command
+
+        maxhp = Math.min(30000, maxhp);
+        maxmp = Math.min(30000, maxmp);
+        exp.set(0);
+        List<Pair<MapleStat, Integer>> statup = new ArrayList<Pair<MapleStat, Integer>>(8);
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.AVAILABLEAP, Integer.valueOf(remainingAp)));
+        statup.add(new Pair<MapleStat, Integer>(MapleStat.MAXHP, Integer.valueOf(maxhp)));
+
+GMs get super haste and hide
+-----------------------------------------
+EMMS2 gives GMs super haste and hide when they login. You can change
+that as follows.
+
+Edit src/net/sf/odinms/net/channel/handler/PlayerLoggedinHandler.java
+
+        if (player.isGM()) {
+            int[] skills = {9101001, 9101004}; // Super haste and Hide
+            for (int i : skills) {
+
+You could mess around and add other skills that a GM gets when she logs in.

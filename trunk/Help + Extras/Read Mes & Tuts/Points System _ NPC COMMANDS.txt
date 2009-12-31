@@ -1,0 +1,16 @@
+Points System NPC Commands
+!==================D
+cm.getPoints();
+==
+Is used to check how many points does the user have
+!==================D
+cm.addPoints(AMOUNT);
+==
+This will add X amount of points. Replace AMOUNT with the amount you want to add
+!==================D
+cm.removePoints(AMOUNT);
+==
+This will remove X amount of points from user. Replace AMOUNT with the amount you want to remove.
+!==================D
+Example Script
+*check: 9001002.js for code*

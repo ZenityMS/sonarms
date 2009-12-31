@@ -1,0 +1,1 @@
+To change rates of server, visit the config folder.
