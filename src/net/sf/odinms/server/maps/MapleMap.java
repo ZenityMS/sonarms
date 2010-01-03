@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Calendar;
-
+import net.sf.odinms.tools.Randomizer;
 import net.sf.odinms.database.DatabaseConnection;
 import net.sf.odinms.client.Equip;
 import net.sf.odinms.client.IItem;
@@ -1019,34 +1019,20 @@ public class MapleMap {
 		tMan.schedule(new ExpireMapItemJob(mdrop), 60000);
 	}
 
-	public void startMapEffect(String msg, int itemId) {
-		if (mapEffect != null)
-			return;
-		mapEffect = new MapleMapEffect(msg, itemId);
-		broadcastMessage(mapEffect.makeStartData());
-		TimerManager tMan = TimerManager.getInstance();
-		/*tMan.schedule(new Runnable() {
-			@Override
-			public void run() {
-				mapEffect.setActive(false);
-				broadcastMessage(mapEffect.makeStartData());
-			}
-		}, 20000);*/
-		tMan.schedule(new Runnable() {
-			@Override
-			public void run() {
-				broadcastMessage(mapEffect.makeDestroyData());
-				mapEffect = null;
-			}
-		}, 30000);
-	}
+        public void startMapEffect(String msg, int itemId) {
+            if (mapEffect != null)
+                return;
+            mapEffect = new MapleMapEffect(msg, itemId);
+            broadcastMessage(mapEffect.makeStartData());
+            TimerManager.getInstance().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    broadcastMessage(mapEffect.makeDestroyData());
+                    mapEffect = null;
+                }
+            }, 30000);
+        }
 
-
-	/**
-	 * Adds a player to this map and sends nescessary data
-	 *
-	 * @param chr
-	 */
 	public void addPlayer(MapleCharacter chr) {
 		//log.warn("[dc] [level2] Player {} enters map {}", new Object[] { chr.getName(), mapid });
 		synchronized (characters) {
@@ -1648,6 +1634,11 @@ public class MapleMap {
 	public int getTimeMobId() {
 		return timeMobId;
 	}
+        
+        public void spawnDojoMonster(final MapleMonster monster) {
+            Point[] pts = {new Point(140, 0), new Point(190, 7), new Point(187, 7)};
+            spawnMonsterWithEffect(monster, 15, pts[Randomizer.getInstance().nextInt(3)]);
+        }
 
 	public String getTimeMobMessage() {
 		return timeMobMessage;
