@@ -4755,17 +4755,39 @@ public class MaplePacketCreator {
                 return mplew.getPacket();
             }
             
-            public static MaplePacket updateDojoStats(int points, int belt, boolean tut) {
+            public static MaplePacket updateDojoStats(MapleCharacter chr, int belt) {
                 MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
                 mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
                 mplew.write(0x0a);
                 mplew.write(HexTool.getByteArrayFromHexString("B7 04")); //?
-                mplew.writeMapleAsciiString("pt=" + points + ";belt=" + belt + ";tuto=" + (tut ? "1" : "0"));
-
+                mplew.writeMapleAsciiString("pt=" + chr.getDojoPoints() + ";belt=" + belt + ";tuto=" + (chr.getDojoFinished() ? "1" : "0"));
                 return mplew.getPacket();
             }
 
+            public static MaplePacket sendDojoAnimation(byte firstByte, String animation) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendPacketOpcode.BOSS_ENV.getValue());
+                mplew.write(firstByte);
+                mplew.writeMapleAsciiString(animation);
+                return mplew.getPacket();
+            }
+
+            public static MaplePacket getDojoInfo(String info) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+                mplew.write(10);
+                mplew.write(HexTool.getByteArrayFromHexString("B7 04"));
+                mplew.writeMapleAsciiString(info);
+                return mplew.getPacket();
+            }
+
+            public static MaplePacket getDojoInfoMessage(String message) {
+                MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
+                mplew.writeShort(SendPacketOpcode.SHOW_STATUS_INFO.getValue());
+                mplew.write(9);
+                mplew.writeMapleAsciiString(message);
+                return mplew.getPacket();
+            }
             /**
             *
             * @param type - (0:Light&Long 1:Heavy&Short)
@@ -4800,11 +4822,9 @@ public class MaplePacketCreator {
 
             public static MaplePacket dojoWarpUp() {
                 MaplePacketLittleEndianWriter mplew = new MaplePacketLittleEndianWriter();
-
                 mplew.writeShort(SendPacketOpcode.DOJO_WARP_UP.getValue());
                 mplew.write(0);
                 mplew.write(6);
-
                 return mplew.getPacket();
             }
 

@@ -10,8 +10,8 @@ function enter(pi) {
             pi.getPlayer().getClient().getChannelServer().getMapFactory().getMap(pi.getPlayer().getMap().getId() + 100).killAllMonsters(false);
             pi.warp(pi.getPlayer().getMap().getId() + 100, 0);
         } else {
-			pi.getPlayer().addMojoCompleted(1);
-        	pi.getPlayer().getClient().getSession().write(MaplePacketCreator.serverNotice(5, "You have completed this pq 1 time for a total of "+ pi.getPlayer().getMojoCompleted() +""));
+			pi.getPlayer().addDojoCompleted(1);
+        	pi.getPlayer().getClient().getSession().write(MaplePacketCreator.serverNotice(5, "You have completed this pq 1 time for a total of "+ pi.getPlayer().getDojoCompleted() +""));
             pi.warp(925020003, 0); //rooftop rofl.
         }
         return true;

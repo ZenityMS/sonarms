@@ -5674,3 +5674,9 @@ INSERT INTO `channelconfig` VALUES (1,2,'net.sf.odinms.channel.net.port','7576')
 /*!40000 ALTER TABLE `channelconfig` ENABLE KEYS */;
 UNLOCK TABLES;
 
+ALTER TABLE `characters` CHANGE `MojoTime` `DojoFinished` TINYINT( 1 ) NOT NULL DEFAULT '0';
+ALTER TABLE `characters` CHANGE `MojoPoints` `DojoPoints` INT( 11 ) NOT NULL DEFAULT '0';
+ALTER TABLE `characters` CHANGE `MojoCompleted` `DojoCompleted` INT( 11 ) NOT NULL DEFAULT '0';
+ALTER TABLE `savedlocations` MODIFY COLUMN `locationtype` ENUM('FREE_MARKET','WORLDTOUR','FLORINA','HIDEOUT','DOJO') NOT NULL;
+ALTER TABLE `savedlocations` ADD `portal` INT( 11 ) NOT NULL;
+

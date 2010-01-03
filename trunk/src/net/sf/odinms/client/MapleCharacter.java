@@ -60,6 +60,7 @@ import net.sf.odinms.server.maps.MapleMapObject;
 import net.sf.odinms.server.maps.MapleMapObjectType;
 import net.sf.odinms.server.maps.MapleSummon;
 import net.sf.odinms.server.maps.SavedLocationType;
+import net.sf.odinms.server.maps.SavedLocation;
 import net.sf.odinms.server.quest.MapleCustomQuest;
 import net.sf.odinms.server.quest.MapleQuest;
 import net.sf.odinms.tools.MaplePacketCreator;
@@ -89,7 +90,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 	private int hair, face;
 	private AtomicInteger meso = new AtomicInteger();
 	private int remainingAp, remainingSp;
-	private int savedLocations[];
+        private SavedLocation savedLocations[];
 	private int fame;
 	private int points;
 	private int reborns;
@@ -99,6 +100,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 	private int useSlots = 100;
 	private int setupSlots = 100;
 	private int etcSlots = 100;
+        private long dojoFinish;
 	private int cashSlots = 100;
 	// local stats represent current stats of the player to avoid expensive operations
 	private transient int localmaxhp, localmaxmp;
@@ -128,10 +130,10 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 	private boolean hidden;
 	private boolean canDoor = true;
 	private int chair;
-        private int MojoTime;
-        private int MojoPoints;
+        private boolean DojoFinished;
+        private int DojoPoints;
         private int dojoEnergy;
-        private int MojoCompleted;
+        private int DojoCompleted;
 	private int itemEffect;
 	private MapleParty party;
 	private EventInstanceManager eventInstance = null;
@@ -180,10 +182,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 			inventory[type.ordinal()] = new MapleInventory(type, (byte) 100);
 		}
 
-		savedLocations = new int[SavedLocationType.values().length];
-		for (int i = 0; i < SavedLocationType.values().length; i++) {
-			savedLocations[i] = -1;
-		}
+                savedLocations = new SavedLocation[SavedLocationType.values().length];
+                for (int i = 0; i < SavedLocationType.values().length; i++)
+                    savedLocations[i] = null;
 
 		quests = new LinkedHashMap<MapleQuest, MapleQuestStatus>();
 		anticheat = new CheatTracker(this);
@@ -239,15 +240,15 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 
 		ret.hair = rs.getInt("hair");
 		ret.face = rs.getInt("face");
-		ret.MojoTime = rs.getInt("MojoTime");
+		ret.DojoFinished = rs.getInt("DojoFinished") == 1;
 
 		ret.accountid = rs.getInt("accountid");
 
 		ret.mapid = rs.getInt("map");
 		ret.initialSpawnPoint = rs.getInt("spawnpoint");
 		ret.world = rs.getInt("world");
-                ret.MojoPoints = rs.getInt("MojoPoints");
-                ret.MojoCompleted = rs.getInt("MojoCompleted");
+                ret.DojoPoints = rs.getInt("DojoPoints");
+                ret.DojoCompleted = rs.getInt("DojoCompleted");
                 
 		ret.rank = rs.getInt("rank");
 		ret.rankMove = rs.getInt("rankMove");
@@ -436,7 +437,7 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 			while (rs.next()) {
 				String locationType = rs.getString("locationtype");
 				int mapid = rs.getInt("map");
-				ret.savedLocations[SavedLocationType.valueOf(locationType).ordinal()] = mapid;
+				ret.savedLocations[SavedLocationType.valueOf(rs.getString("locationtype")).ordinal()] = new SavedLocation(rs.getInt("map"), rs.getInt("portal"));
 			}
 			rs.close();
 			ps.close();
@@ -546,9 +547,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 			con.setAutoCommit(false);
 			PreparedStatement ps;
 			if (update) {
-				ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, " + "map = ?, meso = ?, hpApUsed = ?, mpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, childId = ?, reborns = ?, achivementpoints = ?, MojoTime = ?, MojoPoints = ?, MojoCompleted = ? WHERE id = ?");
+				ps = con.prepareStatement("UPDATE characters SET level = ?, fame = ?, str = ?, dex = ?, luk = ?, `int` = ?, exp = ?, hp = ?, mp = ?, maxhp = ?, maxmp = ?, sp = ?, ap = ?, gm = ?, skincolor = ?, gender = ?, job = ?, hair = ?, face = ?, " + "map = ?, meso = ?, hpApUsed = ?, mpApUsed = ?, spawnpoint = ?, party = ?, buddyCapacity = ?, messengerid = ?, messengerposition = ?, childId = ?, reborns = ?, achivementpoints = ?, DojoFinished = ?, DojoPoints = ?, DojoCompleted = ? WHERE id = ?");
 			} else {
-				ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp, mp, maxhp, maxmp, sp, ap, gm, skincolor, gender, job, hair, face, map, meso, hpApUsed, mpApUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, accountid, name, world, childId, parentId, reborns, achivementpoints, MojoTime, MojoPoints, MojoCompleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+				ps = con.prepareStatement("INSERT INTO characters (level, fame, str, dex, luk, `int`, exp, hp, mp, maxhp, maxmp, sp, ap, gm, skincolor, gender, job, hair, face, map, meso, hpApUsed, mpApUsed, spawnpoint, party, buddyCapacity, messengerid, messengerposition, accountid, name, world, childId, parentId, reborns, achivementpoints, DojoFinished, DojoPoints, DojoCompleted) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 			}
 
 			ps.setInt(1, level);
@@ -611,9 +612,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 				ps.setInt(29, childId);
 				ps.setInt(30, reborns);
 				ps.setInt(31, achivementpoints);
-                                ps.setInt(32, MojoTime);
-                                ps.setInt(33, MojoPoints);
-                                ps.setInt(34, MojoCompleted);
+                                ps.setInt(32, DojoFinished ? 1 : 0);
+                                ps.setInt(33, DojoPoints);
+                                ps.setInt(34, DojoCompleted);
 				ps.setInt(35, id);
 			} else {
 				ps.setInt(29, accountid);
@@ -623,9 +624,9 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 				ps.setInt(33, parentId);
 				ps.setInt(34, reborns);
 				ps.setInt(35, achivementpoints);
-				ps.setInt(36, MojoTime);
-                                ps.setInt(37, MojoPoints);
-                                ps.setInt(38, MojoCompleted);
+				ps.setInt(36, DojoFinished ? 1 : 0);
+                                ps.setInt(37, DojoPoints);
+                                ps.setInt(38, DojoCompleted);
 			}
 			int updateRows = ps.executeUpdate();
 			if (!update) {
@@ -771,16 +772,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 			}
 			ps.close();
 
-			deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?");
-			ps = con.prepareStatement("INSERT INTO savedlocations (characterid, `locationtype`, `map`) VALUES (?, ?, ?)");
-			ps.setInt(1, id);
-			for (SavedLocationType savedLocationType : SavedLocationType.values()) {
-				if (savedLocations[savedLocationType.ordinal()] != -1) {
-					ps.setString(2, savedLocationType.name());
-					ps.setInt(3, savedLocations[savedLocationType.ordinal()]);
-					ps.executeUpdate();
-				}
-			}
+                        deleteWhereCharacterId(con, "DELETE FROM savedlocations WHERE characterid = ?");
+                        ps = con.prepareStatement("INSERT INTO savedlocations (characterid, `locationtype`, `map`, `portal`) VALUES (?, ?, ?, ?)");
+                        ps.setInt(1, id);
+                        for (SavedLocationType savedLocationType : SavedLocationType.values())
+                            if (savedLocations[savedLocationType.ordinal()] != null) {
+                                ps.setString(2, savedLocationType.name());
+                                ps.setInt(3, savedLocations[savedLocationType.ordinal()].getMapId());
+                                ps.setInt(4, savedLocations[savedLocationType.ordinal()].getPortal());
+                                ps.addBatch();
+                        }
 			ps.close();
 
 			deleteWhereCharacterId(con, "DELETE FROM buddies WHERE characterid = ? AND pending = 0");
@@ -1351,12 +1352,12 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             return points;
         }
 
-        public int getMojoPoints(){
-            return MojoPoints;
+        public int getDojoPoints(){
+            return DojoPoints;
         }
 
-        public int getMojoTime(){
-            return MojoTime;
+        public boolean getDojoFinished(){
+            return DojoFinished;
         }
 
         public int getDojoEnergy() {
@@ -1367,10 +1368,31 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             this.dojoEnergy = x;
         }
 
-        public int getMojoCompleted(){
-            return MojoCompleted;
+        public void setDojoStart() {
+            int stage = (map.getId() / 100) % 100;
+            this.dojoFinish = System.currentTimeMillis() + ((stage > 36 ? 15 : stage / 6 + 5) | 0) * 60000;
+        }
+        
+        public void showDojoClock() {
+            int stage = (map.getId() / 100) % 100;
+            long time;
+            if (stage % 6 == 0)
+                time = ((stage > 36 ? 15 : stage / 6 + 5) | 0) * 60;
+            else
+                time = (dojoFinish - System.currentTimeMillis()) / 1000;
+            client.getSession().write(MaplePacketCreator.getClock((int) time));
+            TimerManager.getInstance().schedule(new Runnable() {
+                @Override
+                public void run() {
+                    client.getPlayer().changeMap(client.getChannelServer().getMapFactory().getMap(925020000));
+                }
+            }, time * 1000 + 3000); // let the TIMES UP display for 3 seconds, then warp
         }
 
+        public void changeMap(MapleMap to) {
+            changeMap(to, to.getPortal(0));
+        }
+        
         public int getAchivements() {
             return achivementpoints;
         }
@@ -1387,16 +1409,16 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
             points += addpoints;
         }
 
-        public void setMojoTime(int noob){
-            MojoTime += noob;
+        public void setDojoFinished() {
+            this.DojoFinished = true;
         }
 
-        public void addMojoPoints(int points){
-            MojoPoints += points;
+        public void addDojoPoints(int points){
+            DojoPoints += points;
         }
 
-        public void addMojoCompleted(int points){
-            MojoCompleted += points;
+        public void addDojoCompleted(int points){
+            DojoCompleted += points;
         }
         
         public void addAchivements(int points){
@@ -1939,17 +1961,20 @@ public class MapleCharacter extends AbstractAnimatedMapleMapObject implements In
 		return meso.get();
 	}
 
-	public int getSavedLocation(SavedLocationType type) {
-		return savedLocations[type.ordinal()];
-	}
+        public int getSavedLocation(String type) {
+            int m = savedLocations[SavedLocationType.fromString(type).ordinal()].getMapId();
+            clearSavedLocation(SavedLocationType.fromString(type));
+            return m;
+        }
 
-	public void saveLocation(SavedLocationType type) {
-		savedLocations[type.ordinal()] = getMapId();
-	}
-
-	public void clearSavedLocation(SavedLocationType type) {
-		savedLocations[type.ordinal()] = -1;
-	}
+        public void saveLocation(String type) {
+            MaplePortal closest = map.findClosestPortal(getPosition());
+            savedLocations[SavedLocationType.fromString(type).ordinal()] = new SavedLocation(getMapId(), closest != null ? closest.getId() : 0);
+        }
+        
+        public void clearSavedLocation(SavedLocationType type) {
+            savedLocations[type.ordinal()] = null;
+        }
 
 	public void gainMeso(int gain, boolean show) {
 		gainMeso(gain, show, false, false);
